@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="FixFlow: guided troubleshooting that asks the right questions, gives a clear action plan and keeps your evidence. Works offline.">
+<meta name="theme-color" content="#5b5bd6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14162b" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FixFlow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%279%27 fill=%27%235b5bd6%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-size=%2720%27 font-weight=%27800%27 text-anchor=%27middle%27 fill=%27white%27 font-family=%27sans-serif%27%3EF%3C/text%3E%3C/svg%3E">
+<title>FixFlow — Troubleshooting, made actionable</title>
+<style>
+:root{
+  --bg:#f5f7fb;--surface:#fff;--surface2:#eef2f7;--text:#172033;--muted:#687386;
+  --line:#dfe5ee;--accent:#5b5bd6;--accent2:#4848b8;--good:#16855b;--warn:#b26a00;
+  --danger:#b42318;--shadow:0 12px 35px rgba(23,32,51,.08);--radius:22px;
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,textarea,select{font:inherit} button{cursor:pointer}
+.app{max-width:1180px;margin:auto;padding:20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px}
+.brand h1{font-size:20px;margin:0}.brand p{margin:1px 0 0;color:var(--muted);font-size:12px}
+nav{display:flex;gap:7px;background:var(--surface);padding:5px;border:1px solid var(--line);border-radius:14px}
+nav button{border:0;background:transparent;padding:9px 13px;border-radius:10px;color:var(--muted)}nav button.active{background:var(--surface2);color:var(--text);font-weight:700}
+.view{display:none}.view.active{display:block}
+.hero{background:linear-gradient(135deg,#24245f,#5b5bd6);color:#fff;border-radius:28px;padding:34px;box-shadow:var(--shadow);margin-bottom:20px}
+.hero h2{font-size:clamp(28px,5vw,48px);line-height:1.05;margin:0 0 12px;max-width:700px}.hero p{margin:0;color:#e4e5ff;max-width:650px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.two{grid-template-columns:1.15fr .85fr}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 7px}.muted{color:var(--muted)}.small{font-size:12px}
+.btn{border:1px solid var(--line);background:var(--surface);padding:11px 15px;border-radius:12px;font-weight:700;color:var(--text)}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.primary:hover{background:var(--accent2)}.btn.ghost{background:transparent}.btn.danger{color:var(--danger)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+label{display:block;font-weight:700;margin:0 0 7px}input,textarea,select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--text);outline:none}input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,91,214,.12)}textarea{min-height:130px;resize:vertical}
+.field{margin-bottom:17px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:var(--surface);padding:9px 12px;border-radius:999px;color:var(--muted)}.chip.selected{background:#eeeeff;border-color:#b7b7f3;color:var(--accent2);font-weight:700}
+.step{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}.num{width:34px;height:34px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;font-weight:800;flex:none}.step.done .num{background:#dff5eb;color:var(--good)}.step.done .steptext{text-decoration:line-through;color:var(--muted)}
+.progress{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;background:var(--accent);width:0}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:var(--surface2);font-size:12px;font-weight:700}.badge.good{background:#dff5eb;color:var(--good)}.badge.warn{background:#fff0d6;color:var(--warn)}
+.stat{font-size:30px;font-weight:800}.statbox{padding:15px;background:var(--surface2);border-radius:16px}.history-item{display:flex;justify-content:space-between;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}.history-item:last-child{border-bottom:0}
+.empty{text-align:center;padding:35px 10px;color:var(--muted)}.notice{padding:13px 15px;border-radius:14px;background:#fff7e7;border:1px solid #f2d49d;color:#81500a;margin:15px 0}.safe{background:#eaf8f2;border-color:#bce7d3;color:#126342}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px 10px}
+
+/* V2.8 product polish */
+.top-actions{display:flex;align-items:center;gap:8px}.icon-btn{width:42px;height:42px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:13px;display:grid;place-items:center;font-size:17px;box-shadow:0 5px 18px rgba(23,32,51,.05)}
+.kicker{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.9;margin-bottom:10px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.hero .btn{border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.12);color:#fff}.hero .btn.primary{background:#fff;color:#2b2b73;border-color:#fff}
+.resume-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:18px;margin:0 0 16px;box-shadow:var(--shadow)}.resume-banner .resume-copy{min-width:0}.resume-banner b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.resume-banner .actions{margin:0;flex:none}
+.tip-strip{display:flex;gap:10px;align-items:flex-start;padding:13px 15px;background:var(--surface2);border:1px solid var(--line);border-radius:16px;margin-top:14px}.tip-strip strong{white-space:nowrap}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#172033;color:#fff;padding:11px 15px;border-radius:12px;box-shadow:0 14px 35px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:.22s;z-index:50;max-width:min(92vw,520px);font-size:13px}.toast.show{opacity:1;transform:translate(-50%,0)}
+html.dark{--bg:#10131a;--surface:#171b24;--surface2:#202633;--text:#edf1f7;--muted:#9aa6b8;--line:#303847;--shadow:0 12px 35px rgba(0,0,0,.22)}html.dark input,html.dark textarea,html.dark select{background:#11151d;color:var(--text)}html.dark .hero{background:linear-gradient(135deg,#171a42,#4b4bc2)}html.dark .problem-chip,html.dark .problem-row,html.dark .directory-card{background:#171b24}html.dark .notice{background:#2a2418;border-color:#594823;color:#f0ca82}html.dark .safe{background:#172820;border-color:#285640;color:#9fe0bf}
+@media(max-width:760px){.resume-banner{align-items:flex-start;flex-direction:column}.resume-banner .actions{width:100%}.resume-banner .actions .btn{flex:1}.hero-actions .btn{width:100%}.top-actions{margin-left:auto}}
+
+
+/* V2.2 responsive UI refinement */
+.directory-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.directory-card{min-width:0;padding:18px;background:linear-gradient(180deg,#fff,#fafbfe);border:1px solid var(--line);border-radius:18px;box-shadow:none}
+.directory-head{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.directory-title{min-width:0}.directory-title b{font-size:16px}.directory-title .small{margin-top:2px}
+.problem-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:13px}
+.problem-chip{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-width:0;text-align:left;border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 11px;border-radius:13px;line-height:1.3;transition:.16s ease}
+.problem-chip:hover{border-color:#b9b9ef;background:#f8f8ff;transform:translateY(-1px)}
+.problem-chip span{min-width:0}.problem-chip .arrow{color:var(--accent);font-weight:800;flex:none}
+.method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.method-item{padding:14px;background:var(--surface2);border-radius:16px}.method-item p{margin-bottom:0}
+.section-card{margin-top:16px}
+@media(max-width:900px){.directory-grid{grid-template-columns:1fr}}
+@media(max-width:760px){
+  .app{padding:12px 10px 30px}
+  .grid,.two{grid-template-columns:1fr}
+  .hero{padding:23px 18px;border-radius:21px}
+  header{align-items:center;flex-direction:row;flex-wrap:wrap;margin-bottom:16px}
+  nav{max-width:100%;overflow-x:auto}
+  nav button{white-space:nowrap;padding:8px 11px}
+  .card{padding:16px;border-radius:19px}
+  .directory-grid{grid-template-columns:1fr;gap:10px}
+  .problem-grid{grid-template-columns:1fr}
+  .method-grid{grid-template-columns:1fr;gap:9px}
+  .directory-card{padding:15px}
+  .directory-head .btn{padding:9px 10px}
+  .actions{gap:8px}
+  .actions .btn{flex:0 1 auto}
+}
+@media(max-width:430px){
+  .brand h1{font-size:18px}.brand p{font-size:11px}
+  nav{width:100%;order:3}
+  .hero h2{font-size:30px}
+  .hero p{font-size:14px}
+  .problem-chip{padding:10px}
+}
+
+/* V2.3 section-based navigation */
+.section-hero{background:linear-gradient(135deg,#141d3d,#4e55c9);color:#fff;border-radius:26px;padding:25px 24px;margin-bottom:16px;box-shadow:var(--shadow)}
+.section-hero h2{margin:0 0 6px;font-size:28px}.section-hero p{margin:0;color:#dfe2ff}.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.quick-card{display:flex;align-items:center;gap:11px;padding:15px;border:1px solid var(--line);background:var(--surface);border-radius:18px;text-align:left;box-shadow:var(--shadow);transition:.16s}.quick-card:hover{transform:translateY(-2px);border-color:#b9b9ef}.quick-icon{width:40px;height:40px;border-radius:13px;background:#eeeeff;color:var(--accent);display:grid;place-items:center;font-weight:900;flex:none}.quick-card b{display:block}.quick-card small{color:var(--muted)}.section-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:20px 0 10px}.section-top h3{margin:0}.category-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.category-card{display:flex;align-items:center;gap:13px;padding:16px;border:1px solid var(--line);background:var(--surface);border-radius:18px;cursor:pointer;box-shadow:var(--shadow);text-align:left}.category-card:hover{border-color:#b9b9ef}.category-card .cat-icon{width:44px;height:44px;border-radius:14px;background:#eeeeff;color:var(--accent);display:grid;place-items:center;font-size:20px;font-weight:800;flex:none}.category-card .arrow{margin-left:auto;color:var(--accent);font-size:20px}.diagnose-toolbar{display:flex;gap:10px;align-items:center;margin:14px 0}.diagnose-toolbar input{flex:1}.problem-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.problem-row{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border:1px solid var(--line);background:var(--surface);border-radius:16px;text-align:left}.problem-row:hover{border-color:#b9b9ef;background:#fafaff}.problem-row .picon{width:36px;height:36px;border-radius:12px;background:#f0f2ff;color:var(--accent);display:grid;place-items:center;flex:none}.problem-row .arrow{margin-left:auto;color:var(--accent);font-size:20px}.recent-card{padding:14px 16px}.home-recent{display:grid;gap:8px}.home-recent .history-item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px 14px}.home-recent .history-item:last-child{border-bottom:1px solid var(--line)}
+@media(max-width:760px){.quick-grid,.category-list,.problem-list{grid-template-columns:1fr}.section-hero{padding:21px 18px}.section-top{margin-top:17px}.diagnose-toolbar{align-items:stretch;flex-direction:column}.diagnose-toolbar .btn{width:100%}}
+
+/* V2.6 real-support workflow */
+.workflow-bar{display:flex;gap:6px;align-items:center;margin:0 0 18px;overflow:auto;padding-bottom:2px}.workflow-step{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;white-space:nowrap}.workflow-step .dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--surface2);font-weight:800}.workflow-step.active{color:var(--accent2);font-weight:800}.workflow-step.active .dot{background:#eeeeff;color:var(--accent2)}.workflow-step.done .dot{background:#dff5eb;color:var(--good)}.workflow-line{width:18px;height:1px;background:var(--line);flex:none}
+.quick-checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}.check-card{padding:12px;border:1px solid var(--line);background:var(--surface);border-radius:15px}.check-card b{display:block;font-size:13px}.check-status{font-size:12px;color:var(--muted);margin-top:3px}.check-card.good{border-color:#bce7d3;background:#f4fcf8}.check-card.warn{border-color:#f2d49d;background:#fffaf0}.check-card.bad{border-color:#efc4c0;background:#fff7f6}
+.context-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.mini-label{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:5px}.result-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.result-btn{border:1px solid var(--line);background:var(--surface);padding:8px 10px;border-radius:10px;font-weight:700;color:var(--text)}.result-btn.selected{background:#eeeeff;border-color:#b7b7f3;color:var(--accent2)}.support-summary{background:#f8f9fc;border:1px dashed #cfd6e3;border-radius:16px;padding:15px;white-space:pre-wrap;font-size:13px;line-height:1.55}.search-history{margin:12px 0}.resume-badge{background:#fff0d6;color:var(--warn)}
+@media(max-width:760px){.quick-checks,.context-grid{grid-template-columns:1fr}.workflow-step{font-size:11px}.workflow-line{width:10px}}
+
+
+/* V2.9 fixes */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.notice.danger{background:#fdecea;border-color:#f3b8b2;color:#8a1c12}
+dialog{border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--text);padding:20px;width:min(92vw,460px);box-shadow:var(--shadow)}dialog::backdrop{background:rgba(10,14,25,.5)}
+html.dark .check-card.good{background:#14261f}html.dark .check-card.warn{background:#2a2418}html.dark .check-card.bad{background:#2b1a19}
+html.dark .directory-card,html.dark .problem-row:hover,html.dark .problem-chip:hover,html.dark .support-summary{background:var(--surface2)}
+html.dark .chip.selected,html.dark .result-btn.selected,html.dark .quick-icon,html.dark .cat-icon,html.dark .picon,html.dark .workflow-step.active .dot{background:#26264f;color:#c9c9ff;border-color:#4a4a8f}
+html.dark .badge.good,html.dark .step.done .num{background:#17352a}html.dark .badge.warn,html.dark .resume-badge{background:#3a2c10}
+html.dark .notice.danger{background:#2b1a19;border-color:#6b2c27;color:#f5b5ad}
+.ev-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+@media(max-width:760px){.ev-grid{grid-template-columns:1fr}}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.thumb{position:relative;width:96px;height:96px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}.thumb img{width:100%;height:100%;object-fit:cover;cursor:zoom-in;display:block}.thumb button{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.7);color:#fff;line-height:1}
+#imgDlg{width:min(94vw,760px)}#imgDlg img{max-width:100%;border-radius:12px;display:block;margin:0 auto 12px}
+.net-badge{display:inline-block;margin-left:8px;padding:3px 10px;border-radius:999px;background:#fff4dc;color:#7a5200;font-size:12px;font-weight:600}
+html.dark .net-badge{background:#3a2c10;color:#f3d392}
+footer .btn{margin-left:8px;padding:6px 12px;font-size:13px}
+.update-bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;display:flex;gap:12px;align-items:center;padding:10px 12px 10px 16px;border-radius:14px;background:var(--surface);color:var(--text);border:1px solid var(--line);box-shadow:var(--shadow)}
+
+/* Long unbroken text (URLs, error codes) must wrap instead of stretching the page */
+body{overflow-wrap:anywhere}
+.card,.notice,.history-item,.history-item>*,.step,.steptext,.resume-banner,.resume-copy,.workflow-step,.field{min-width:0;max-width:100%}
+.badge{max-width:100%;white-space:normal}
+textarea,input,select{max-width:100%}
+.actions,.history-item .actions,.chips{flex-wrap:wrap}
+.history-item{flex-wrap:wrap}.history-item>div:first-child{flex:1 1 200px}.history-item>div:last-child{flex-wrap:wrap}
+
+/* Accessibility: contrast-safe colours (checked at 4.5:1 or better in both themes) */
+:root{--muted:#5a6579}
+button{color:inherit;font:inherit}
+.quick-card,.directory-card,.cat-card,.problem-row,.problem-chip{color:var(--text)}
+.badge.good,.step.done .num,.num.done{color:#0f6b49}
+.badge.warn,.resume-badge{color:#7a4a00}
+html.dark{--muted:#9aa6b8}
+html.dark .badge.good,html.dark .step.done .num,html.dark .num.done{color:#6ee7b7}
+html.dark .badge.warn,html.dark .resume-badge{color:#f3d392}
+html.dark .workflow-step.active,html.dark .workflow-step.active b{color:#c9c9ff}
+html.dark .arrow,html.dark .quick-card .arrow{color:#b9b9ff}
+html.dark .btn.danger{color:#ff9b92}
+.workflow-step.done .dot,.workflow-step .dot.done{color:#0f6b49}
+html.dark .workflow-step.done .dot,html.dark .workflow-step .dot.done{color:#6ee7b7}
+html.dark .workflow-step.done .dot,html.dark .workflow-step .dot.done,html.dark .step.done .num,html.dark .badge.good{background:#17352a}
+
+/* Skip link + programmatic focus targets */
+.skip{position:absolute;left:12px;top:-64px;z-index:100;background:var(--accent2);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}
+.skip:focus{top:12px}
+[tabindex="-1"]:focus{outline:none}
+
+/* Toast with an action (Undo); hidden toasts must not be focusable */
+.toast:not(.show){visibility:hidden}
+.toast.has-action.show{pointer-events:auto}
+.toast-action{margin-left:10px;background:transparent;border:1px solid #fff;color:#fff;border-radius:8px;padding:4px 10px;font-weight:700;cursor:pointer}
+
+/* ---- Print / Save as PDF: only the report is printed ---- */
+#printReport{display:none}
+@media print{
+ @page{margin:16mm}
+ html,body{background:#fff!important;color:#000!important}
+ body>*:not(#printReport){display:none!important}
+ #printReport{display:block!important;font:11pt/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+ .rp-brand{font-weight:800;letter-spacing:.04em;color:#4848b8;font-size:11pt}
+ .rp h1{font-size:20pt;margin:2pt 0 2pt}.rp h2{font-size:13pt;margin:16pt 0 6pt;border-bottom:1px solid #ccc;padding-bottom:3pt;break-after:avoid}
+ .rp-sub{color:#555;margin:0 0 10pt;font-size:10pt}
+ .rp-table{border-collapse:collapse;width:100%}.rp-table th{text-align:left;width:30%;padding:3pt 8pt 3pt 0;vertical-align:top;color:#333}.rp-table td{padding:3pt 0}
+ .rp-steps{padding-left:18pt}.rp-step{break-inside:avoid;margin-bottom:6pt}.rp-res{color:#444;font-size:10pt}
+ .rp-pics{display:flex;flex-wrap:wrap;gap:10pt}.rp-pics figure{margin:0;width:48%;break-inside:avoid}.rp-pics img{width:100%;border:1px solid #ccc}.rp-pics figcaption{font-size:9pt;color:#555}
+ .rp footer{margin-top:20pt;color:#666;font-size:9pt;border-top:1px solid #ccc;padding-top:6pt}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="app">
+<header>
+  <div class="brand"><div class="logo">F</div><div><h1>FixFlow</h1><p>Troubleshooting, made actionable.</p></div></div>
+  <div class="top-actions"><button class="icon-btn" id="themeToggle" type="button" title="Toggle theme" aria-label="Toggle theme">☾</button></div>
+  <nav aria-label="Main navigation">
+    <button class="nav active" data-view="home">Home</button><button class="nav" data-view="diagnose">Diagnose</button><button class="nav" data-view="history">History</button><button class="nav" data-view="analytics">Insights</button>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1">
+<section id="home" class="view active">
+  <div class="hero">
+    <div class="kicker">● Guided troubleshooting</div>
+    <h2>Real problems. Practical solutions.</h2>
+    <p>Describe what is going wrong. FixFlow narrows the problem, asks useful questions, then gives you a clear action plan.</p>
+    <div class="hero-actions"><button class="btn primary" type="button" data-action="new-case">Start diagnosing →</button><button class="btn" type="button" data-action="open-history">View history</button></div>
+  </div>
+  <div id="resumeBanner"></div>
+  <div class="section-top"><div><h3>Quick access</h3><span class="small muted">Start with the topic that matches your problem.</span></div><button class="btn" onclick="go('diagnose')">See all</button></div>
+  <div class="quick-grid" id="quickAccess"></div>
+  <div class="section-top"><div><h3>Recent cases</h3><span class="small muted">Pick up where you left off.</span></div><button class="btn" onclick="go('history')">View history</button></div>
+  <div id="recentHome" class="home-recent"></div>
+</section>
+
+<section id="diagnose" class="view">
+  <div class="section-hero"><h2>Choose a category</h2><p>Select the type of problem you are facing. FixFlow will show common real-world symptoms.</p></div>
+  <div id="categoryDirectory" class="category-list"></div>
+  <div id="diagnoseProblems" hidden></div>
+</section>
+
+<section id="case" class="view">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><div><span class="badge" id="caseStage">New case</span><h2 id="caseTitle" style="margin:8px 0 0">Describe the problem</h2></div><button class="btn ghost" onclick="cancelCase()">Save &amp; close</button></div>
+    <div id="caseBody" style="margin-top:24px"></div>
+  </div>
+</section>
+
+<section id="history" class="view">
+  <div class="card"><h2 style="margin-top:0">Case history</h2><div id="historyList"></div></div>
+</section>
+
+<section id="analytics" class="view">
+  <div class="grid" id="stats"></div>
+  <div class="card" style="margin-top:16px"><h3>What FixFlow is learning from your usage</h3><p class="muted">This first version keeps data on this device. It tracks cases, categories, outcomes and step completion — not personal identity.</p><div id="categoryBreakdown"></div></div>
+  <div class="card" style="margin-top:16px"><h3>Backup</h3><p class="muted">Export your local data so you can keep a copy or move it later.</p><div class="actions"><button class="btn primary" onclick="exportData()">Export JSON</button><button class="btn" onclick="document.getElementById('importFile').click()">Import JSON</button><input id="importFile" aria-label="Import a FixFlow backup file" type="file" accept="application/json" hidden onchange="importData(event)"></div></div>
+</section>
+</main>
+<dialog id="imgDlg"><img id="imgDlgImg" alt="Attachment preview"><form method="dialog"><button class="btn primary">Close</button></form></dialog>
+<dialog id="dlg"><form method="dialog"><b id="dlgTitle"></b><div id="dlgBody" style="margin:12px 0"></div><div class="actions" style="margin-top:0"><button class="btn primary" value="ok">OK</button><button class="btn" value="cancel">Cancel</button></div></form></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<footer>FixFlow V3.3 • Reliable navigation • Guided diagnostics • Evidence tracking <span id="netBadge" class="net-badge" hidden>Offline: your cases are safe on this device</span> <button type="button" id="installBtn" class="btn" hidden onclick="installApp()">Install app</button></footer>
+</div>
+
+<script>
+/* GENERATED FILE: do not edit by hand.
+   Source: data/playbooks.json   Regenerate: npm run build:data */
+const FIXFLOW_DATA = {"schemaVersion":1,"categories":[{"id":"internet","name":"Internet / Wi-Fi","icon":"◉","depth":"Network diagnostics"},{"id":"device","name":"Phone / Computer","icon":"▣","depth":"Hardware & system checks"},{"id":"software","name":"Apps / Software","icon":"◇","depth":"App-level diagnosis"},{"id":"website","name":"Website","icon":"⌁","depth":"Browser / web diagnosis"},{"id":"study","name":"Study / Productivity","icon":"◆","depth":"Workflow diagnosis"},{"id":"household","name":"Household","icon":"⌂","depth":"Safe visible checks only"},{"id":"other","name":"Other","icon":"?","depth":"General diagnostic framework"}],"commonProblems":{"internet":[["wifi-disconnects","Wi-Fi keeps disconnecting","Drops repeatedly, reconnects, then drops again."],["wifi-slow","Wi-Fi is very slow","Browsing, streaming or downloads are much slower than expected."],["wifi-nointernet","Connected to Wi-Fi but no internet","The device says it is connected, but websites/services do not load."],["wifi-one-device","Wi-Fi works on other devices but not mine","Only one phone/computer appears affected."],["wifi-range","Wi-Fi is weak in one room","Connection becomes unreliable farther from the router."],["wifi-newdevice","New device cannot connect","A newly connected phone/computer cannot join normally."],["wifi-password","Wi-Fi password is rejected","The network is visible but the password/connection fails."],["wifi-intermittent","Internet works, then stops randomly","The connection alternates between normal and unusable."],["wifi-other","Other Wi-Fi problem","Something else is wrong with the connection."]],"device":[["phone-slow","Phone/computer is slow","Apps or normal actions take unusually long."],["phone-freeze","Device freezes or becomes unresponsive","The screen or system stops responding normally."],["phone-restart","Device restarts unexpectedly","It restarts or shuts down without you intentionally doing so."],["phone-battery","Battery drains unusually fast","Battery life is noticeably worse than your normal baseline."],["phone-storage","Storage is almost full","The device reports low or nearly full storage."],["phone-overheat","Device gets unusually warm","It becomes warmer than expected during ordinary use."],["phone-appcrash","Apps keep crashing","One or several apps repeatedly close or freeze."],["phone-update","Problem started after an update","The issue appeared after a system/app update."],["phone-camera","Camera/mic/speaker is not working","A built-in hardware feature behaves unexpectedly."],["phone-other","Other phone/computer problem","Something else is wrong with the device."]],"software":[["app-crash","An app keeps crashing","The app closes or freezes repeatedly."],["app-error","An app shows an error","A visible message/code appears."],["app-login","Cannot log in","Sign-in fails even though the account should work."],["app-slow","An app is very slow","The app responds much more slowly than usual."],["app-feature","One feature is not working","A specific button, screen or function fails."],["app-install","Cannot install/update an app","Installation or updating does not complete normally."],["app-file","File will not open/work","A document, image, project or other file behaves unexpectedly."],["app-sync","Data is not syncing","Changes do not appear across devices/services."],["app-other","Other app/software problem","Something else is wrong with software."]],"website":[["web-notload","Website will not load","The page fails to open or keeps loading."],["web-slow","Website is very slow","Pages or actions take unusually long."],["web-login","Website login fails","Sign-in does not work as expected."],["web-form","Form/button does not work","A submission, button, upload or action fails."],["web-broken","Website looks broken","Images, layout, text or controls appear incorrect."],["web-error","Website shows an error","A server/browser/error message appears."],["web-mobile","Website works on PC but not phone","The same site behaves differently by device."],["web-browser","Website works in one browser only","Another browser behaves differently."],["web-other","Other website problem","Something else is wrong with a website."]],"study":[["study-start","I cannot start studying","I keep delaying even when I know what to do."],["study-focus","I lose focus quickly","I start but repeatedly switch tasks or get distracted."],["study-plan","I do not know what to study first","Too many tasks and no clear priority."],["study-forget","I forget what I studied","Recall is weak after studying."],["study-backlog","My backlog keeps growing","Work accumulates faster than I can complete it."],["study-consistency","I cannot stay consistent","Good days are followed by long gaps."],["study-mistakes","I keep making the same mistakes","Errors repeat even after reviewing."],["study-test","My test performance is lower than preparation","I study but performance does not match preparation."],["study-time","I spend too much time on one topic","A chapter/question set takes much longer than planned."],["study-other","Other study/productivity problem","Something else is blocking progress."]],"household":[["home-leak","There is a visible leak","Water/moisture is appearing where it normally should not."],["home-noise","An appliance/object is making an unusual noise","The sound is different from normal operation."],["home-notwork","A household item is not working normally","Normal operation has changed."],["home-clean","A routine cleaning/maintenance problem","Something needs ordinary user-level cleaning or care."],["home-door","A door/drawer/cabinet is not behaving normally","It sticks, does not close, or behaves differently."],["home-light","A light/device is behaving unexpectedly","A visible household electrical symptom is present."],["home-odor","There is an unusual smell","A new or unexpected odor is noticeable."],["home-other","Other household problem","Something else is wrong."]],"other":[["other-notwork","Something does not work","A device, process, object or service is failing."],["other-slow","Something is unusually slow","An action takes much longer than expected."],["other-error","I am getting an error","A message or unexpected response appears."],["other-repeating","The same problem keeps returning","Temporary fixes do not last."],["other-change","Something changed unexpectedly","The result changed from the normal behavior."],["other-unknown","I do not know what is wrong","The symptom is unclear and needs structured diagnosis."],["other-compare","It works for someone else but not me","A known-good comparison exists."],["other-other","Other problem","None of the listed problems fit."]]},"playbooks":{"internet":{"symptoms":[["slow","Internet is slow","Pages/videos take too long to load."],["drop","Connection keeps dropping","Wi-Fi disconnects or stops working intermittently."],["none","No internet","Connected to Wi-Fi but nothing loads."],["one","Only one device has the problem","Other devices work normally."],["range","Weak signal in some areas","Connection is much worse farther from the router."]],"questions":[{"q":"Does the same problem happen on another device connected to the same Wi-Fi?","yes":"multi","no":"single","yl":"Yes — other devices too","nl":"No — only this device"},{"q":"Does restarting the router temporarily improve it?","yes":"router","no":"persistent","yl":"Yes — restart helps for a while","nl":"No — restart does not help"},{"q":"Is the problem worse in one physical location?","yes":"signal","no":"not-signal","yl":"Yes — worse in one place","nl":"No — about the same everywhere"},{"q":"Does it happen at roughly the same time of day?","yes":"timing","no":"not-timing","yl":"Yes — similar time each day","nl":"No — no time pattern"}],"branches":{"multi":{"title":"Likely network-side issue","why":"Multiple devices showing the same symptom points away from a single device.","steps":[{"title":"Observe","action":"Test two different devices for 2–3 minutes.","detail":"You should be able to tell whether the issue is shared."},{"title":"Restart","action":"Restart the router/modem using its normal power procedure.","detail":"Wait until its normal status lights/connection return."},{"title":"Compare","action":"Test again near the router and then at the original location.","detail":"A large difference suggests coverage/interference rather than the internet line itself."},{"title":"Record","action":"Write down the time, duration, affected devices and exact symptom.","detail":"This gives your ISP/support team useful evidence."},{"title":"Escalate","action":"If multiple devices still fail, contact the internet provider or responsible adult.","detail":"Provide the observations instead of only saying “Wi-Fi is bad.”"}]},"single":{"title":"Likely device-side issue","why":"If other devices work, investigate the affected device before changing the whole network.","steps":[{"title":"Reconnect","action":"Forget/reconnect to the Wi-Fi network using the device’s normal settings.","detail":"Confirm the device receives a normal connection."},{"title":"Restart","action":"Restart the affected device.","detail":"Retest before changing additional settings."},{"title":"Compare","action":"Test another network if one is safely available.","detail":"If the device works elsewhere, the original network/device interaction becomes more relevant."},{"title":"Update","action":"Check for normal system/network-driver updates.","detail":"Only install updates from the device’s normal trusted update channel."},{"title":"Record","action":"Capture the exact error or behavior if it remains.","detail":"Use the evidence when seeking support."}]},"router":{"title":"Temporary recovery after router restart","why":"A temporary improvement suggests the network equipment or connection may be involved, but it does not prove the cause.","steps":[{"title":"Observe","action":"Note how long the connection remains stable after recovery.","detail":"A repeatable pattern is useful evidence."},{"title":"Compare","action":"Check whether all connected devices are affected when it happens again.","detail":"This separates shared from device-specific symptoms."},{"title":"Position","action":"If the issue is location-dependent, compare near and far from the router.","detail":"Large differences point toward coverage."},{"title":"Record","action":"Record timestamps and symptoms for two or three occurrences.","detail":"Patterns are more useful than a single incident."},{"title":"Escalate","action":"If the problem repeatedly returns, involve the ISP or responsible adult.","detail":"Share the pattern and affected devices."}]},"signal":{"title":"Likely coverage/interference issue","why":"A location-dependent symptom makes the physical Wi-Fi path important.","steps":[{"title":"Compare","action":"Test near the router and in the problem location.","detail":"Measure the practical difference by loading the same simple page."},{"title":"Reduce distance","action":"For important work, temporarily use a location with a stronger signal.","detail":"This is a workaround, not proof of the root cause."},{"title":"Check pattern","action":"See whether walls, floors or one specific room consistently correlate with the problem.","detail":"A repeatable location pattern is useful evidence."},{"title":"Record","action":"Write down the locations where the connection is reliable/unreliable.","detail":"Use this before considering network changes."}]},"timing":{"title":"Time-pattern investigation","why":"A repeated time pattern can point to congestion, scheduled activity, or an external event.","steps":[{"title":"Log","action":"Record start/end times for several occurrences.","detail":"Look for a repeated window rather than one coincidence."},{"title":"Compare","action":"Check whether every device is affected during that window.","detail":"Shared timing strengthens the network-side hypothesis."},{"title":"Cross-check","action":"Compare with another network or ask whether the same service is affected elsewhere.","detail":"This helps separate local from service-wide problems."},{"title":"Escalate","action":"If the pattern persists, provide the timestamps to the responsible support team.","detail":"Precise timestamps are actionable evidence."}]},"persistent":{"title":"Persistent connection issue","why":"Because a restart does not resolve the issue, focus on reproducible evidence rather than repeatedly restarting.","steps":[{"title":"Reproduce","action":"Trigger the problem once and note the exact symptom.","detail":"Avoid changing several settings at once."},{"title":"Compare","action":"Test another device on the same network.","detail":"This is the key split between network and device diagnosis."},{"title":"Compare location","action":"Test near the router if relevant.","detail":"A location change can reveal a coverage component."},{"title":"Record","action":"Keep a short incident log with time, device and symptom.","detail":"Use it for support."}]},"not-signal":{"title":"General network diagnosis","why":"No obvious location pattern means you need to separate device, router and service symptoms systematically.","steps":[{"title":"Compare devices","action":"Test at least two devices.","detail":"Determine whether the symptom is shared."},{"title":"Restart once","action":"Restart the relevant device/network equipment through normal controls.","detail":"Then retest."},{"title":"Observe","action":"Record exactly what fails: connection, DNS/page loading, speed, or one service.","detail":"Specific symptoms narrow the next step."},{"title":"Escalate","action":"If multiple devices fail repeatedly, involve the ISP/support team.","detail":"Give them your observations."}]},"not-timing":{"title":"Repeatable network diagnosis","why":"Without a time pattern, device/location comparison gives the most useful information.","steps":[{"title":"Compare devices","action":"Test another device on the same network.","detail":"Shared vs single-device behavior is the first split."},{"title":"Compare location","action":"Test near and far from the router.","detail":"This checks coverage."},{"title":"Record","action":"Write the exact symptom and when it occurs.","detail":"Keep the evidence consistent."},{"title":"Escalate","action":"Use the collected evidence if the issue remains.","detail":"Avoid random setting changes."}]}},"evidence":["Affected device(s)","Location","Time of occurrence","Exact symptom/error","What changed immediately before it started"]},"device":{"symptoms":[["slow","Device feels slow","Apps open slowly or actions lag."],["crash","Apps crash/freeze","One or more apps close, freeze or become unresponsive."],["battery","Battery drains unusually fast","Battery falls faster than your normal baseline."],["storage","Storage is nearly full","The device reports low storage."],["restart","Device restarts/shuts down unexpectedly","The device restarts without you intentionally doing it."]],"questions":[{"q":"Does the problem affect one app or many parts of the device?","yes":"broad","no":"single","yl":"Many parts of the device","nl":"Just one app or feature"},{"q":"Did the problem start after an update, install, or setting change?","yes":"change","no":"nochange","yl":"Yes — after a change","nl":"No — nothing changed"},{"q":"Does a normal restart temporarily improve it?","yes":"restart","no":"persistent","yl":"Yes — restart helps for a while","nl":"No — restart does not help"}],"branches":{"single":{"title":"App-specific device issue","why":"A problem isolated to one app should be investigated at the app level first.","steps":[{"title":"Reproduce","action":"Open the app and trigger the problem once.","detail":"Record the exact behavior."},{"title":"Restart app","action":"Close and reopen the app normally.","detail":"Retest before changing settings."},{"title":"Update","action":"Check the app’s official update channel.","detail":"Install an update only if one is offered there."},{"title":"Compare","action":"If possible, check whether the same account/service works elsewhere.","detail":"This helps separate app from account/service issues."},{"title":"Escalate","action":"If the issue persists, record the app version and exact error.","detail":"Use official support."}]},"broad":{"title":"System-wide device issue","why":"Multiple affected areas make a system-level cause more relevant than one app.","steps":[{"title":"Check storage","action":"Look at the device’s storage status.","detail":"Very low free space can affect normal operation."},{"title":"Restart","action":"Perform one normal restart.","detail":"Retest the same actions afterward."},{"title":"Update","action":"Check normal system updates.","detail":"Use only the device’s built-in update path."},{"title":"Observe","action":"Note whether the problem appears during a particular activity or after a particular action.","detail":"Patterns help distinguish causes."},{"title":"Escalate","action":"If unexpected restarts or persistent system failures continue, involve a trusted adult or qualified service provider.","detail":"Bring the observations rather than repeatedly experimenting."}]},"change":{"title":"Recent-change investigation","why":"A new update, installation or setting change creates a strong timeline clue.","steps":[{"title":"Identify","action":"Write down what changed immediately before the problem began.","detail":"Be specific: app, update, setting or accessory."},{"title":"Test safely","action":"Use normal app/device settings to return only the recent change if there is an obvious reversible option.","detail":"Do not modify advanced system settings blindly."},{"title":"Retest","action":"Repeat the original action.","detail":"Check whether the symptom changes."},{"title":"Record","action":"Keep the before/after observation.","detail":"This is stronger evidence than memory."},{"title":"Escalate","action":"If the issue remains or the device behaves unpredictably, use official support/service.","detail":"Avoid risky hardware modifications."}]},"nochange":{"title":"Baseline comparison","why":"Without a known recent change, compare scope, reproduction and system state.","steps":[{"title":"Define","action":"Write the exact symptom and one reproducible example.","detail":"Avoid vague descriptions such as “it is broken.”"},{"title":"Scope","action":"Check whether one app, one feature, or the whole device is affected.","detail":"This determines the next branch."},{"title":"Check basics","action":"Review storage and normal updates.","detail":"Do not change advanced settings yet."},{"title":"Restart","action":"Restart once and compare.","detail":"Record whether anything changed."},{"title":"Escalate","action":"If persistent, use official support/service with your evidence.","detail":"Bring your notes, the device model and the exact symptom to the manufacturer, your carrier or a qualified repair shop."}]},"restart":{"title":"Temporary recovery after restart","why":"Temporary improvement suggests state, resource, or software interaction issues but does not identify the root cause.","steps":[{"title":"Observe","action":"Note how long the device works normally after restart.","detail":"Repeat only enough to establish a pattern."},{"title":"Scope","action":"Identify the exact app/action that eventually triggers the issue.","detail":"This narrows the investigation."},{"title":"Check basics","action":"Review storage and available updates.","detail":"Use built-in settings."},{"title":"Record","action":"Keep a short incident log.","detail":"Time + action + symptom is enough."},{"title":"Escalate","action":"If repeated restarts become necessary, seek official support.","detail":"If restarts keep being needed, or the device shuts down by itself, stop experimenting and contact official support."}]},"persistent":{"title":"Persistent device issue","why":"Because restarting does not help, focus on scope and evidence instead of repeating the same action.","steps":[{"title":"Define","action":"Record one exact reproducible symptom.","detail":"Write one sentence: what you do, what you expect, and what actually happens. One clear example beats a general complaint."},{"title":"Scope","action":"Check whether it is one app or system-wide.","detail":"Try the same action in another app or feature. The same result everywhere suggests a system-wide issue; only one place suggests an app issue."},{"title":"Check basics","action":"Review storage and normal updates.","detail":"Open Settings and note your free storage and whether an update is waiting."},{"title":"Avoid random changes","action":"Do not alter advanced settings without knowing what they do.","detail":"Changing unknown settings can create new problems and hide the original one. Change one thing at a time, and only if you can undo it."},{"title":"Escalate","action":"Use official support/service if the problem remains.","detail":"Contact the manufacturer or a trusted repair service with your notes, model and OS version."}]}},"evidence":["Device model/OS","Affected app or feature","Exact error","Recent changes","Frequency and timing"]},"software":{"symptoms":[["crash","App crashes","The program closes unexpectedly."],["error","Error message","A visible error appears."],["slow","Software is slow","Actions take much longer than expected."],["data","Data/file issue","A file is missing, wrong, or cannot be opened."],["login","Login/account issue","Sign-in or account behavior is failing."]],"questions":[{"q":"Can you reproduce the issue consistently?","yes":"repeat","no":"intermittent","yl":"Yes — it happens every time","nl":"No — it comes and goes"},{"q":"Is there a specific error message or code?","yes":"error","no":"noerror","yl":"Yes — an error is shown","nl":"No — no clear error"},{"q":"Did an update, install, setting, or file change happen first?","yes":"recent","no":"norecent","yl":"Yes — something changed first","nl":"No — nothing changed"},{"q":"Does the same problem happen with a different file, account, or project?","yes":"everywhere","no":"oneitem","yl":"Yes — happens with others too","nl":"No — only this one"}],"branches":{"repeat":{"title":"Reproducible software issue","why":"A repeatable failure is easier to diagnose because each test can be compared.","steps":[{"title":"Reproduce once","action":"Trigger the issue and capture the exact message/behavior.","detail":"Do not repeatedly retry if it risks changing data."},{"title":"Isolate","action":"Change only one safe variable at a time.","detail":"For example, test another file or account if appropriate."},{"title":"Check version","action":"Record the software version and platform.","detail":"Use the official about/help screen."},{"title":"Check official support","action":"Search the exact error in the software maker’s official support documentation.","detail":"Prefer official documentation over random fixes."},{"title":"Escalate","action":"If unresolved, provide the reproduction steps and evidence to support.","detail":"Send support the steps that trigger it, the exact error, the app version and your platform."}]},"intermittent":{"title":"Intermittent software issue","why":"Intermittent failures require logging because memory after the fact is unreliable.","steps":[{"title":"Start a log","action":"Record date/time, action, file/account and symptom.","detail":"A note on your phone is enough: date, time, what you were doing and what happened."},{"title":"Look for triggers","action":"After several incidents, compare what was common.","detail":"Do not assume the first coincidence is causal."},{"title":"Update safely","action":"Check the official update channel.","detail":"Use only the app store or the software's own update option, never third-party download sites."},{"title":"Reduce variables","action":"When possible, reproduce with a simple known-good input.","detail":"Try a small, simple file or a fresh test account so fewer things can go wrong at once."},{"title":"Escalate","action":"Share the incident pattern with support.","detail":"Give support your log and what the incidents had in common."}]},"error":{"title":"Error-led diagnosis","why":"An exact error code is often more informative than a general description.","steps":[{"title":"Copy exactly","action":"Record the error text/code without paraphrasing.","detail":"Copy the message or take a screenshot. Codes and exact wording are what support searches for."},{"title":"Capture context","action":"Write what action caused it and what you expected.","detail":"Note what you clicked just before it appeared and what you expected to happen."},{"title":"Check official docs","action":"Search the exact error in the software maker’s official help/support.","detail":"Search the exact text on the maker's own help site. Ignore answers that tell you to disable security features."},{"title":"Test one documented fix","action":"Apply one relevant, low-risk documented action.","detail":"Pick one low-risk fix from the official page. Doing several at once means you won't know which one worked."},{"title":"Record result","action":"Note whether the error changed, disappeared, or stayed identical.","detail":"Did the error disappear, change or stay identical? A changed error is progress, so record the new text."}]},"noerror":{"title":"Behavior-led diagnosis","why":"Without an error, scope and reproduction become the strongest clues.","steps":[{"title":"Define","action":"Describe the expected vs actual behavior.","detail":"Write \"I expected X, but Y happened\". That gap is what support needs."},{"title":"Reproduce","action":"Find the smallest sequence that reliably triggers it.","detail":"Find the shortest set of clicks that triggers it every time."},{"title":"Compare","action":"Try a known-good file/action if possible.","detail":"Try another file, account or project. If it works there, the problem is tied to the original item."},{"title":"Check updates","action":"Use the official update channel.","detail":"Update using the official update option, then retest the same sequence."},{"title":"Escalate","action":"Share exact reproduction steps if the issue persists.","detail":"Share your exact steps, the expected vs actual result, and the version."}]},"recent":{"title":"Recent-change investigation","why":"A timeline gives you a concrete hypothesis without guessing.","steps":[{"title":"Identify","action":"Record the exact change and timestamp if known.","detail":"Note the exact update, install or setting, and roughly when it happened."},{"title":"Compare","action":"Check whether the issue existed before the change.","detail":"Ask yourself whether it worked the day before. If it did, the change is a strong suspect."},{"title":"Use documented rollback","action":"If the software officially provides a safe undo/restore path, follow that documentation.","detail":"Do not delete or overwrite important data blindly."},{"title":"Retest","action":"Repeat the original action.","detail":"Repeat exactly the action that failed and compare with before."},{"title":"Record","action":"Keep the before/after result.","detail":"Write down what changed and what didn't. This gives support a clear timeline."}]},"norecent":{"title":"Baseline software diagnosis","why":"Without a recent change, establish a reproducible baseline first.","steps":[{"title":"Define","action":"Write expected vs actual behavior.","detail":"Write the symptom plus one example you can repeat."},{"title":"Reproduce","action":"Find a minimal reproducible example.","detail":"Find a repeatable trigger. If it happens randomly, start a log instead."},{"title":"Check version","action":"Record software/platform version.","detail":"Find it under About or Help. Support will ask for it first."},{"title":"Check official support","action":"Look for known issues/documentation.","detail":"Search your exact symptom on the software maker's site."},{"title":"Escalate","action":"Provide the reproduction steps and evidence.","detail":"Send the version, platform, steps and evidence to official support."}]}},"evidence":["Software/app name + version","Platform","Exact error","Reproduction steps","Input/file/account context"]},"website":{"symptoms":[["down","Website does not load","The page fails to load at all."],["broken","Page loads incorrectly","Layout, buttons, images or content are broken."],["login","Login fails","Sign-in does not work as expected."],["slow","Website is very slow","Pages or actions take unusually long."],["form","Form/action fails","A button, upload, or form submission does not work."]],"questions":[{"q":"Does the problem go away when you use a different browser?","yes":"browser","no":"notbrowser","yl":"Yes — works in another browser","nl":"No — same in other browsers"},{"q":"Does it happen on another device or network?","yes":"broad","no":"local","yl":"Yes — also elsewhere","nl":"No — only this device/network"},{"q":"Is there a visible error message?","yes":"error","no":"noerror","yl":"Yes — error shown","nl":"No — no clear error"}],"branches":{"browser":{"title":"Browser-specific investigation","why":"If another browser works, the original browser becomes the first variable to isolate.","steps":[{"title":"Compare","action":"Repeat the same action in the working and failing browser.","detail":"Keep the test identical."},{"title":"Private test","action":"Try a private/incognito window in the failing browser.","detail":"This can separate session/extension effects."},{"title":"Check extensions","action":"If private mode works, review browser extensions one at a time.","detail":"Disable only what you understand."},{"title":"Clear only if appropriate","action":"Use the browser’s normal site-data controls if official support recommends it.","detail":"Avoid deleting important saved information blindly."},{"title":"Record","action":"Keep the exact browser/version and error.","detail":"Use this when reporting the issue."}]},"broad":{"title":"Cross-device/service investigation","why":"If multiple devices or networks reproduce it, a local browser issue becomes less likely.","steps":[{"title":"Confirm","action":"Repeat the same action on a second device/network.","detail":"Try the same site on another device and network (for example mobile data). If it fails everywhere, the problem is probably the site."},{"title":"Record","action":"Capture exact error, URL/page and time.","detail":"Note the time, the page and any message. Screenshots help."},{"title":"Check official status/support","action":"If the website provides an official status page or support channel, check it.","detail":"Look for a status page or the company's official account for outage notices."},{"title":"Wait-and-retest","action":"For service-side issues, retest later rather than repeatedly changing local settings.","detail":"Wait 15 to 30 minutes and test again. Don't keep retrying anything that involves payments or submitting forms."},{"title":"Report","action":"Send the exact reproduction steps to the website owner/support.","detail":"Contact the site's support with the time, page, error and what you tried."}]},"local":{"title":"Local browser/session investigation","why":"If another environment works, focus on the original device/browser/session.","steps":[{"title":"Refresh","action":"Reload once and repeat the action.","detail":"Do a hard refresh (Ctrl/Cmd+Shift+R) or close and reopen the tab."},{"title":"Private test","action":"Try a private/incognito window.","detail":"Open the page in a private/incognito window. If it works there, extensions or cached data may be involved."},{"title":"Browser comparison","action":"Try another supported browser.","detail":"Try a second browser. If it works there, the first browser is the likely cause."},{"title":"Check session","action":"If appropriate, sign out/in through the site’s normal controls.","detail":"Sign out and back in. Expired sessions cause many odd failures."},{"title":"Record","action":"Document what works and what fails.","detail":"Note which browser and mode worked and which didn't."}]},"notbrowser":{"title":"Browser-neutral web diagnosis","why":"Because another browser does not reproduce the issue, investigate whether the problem is local or service-side.","steps":[{"title":"Compare device","action":"Test another device if safely available.","detail":"Try another phone or computer on the same network."},{"title":"Compare network","action":"Test another network if safely available.","detail":"Switch between Wi-Fi and mobile data to see whether your network is blocking or slowing the site."},{"title":"Record error","action":"Capture exact text and page.","detail":"Copy the exact message shown, and the time."},{"title":"Check official support","action":"Use the website’s official support/status information.","detail":"Check the site's help pages for that message."},{"title":"Report","action":"Provide concise reproduction steps.","detail":"Send support your device, browser, network type and the error."}]},"error":{"title":"Error-led web diagnosis","why":"The exact error is the strongest evidence available at this stage.","steps":[{"title":"Capture","action":"Copy the exact error text/code and page.","detail":"Screenshot the message including the address bar. Don't retype it from memory."},{"title":"Reproduce","action":"Confirm the same action produces it.","detail":"Repeat the same steps once to see whether the error is consistent."},{"title":"Compare","action":"Test another browser/device if possible.","detail":"Try another browser or device to see whether the error follows you."},{"title":"Check official support","action":"Search the exact error using the site’s official support information.","detail":"Search the exact message on the site's official help centre."},{"title":"Report","action":"Include URL/page, time, browser/device and error.","detail":"Send the screenshot, time and what you tried to the site's support."}]},"noerror":{"title":"Behavior-led web diagnosis","why":"Without an error, cross-environment comparison is the fastest way to narrow the scope.","steps":[{"title":"Define","action":"Write expected vs actual behavior.","detail":"Write what should happen and what actually happens."},{"title":"Compare browser","action":"Try another supported browser.","detail":"Test in a second browser. Different results point to the browser."},{"title":"Compare device/network","action":"Try another environment if available.","detail":"Try another device or network to rule out your setup."},{"title":"Record","action":"Note what combination works/fails.","detail":"Note the browser, device, network and which combinations worked."},{"title":"Escalate","action":"Report the smallest reproducible sequence.","detail":"Give the site's support your comparison notes; it saves them time."}]}},"evidence":["URL/page","Browser + version","Device","Network","Exact error/behavior","Timestamp"]},"study":{"symptoms":[["start","I cannot start","I know I should study but keep delaying."],["focus","I lose focus","I start but repeatedly switch tasks."],["retention","I forget quickly","I study but cannot recall later."],["planning","I do not know what to study","I have too much work and no clear priority."],["consistency","I cannot stay consistent","Some days go well, then the routine collapses."]],"questions":[{"q":"Do you have one clearly defined task for the next session?","yes":"clear","no":"unclear","yl":"Yes — one clear task","nl":"No — task is unclear"},{"q":"Is the main interruption coming from your environment/device?","yes":"distraction","no":"internal","yl":"Yes — phone, noise or surroundings","nl":"No — it feels more internal"},{"q":"Can you explain what you studied without looking at your notes?","yes":"recall","no":"weakrecall","yl":"Yes — I can explain most of it","nl":"No — I forget a lot"}],"branches":{"clear":{"title":"Execution problem","why":"When the next task is clear, the main bottleneck is usually starting and protecting attention.","steps":[{"title":"Shrink","action":"Define a 15–30 minute unit of work.","detail":"Make the finish line visible."},{"title":"Remove one distraction","action":"Put the biggest avoidable interruption out of reach.","detail":"Change the environment before starting."},{"title":"Start timer","action":"Work only on the defined task for one short block.","detail":"Do not optimize the system mid-session."},{"title":"Record friction","action":"After the block, write what interrupted you.","detail":"One sentence is enough."},{"title":"Adjust","action":"Use the friction note to change the next session.","detail":"Build from evidence rather than motivation."}]},"unclear":{"title":"Planning bottleneck","why":"If the next task is unclear, motivation is not the first problem — task selection is.","steps":[{"title":"List","action":"Write every pending task without organizing it yet.","detail":"Write every task down, even small ones. Seeing the whole list removes the strain of holding it in your head."},{"title":"Define","action":"For each important task, write the smallest next action.","detail":"Example: “solve Q1–5” instead of “study physics.”"},{"title":"Prioritize","action":"Choose one urgent/high-value next action.","detail":"Only one starting task."},{"title":"Time-box","action":"Give it a short block.","detail":"Give the first task a fixed short block (say 25 minutes) and stop when it ends, even if unfinished."},{"title":"Review","action":"At the end, choose the next action before stopping.","detail":"This reduces tomorrow’s startup friction."}]},"distraction":{"title":"Environment bottleneck","why":"If the main interruption is external, changing the environment can have more leverage than trying to force concentration.","steps":[{"title":"Identify","action":"Name the top one distraction.","detail":"For one session, note each time you get pulled away and what pulled you."},{"title":"Remove","action":"Change one environmental variable before starting.","detail":"Put your phone in another room and close unrelated tabs before you begin."},{"title":"Focus block","action":"Work for a short defined block.","detail":"Work in one timed block on one task, then take a real break."},{"title":"Log interruptions","action":"Record what still broke focus.","detail":"Keep a tally of interruptions. If it drops, the change is working."},{"title":"Iterate","action":"Change only the biggest remaining interruption next time.","detail":"After a few days, keep what reduced distractions and drop what didn't."}]},"internal":{"title":"Attention/energy investigation","why":"When external distractions are not dominant, task size, difficulty and timing are worth testing.","steps":[{"title":"Check task size","action":"Reduce the task to a concrete 15–30 minute unit.","detail":"If a task feels heavy, cut it into a piece you can finish in about 20 minutes."},{"title":"Change timing","action":"Compare a different time of day on the next session.","detail":"Try studying at a different time of day. Your energy may be better then."},{"title":"Use active work","action":"For learning, alternate input with recall/practice.","detail":"Swap re-reading for solving questions, explaining aloud or writing from memory."},{"title":"Record difficulty","action":"Note where you got stuck instead of simply stopping.","detail":"Note where you get stuck or bored. That is the real problem to solve."},{"title":"Adjust","action":"Use the pattern to choose the next session format.","detail":"Change one thing (task size, time or method) and review after a few days."}]},"recall":{"title":"Retention is the next lever","why":"Being able to retrieve information without notes is a stronger test of learning than rereading alone.","steps":[{"title":"Close notes","action":"After a study block, put notes away.","detail":"Shut your notes and write everything you remember on a blank page."},{"title":"Recall","action":"Write or say the key ideas from memory.","detail":"Pull the topic out of memory without looking. The effort is what strengthens it."},{"title":"Check","action":"Compare your recall with the source.","detail":"Compare your page to the notes and mark what was missing or wrong."},{"title":"Log gaps","action":"Record exactly what you could not recall.","detail":"Keep a running list of gaps so your next session starts there."},{"title":"Re-test","action":"Return to those gaps later using retrieval/practice.","detail":"Test yourself again after a day or two, and again after a week."}]},"weakrecall":{"title":"Active-recall diagnosis","why":"If you cannot retrieve the material without notes, the next action should test and strengthen retrieval.","steps":[{"title":"Close notes","action":"Attempt recall before rereading.","detail":"Put your notes away before you test yourself."},{"title":"Generate questions","action":"Turn the material into a few questions.","detail":"Write 5 to 10 questions about the topic that you might be asked on a test."},{"title":"Answer","action":"Answer without looking.","detail":"Answer them from memory, then check."},{"title":"Check gaps","action":"Mark only the missed concepts.","detail":"Mark the ones you got wrong or answered slowly. These are your real weak spots."},{"title":"Re-test later","action":"Space the next retrieval attempt instead of immediately rereading everything.","detail":"Come back to the same questions after a few days to see whether they stuck."}]}},"evidence":["Subject/topic","Specific task","Session length","Main interruption","What you could/could not recall"]},"household":{"symptoms":[["visible","Something visibly looks wrong","A loose, blocked, leaking, noisy, or misaligned non-hazardous item."],["clean","Cleaning/maintenance issue","The item needs routine cleaning or care."],["usage","It works differently than expected","The behavior changed during normal use."]],"questions":[{"q":"Could this involve electricity, gas, fire, chemicals, pressure, sharp machinery, or structural damage?","yes":"hazard","no":"safe","yl":"Yes — possible hazard","nl":"No — none that I can see"},{"q":"Can you inspect the issue without opening, dismantling, cutting, lifting, or touching a hazardous component?","yes":"visible","no":"stop","yl":"Yes — outside only","nl":"No — would need to open or touch it"},{"q":"Do you have the manual or the manufacturer instructions for this item?","yes":"manual","no":"nomanual","yl":"Yes — I can check them","nl":"No — I cannot find them"}],"branches":{"hazard":{"title":"Safety stop","why":"Some household problems can become dangerous when a person experiments with them.","steps":[{"title":"Stop","action":"Do not continue troubleshooting the hazardous component.","detail":"Do not touch, open or repair the item. Stepping away is the right move."},{"title":"Secure","action":"Move away from the suspected hazard and follow normal emergency/safety procedures if there is immediate danger.","detail":"Keep people and pets away. Switch the item off with its normal control only if that is clearly safe. Never touch anything wet, hot or sparking."},{"title":"Tell an adult","action":"Inform a trusted adult about the exact visible symptom.","detail":"Tell a parent, guardian or the person responsible for the home right away."},{"title":"Professional help","action":"Use a qualified professional for inspection/repair when appropriate.","detail":"Call a licensed electrician, plumber or gas engineer. For fire, a gas smell or serious danger, call your local emergency number."},{"title":"Record safely","action":"Only note visible, non-hazardous symptoms if it is safe to do so.","detail":"Take a photo from a safe distance and note the time and what you saw. Don't move closer for a better picture."}]},"stop":{"title":"Do not dismantle","why":"If safe observation is not possible, the correct diagnostic action is escalation rather than experimentation.","steps":[{"title":"Stop","action":"Do not open or dismantle the item.","detail":"If you can't check it without opening or touching something hazardous, don't continue."},{"title":"Tell an adult","action":"Describe what happened and what you observed.","detail":"Explain to them what you saw and why you stopped."},{"title":"Professional help","action":"Ask a qualified person to inspect it.","detail":"A qualified person should handle anything you can't inspect safely."},{"title":"Record","action":"Keep the model/name and visible symptom if safe.","detail":"Note what you observed and when, from a safe distance."}]},"visible":{"title":"Safe visible-check workflow","why":"Only routine, non-hazardous observations are appropriate here.","steps":[{"title":"Observe","action":"Describe exactly what looks or behaves differently.","detail":"Look closely at the outside only. Note loose parts, blockages, marks or damage."},{"title":"Check normal controls","action":"Use only the normal user controls/instructions for the item.","detail":"Check plug and switch position, batteries, settings and the on/off state you'd normally use."},{"title":"Clean if documented","action":"If routine cleaning is explicitly described by the manufacturer, follow that documentation.","detail":"Clean only in the ways the manual describes, with the item off and cool."},{"title":"Retest","action":"Use the item normally and compare.","detail":"Try the item again normally and compare with before."},{"title":"Escalate","action":"If the issue remains or becomes unsafe, stop and involve an adult/professional.","detail":"If nothing changed, check the manual or contact the maker or a professional."}]},"safe":{"title":"Safety-first household diagnosis","why":"Before any action, rule out hazards and keep the investigation limited to normal user-level checks.","steps":[{"title":"Describe","action":"Record the visible symptom.","detail":"Write what's wrong, when it began and what normally happens."},{"title":"Check instructions","action":"Use the manufacturer’s normal user guidance if available.","detail":"Find the manual or manufacturer's page and see whether your symptom is listed."},{"title":"Try one safe action","action":"Change one normal-use variable at a time.","detail":"Pick one simple, documented action. Nothing that involves opening or dismantling."},{"title":"Retest","action":"Compare with the original symptom.","detail":"Check whether the symptom changed."},{"title":"Escalate","action":"Stop if anything becomes hazardous or unclear.","detail":"If nothing changes, ask a trusted adult, the maker or a professional."}]}},"evidence":["Item/model","Visible symptom","When it started","What changed","Manufacturer/user guidance"]},"other":{"symptoms":[["notwork","Something does not work","A device, process, object, or service is failing."],["unexpected","Unexpected result","You did something normal and got an unexpected outcome."],["recurring","Problem keeps returning","The same issue returns after temporary recovery."]],"questions":[{"q":"Can you reproduce the problem?","yes":"repeat","no":"intermittent","yl":"Yes — I can repeat it","nl":"No — it comes and goes"},{"q":"Did something change before it started?","yes":"change","no":"nochange","yl":"Yes — something changed","nl":"No — nothing I know of"},{"q":"Can you safely compare with a known-good example?","yes":"compare","no":"nocompare","yl":"Yes — I have a working example","nl":"No — nothing to compare"}],"branches":{"repeat":{"title":"Reproducible problem","why":"Repeatability lets you test one variable at a time.","steps":[{"title":"Define","action":"Write expected vs actual result.","detail":"Describe the problem in one sentence: what you did and what happened."},{"title":"Reproduce","action":"Find the smallest sequence that causes the issue.","detail":"Find the smallest sequence of actions that causes it each time."},{"title":"Change one thing","action":"Make one safe, reversible change.","detail":"Change only one thing, so you know what made the difference."},{"title":"Retest","action":"Compare with the original behavior.","detail":"Do exactly the same action again and compare."},{"title":"Document","action":"Keep the successful/failed test results.","detail":"Write down what you tried and what happened so you don't repeat it."}]},"intermittent":{"title":"Intermittent problem","why":"A log turns an unpredictable issue into a pattern you can investigate.","steps":[{"title":"Log","action":"Record time, context, action and symptom every time.","detail":"Note the date, time and what was happening each time."},{"title":"Compare","action":"After several incidents, look for repeated conditions.","detail":"Look at your log: what do the incidents have in common?"},{"title":"Test one hypothesis","action":"Change one safe variable.","detail":"Pick one likely cause and test only that."},{"title":"Record result","action":"Write what changed.","detail":"Write down whether the test changed anything."},{"title":"Escalate","action":"Use the evidence if specialist help is needed.","detail":"Share your log with whoever supports this."}]},"change":{"title":"Recent-change investigation","why":"A clear timeline gives you a testable hypothesis.","steps":[{"title":"Identify","action":"Write what changed immediately before the issue.","detail":"Think back to what changed before it began: a setting, a place, a person, a product?"},{"title":"Compare","action":"Check whether the issue existed before that change.","detail":"Compare how it worked before with how it works now."},{"title":"Undo safely","action":"If there is an obvious normal-user undo path, use it.","detail":"Reverse the change only if it can be undone easily and safely."},{"title":"Retest","action":"Repeat the original action.","detail":"Repeat the original action and compare."},{"title":"Document","action":"Keep the before/after evidence.","detail":"Note what changed and whether undoing it helped."}]},"nochange":{"title":"Baseline investigation","why":"Without a known change, scope and reproduction are the best starting points.","steps":[{"title":"Define","action":"Write the exact symptom.","detail":"State the problem and give one real example."},{"title":"Reproduce","action":"Find a repeatable example if possible.","detail":"Find a repeatable trigger."},{"title":"Compare","action":"Use a known-good example if safely available.","detail":"Compare with a working example if you can find one."},{"title":"Change one variable","action":"Test one safe possibility.","detail":"Change one variable, retest and write down the result."},{"title":"Document","action":"Keep what worked and what did not.","detail":"Keep notes so anyone helping you can see your tests."}]},"compare":{"title":"Known-good comparison","why":"A controlled comparison can reveal which variable differs.","steps":[{"title":"List variables","action":"Write what differs between working and failing cases.","detail":"List the differences between the working and non-working case: settings, place, version, timing, person."},{"title":"Choose one","action":"Pick one safe variable to test.","detail":"Choose the difference you suspect most."},{"title":"Retest","action":"Make only that change.","detail":"Make the two match on that one point and test again."},{"title":"Record","action":"Note whether the symptom changes.","detail":"Write down what happened."},{"title":"Repeat carefully","action":"Test the next variable only if needed.","detail":"Repeat with the next difference, changing only one thing each time."}]},"nocompare":{"title":"Evidence-first diagnosis","why":"Without a known-good comparison, build a reliable description before changing things.","steps":[{"title":"Define","action":"Write expected vs actual.","detail":"Say what you expected and what you got."},{"title":"Reproduce","action":"Try to create the symptom again.","detail":"Find a way to trigger it deliberately."},{"title":"Log","action":"Record time, context and exact behavior.","detail":"Log the time and conditions each time it happens."},{"title":"Change one safe variable","action":"Test only one hypothesis.","detail":"Change one safe thing and test."},{"title":"Escalate","action":"Use the evidence when asking for help.","detail":"Share your log and tests with the person or service that can help."}]}},"evidence":["Expected result","Actual result","When it started","Recent changes","Reproduction steps","Known-good comparison"]}}};
+const { categories, commonProblems, playbooks } = FIXFLOW_DATA;
+</script>
+<script>
+/* FixFlow core: pure logic with no DOM access.
+   Loaded as a plain script in the browser (functions become globals) and
+   with require() in Node, where the unit tests import it directly. */
+
+const OUT = { resolved: 'Resolved', partial: 'Partly helped', unresolved: 'Unresolved' };
+
+/* HTML-escapes user text before it is placed into markup. */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+}
+
+function uid() {
+  return globalThis.crypto?.randomUUID?.() || ('c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+}
+
+function fmt(d) {
+  const x = new Date(d);
+  return isNaN(x) ? 'Unknown date' : x.toLocaleString();
+}
+
+/* ---- Diagnosis routing ----
+   Maps a category's answers to a branch key in data/playbooks.json.
+   Answers are stored by their key (for example a[0] === 'single'). Every branch of every
+   category is reachable; tests/routing.test.js proves it. */
+function routeBranch(category, a) {
+  a = a || {};
+  const R = {
+    internet: () => {
+      if (a[0] === 'single') return 'single';                       // other devices are fine: device-side
+      const router = a[1] === 'router', signal = a[2] === 'signal', timing = a[3] === 'timing';
+      const clues = router + signal + timing;
+      if (clues === 3) return 'multi';
+      if (clues === 0) return 'persistent';
+      if (clues === 1) return router ? 'router' : signal ? 'signal' : 'timing';
+      return router && signal ? 'not-timing' : router && timing ? 'not-signal' : 'signal';
+    },
+    device: () =>
+      a[1] === 'change' ? (a[0] === 'broad' ? 'change' : 'single')
+        : a[0] === 'broad' ? (a[2] === 'restart' ? 'restart' : 'broad')
+        : (a[2] === 'restart' ? 'nochange' : 'persistent'),
+    software: () => {
+      const err = a[1] === 'error', recent = a[2] === 'recent', oneItem = a[3] === 'oneitem';
+      if (err) return recent ? 'recent' : 'error';
+      if (recent) return oneItem ? 'noerror' : 'recent';
+      if (a[0] === 'intermittent') return 'intermittent';
+      return oneItem ? 'repeat' : 'norecent';
+    },
+    website: () =>
+      a[0] === 'browser' ? (a[1] === 'local' && a[2] === 'noerror' ? 'local' : 'browser')
+        : a[1] === 'broad' ? (a[2] === 'error' ? 'broad' : 'notbrowser')
+        : (a[2] === 'error' ? 'error' : 'noerror'),
+    study: () =>
+      a[0] === 'clear'
+        ? (a[1] === 'distraction' ? (a[2] === 'recall' ? 'clear' : 'distraction') : (a[2] === 'recall' ? 'recall' : 'weakrecall'))
+        : (a[1] === 'internal' && a[2] === 'recall' ? 'internal' : 'unclear'),
+    household: () => a[0] === 'hazard' ? 'hazard' : a[1] === 'stop' ? 'stop' : a[2] === 'manual' ? 'safe' : 'visible',
+    other: () =>
+      a[1] === 'change' ? (a[0] === 'intermittent' && a[2] === 'nocompare' ? 'intermittent' : 'change')
+        : a[0] === 'repeat' ? (a[2] === 'compare' ? 'compare' : 'repeat')
+        : (a[2] === 'compare' ? 'nochange' : 'nocompare')
+  };
+  return (R[category] || (() => 'other'))();
+}
+
+/* 1-based numbers of the questions that have no answer yet. */
+function missingAnswers(questions, answers) {
+  return questions.map((q, i) => (!answers?.[i] ? i + 1 : null)).filter(Boolean);
+}
+
+function detailFor(playbooks, category, branch, i) {
+  return playbooks[category]?.branches?.[branch]?.steps?.[i]?.detail || '';
+}
+
+function buildSteps(playbooks, category, branch) {
+  return (playbooks[category]?.branches?.[branch]?.steps || []).map((s, i) => ({
+    id: i, text: s.title + ': ' + s.action, detail: s.detail || '', done: false, failed: false, note: ''
+  }));
+}
+
+/* ---- Case data hygiene ---- */
+const ATTACHMENT_RE = /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/;
+const SAFE_ID_RE = /^[\w-]{1,64}$/;
+const isSafeId = v => typeof v === 'string' && SAFE_ID_RE.test(v);
+
+/* Rebuilds any case-shaped object into a safe, complete case. Used on load and on import so
+   old, partial or hostile data can never crash the UI or inject markup through ids. */
+function normalizeCase(c, categoryIds) {
+  if (!c || typeof c !== 'object') return null;
+  const now = new Date().toISOString();
+  const arr = x => (Array.isArray(x) ? x : []);
+  const obj = x => (x && typeof x === 'object' && !Array.isArray(x) ? x : {});
+  return {
+    ...c,
+    id: isSafeId(c.id) ? c.id : uid(),
+    created: c.created || now,
+    updated: c.updated || c.created || now,
+    title: String(c.title || ''),
+    description: String(c.description || ''),
+    category: (categoryIds || []).includes(c.category) ? c.category : 'other',
+    answers: obj(c.answers),
+    stepResults: obj(c.stepResults),
+    quickChecks: obj(c.quickChecks),
+    evidence: arr(c.evidence).map(String),
+    evidenceVals: obj(c.evidenceVals),
+    attachments: arr(c.attachments)
+      .filter(a => a && (typeof a.data === 'string' ? ATTACHMENT_RE.test(a.data) : a.idb === true && isSafeId(a.id)))
+      .slice(0, 6)
+      .map(a => {
+        const base = { id: isSafeId(a.id) ? a.id : uid(), name: String(a.name || 'image').slice(0, 60) };
+        return typeof a.data === 'string' ? { ...base, data: a.data } : { ...base, idb: true };
+      }),
+    log: arr(c.log),
+    branch: String(c.branch || ''),
+    status: c.status || 'open',
+    steps: arr(c.steps).map((t, i) => ({
+      id: i, text: String(t?.text || ''), detail: String(t?.detail || ''),
+      done: !!t?.done, failed: !!t?.failed, note: String(t?.note || '')
+    }))
+  };
+}
+
+/* Merge imported cases into existing ones: same id keeps the newer copy; newest first. */
+function mergeCases(existing, incoming) {
+  const byId = new Map(existing.map(c => [c.id, c]));
+  incoming.forEach(c => {
+    const old = byId.get(c.id);
+    if (!old || String(c.updated) > String(old.updated)) byId.set(c.id, c);
+  });
+  return [...byId.values()].sort((p, q) => String(q.created).localeCompare(String(p.created)));
+}
+
+function filterCases(cases, { query = '', status = 'all', category = 'all' } = {}) {
+  const q = query.toLowerCase().trim();
+  return cases.filter(c =>
+    `${c.title} ${c.description} ${c.category} ${c.outcome || ''}`.toLowerCase().includes(q) &&
+    (status === 'all' || (status === 'open' ? c.status !== 'closed' : c.outcome === status)) &&
+    (category === 'all' || c.category === category)
+  );
+}
+
+function computeStats(cases) {
+  const total = cases.length;
+  const resolved = cases.filter(c => c.outcome === 'resolved').length;
+  const partial = cases.filter(c => c.outcome === 'partial').length;
+  const open = cases.filter(c => c.status !== 'closed').length;
+  const doneSteps = cases.reduce((n, c) => n + (c.steps || []).filter(s => s.done).length, 0);
+  const allSteps = cases.reduce((n, c) => n + (c.steps || []).length, 0);
+  const byCategory = {};
+  cases.forEach(c => { byCategory[c.category] = (byCategory[c.category] || 0) + 1; });
+  return {
+    total, resolved, partial, open, byCategory,
+    resolutionRate: total ? Math.round(resolved / total * 100) : null,
+    stepCompletion: allSteps ? Math.round(doneSteps / allSteps * 100) : null
+  };
+}
+
+/* ---- Support summary ---- */
+function evidenceSummary(c) {
+  const ev = c.evidence || [];
+  const lines = ev.map((x, i) => (c.evidenceVals?.[i] ? `- ${x}: ${c.evidenceVals[i]}` : '')).filter(Boolean);
+  const attached = (c.attachments || []).length;
+  return (lines.length ? '\n\nEvidence:\n' + lines.join('\n') : '') +
+    (attached ? `\n\nAttachments: ${attached} image(s) saved in FixFlow. Attach them manually when contacting support.` : '');
+}
+
+function summaryText(c, { categories, commonProblems, playbooks }) {
+  const category = categories.find(k => k.id === c.category)?.name || c.category;
+  const problem = (commonProblems[c.category] || []).find(x => x[0] === c.symptom)?.[1] || c.title;
+  const steps = (c.steps || [])
+    .map((s, i) => `${i + 1}. ${s.text} — ${c.stepResults?.[i] || 'not tested'}${s.note ? ' — ' + s.note : ''}`)
+    .join('\n');
+  const log = (c.log || []).length
+    ? '\n\nIncident log:\n' + c.log.map(l => '- ' + fmt(l.t) + (l.n ? ' — ' + l.n : '')).join('\n')
+    : '';
+  return `FixFlow troubleshooting summary\n\nProblem: ${problem}\nDetails: ${c.description}\nCategory: ${category}\n` +
+    `Platform: ${c.platform || 'Not specified'}\nDevice/service: ${c.device || 'Not specified'}\nUrgency: ${c.severity || 'Normal'}\n` +
+    `Branch: ${playbooks[c.category]?.branches[c.branch]?.title || 'Not selected'}\n\nSteps and observations:\n${steps || 'No steps recorded.'}` +
+    `${evidenceSummary(c)}${log}${c.notes ? '\n\nOutcome notes: ' + c.notes : ''}`;
+}
+
+/* ---- Printable report (used for "Save as PDF") ---- */
+const RESULT_LABELS = { helped: 'Helped', same: 'No change', worse: 'Got worse' };
+
+/* Returns the HTML of a one-case report. Every user-supplied value is escaped, and only real
+   image data URLs are embedded. ctx.t is an optional translate function. */
+function reportHtml(c, { categories, commonProblems, playbooks, t = s => s }, images = []) {
+  const category = categories.find(k => k.id === c.category)?.name || c.category;
+  const branch = playbooks[c.category]?.branches?.[c.branch]?.title || '';
+  const row = (k, v) => (v ? `<tr><th>${esc(t(k))}</th><td>${esc(v)}</td></tr>` : '');
+  const outcome = c.outcome ? (OUT[c.outcome] ? t(OUT[c.outcome]) : c.outcome) : (c.status === 'closed' ? t('Closed') : t('In progress'));
+  const steps = (c.steps || []).map((s, i) => {
+    const res = c.stepResults?.[i];
+    const label = res ? t(RESULT_LABELS[res] || String(res)) : t('Not tested');
+    return `<li class="rp-step"><div>${esc(s.text)}</div><div class="rp-res">${esc(label)}${s.note ? ' — ' + esc(s.note) : ''}</div></li>`;
+  }).join('');
+  const ev = (c.evidence || []).map((x, i) => (c.evidenceVals?.[i] ? row(x, c.evidenceVals[i]) : '')).join('');
+  const log = (c.log || []).map(l => `<li>${esc(fmt(l.t))}${l.n ? ' — ' + esc(l.n) : ''}</li>`).join('');
+  const pics = images.filter(im => im && ATTACHMENT_RE.test(im.data || ''))
+    .map(im => `<figure><img src="${im.data}" alt="${esc(im.name)}"><figcaption>${esc(im.name)}</figcaption></figure>`).join('');
+  return `<article class="rp">
+<header><div class="rp-brand">FixFlow</div><h1>${esc(c.title || t('Untitled case'))}</h1>
+<p class="rp-sub">${esc(t('Troubleshooting report'))} · ${esc(fmt(new Date()))}</p></header>
+<table class="rp-table">${row('Category', category)}${row('Platform', c.platform)}${row('Device/service', c.device)}${row('Urgency', c.severity)}${row('Started', fmt(c.created))}${row('Route', branch)}${row('Outcome', outcome)}</table>
+<h2>${esc(t('Problem'))}</h2><p>${esc(c.description)}</p>
+${steps ? `<h2>${esc(t('Steps and results'))}</h2><ol class="rp-steps">${steps}</ol>` : ''}
+${ev ? `<h2>${esc(t('Evidence'))}</h2><table class="rp-table">${ev}</table>` : ''}
+${log ? `<h2>${esc(t('Incident log'))}</h2><ul>${log}</ul>` : ''}
+${c.notes ? `<h2>${esc(t('What was learned'))}</h2><p>${esc(c.notes)}</p>` : ''}
+${pics ? `<h2>${esc(t('Photos and screenshots'))}</h2><div class="rp-pics">${pics}</div>` : ''}
+<footer>${esc(t('Generated by FixFlow. General guidance only.'))}</footer></article>`;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    OUT, esc, uid, fmt, routeBranch, missingAnswers, detailFor, buildSteps,
+    normalizeCase, mergeCases, filterCases, computeStats, evidenceSummary, summaryText, reportHtml, RESULT_LABELS
+  };
+}
+</script>
+<script>
+/* Photo storage in IndexedDB. localStorage keeps only small metadata ({id, name, idb: true});
+   the image bytes live here, so photos no longer compete for localStorage's ~5 MB limit.
+   If IndexedDB is unavailable (some private modes), attachments fall back to inline data URLs. */
+const imageDB = (() => {
+  const DB_NAME = 'fixflow-images', STORE = 'images';
+  let opening = null;
+
+  function open() {
+    if (!opening) {
+      opening = new Promise((resolve, reject) => {
+        if (typeof indexedDB === 'undefined') return reject(new Error('IndexedDB unavailable'));
+        let req;
+        try { req = indexedDB.open(DB_NAME, 1); } catch (e) { return reject(e); }
+        req.onupgradeneeded = () => req.result.createObjectStore(STORE);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    return opening;
+  }
+
+  function run(mode, work) {
+    return open().then(db => new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE, mode);
+      const req = work(tx.objectStore(STORE));
+      tx.oncomplete = () => resolve(req ? req.result : undefined);
+      tx.onerror = tx.onabort = () => reject(tx.error);
+    }));
+  }
+
+  return {
+    isAvailable: () => open().then(() => true, () => false),
+    put: (id, blob) => run('readwrite', s => s.put(blob, id)),
+    get: id => run('readonly', s => s.get(id)),
+    remove: id => run('readwrite', s => s.delete(id)),
+    keys: () => run('readonly', s => s.getAllKeys())
+  };
+})();
+
+function dataUrlToBlob(url) {
+  const m = /^data:([^;,]+);base64,(.*)$/.exec(url || '');
+  if (!m) return null;
+  const bin = atob(m[2]), bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new Blob([bytes], { type: m[1] });
+}
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+
+/* data: URLs (not blob: URLs) so images also render under strict content-security policies. */
+const imageSrcCache = new Map();
+async function imageSrc(att) {
+  if (att.data) return att.data;
+  if (imageSrcCache.has(att.id)) return imageSrcCache.get(att.id);
+  const blob = await imageDB.get(att.id).catch(() => null);
+  if (!blob) return '';
+  const url = await blobToDataUrl(blob);
+  imageSrcCache.set(att.id, url);
+  return url;
+}
+
+/* Fills <img data-att="id"> thumbnails from IndexedDB after a screen renders. */
+async function hydrateImages(root = document) {
+  for (const img of root.querySelectorAll('img[data-att]:not([data-loaded])')) {
+    const att = (current?.attachments || []).find(a => a.id === img.dataset.att);
+    if (!att) continue;
+    img.dataset.loaded = '1';
+    const src = await imageSrc(att);
+    if (src) img.src = src; else img.alt += ' (image missing)';
+  }
+}
+
+/* Moves legacy inline photos (data URLs inside cases) into IndexedDB. Returns true if any moved. */
+async function moveInlineImagesToDb(cases) {
+  if (!(await imageDB.isAvailable())) return false;
+  let changed = false;
+  for (const c of cases) {
+    for (const a of c.attachments || []) {
+      if (!a.data) continue;
+      const blob = dataUrlToBlob(a.data);
+      if (!blob) continue;
+      try { await imageDB.put(a.id, blob); delete a.data; a.idb = true; changed = true; } catch (e) { /* keep inline */ }
+    }
+  }
+  return changed;
+}
+
+/* Deletes stored photos that no case (or case still undoable / open) refers to. */
+async function purgeOrphanImages() {
+  if (!(await imageDB.isAvailable())) return;
+  const keep = new Set();
+  const add = c => (c?.attachments || []).forEach(a => keep.add(a.id));
+  state.cases.forEach(add); add(current); add(lastDeleted?.c);
+  for (const key of await imageDB.keys()) {
+    if (!keep.has(key)) { await imageDB.remove(key); imageSrcCache.delete(key); }
+  }
+}
+
+new MutationObserver(() => hydrateImages()).observe(document.getElementById('caseBody'), { childList: true, subtree: true });
+</script>
+<script>
+/* App state and persistence (localStorage). Loaded after data.js and core.js. */
+const KEY='fixflow_v1';
+const CATEGORY_IDS=categories.map(c=>c.id);
+
+const APP_VERSION=2;
+
+function defaultState(){return {version:2,cases:[],settings:{}}}
+
+let stateRecovered=false; /* true when saved data was unreadable and a fresh state was created */
+function load(){let raw=null;try{raw=localStorage.getItem(KEY);const x=JSON.parse(raw);if(x&&x.version===2&&Array.isArray(x.cases)){x.cases=x.cases.map(c=>normalizeCase(c,CATEGORY_IDS)).filter(Boolean);return x}}catch(e){}
+ if(raw){stateRecovered=true;try{localStorage.setItem(KEY+'_backup',raw)}catch(e){}}return defaultState()}
+
+let state=load(),current=null;
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch(e){showToast('Could not save: browser storage is full or blocked');return false}}
+
+function saveCurrent(){if(!current.title&&!current.description&&!(current.steps||[]).length)return false;current.updated=new Date().toISOString();const i=state.cases.findIndex(c=>c.id===current.id);if(i>=0)state.cases[i]=current;else state.cases.unshift(current);return save()}
+</script>
+<script>
+/* Views, rendering and user actions. Handlers are global because the markup uses inline onclick. */
+function dlg(title,o={}){return new Promise(res=>{const d=document.getElementById('dlg');document.getElementById('dlgTitle').textContent=title;document.getElementById('dlgBody').innerHTML=o.text?'<textarea id="dlgInput" style="min-height:90px"></textarea>':'';const inp=document.getElementById('dlgInput');if(inp){inp.value=o.value||'';inp.setAttribute('aria-label',title)}if(typeof d.showModal!=='function'){res(o.text?prompt(title,o.value||''):window.confirm(title));return}d.onclose=()=>res(d.returnValue==='ok'?(o.text?inp.value.trim():true):(o.text?null:false));d.returnValue='';d.showModal();inp&&inp.focus()})}
+
+function evCount(){const n=(current.evidence||[]).length,f=(current.evidence||[]).filter((x,i)=>(current.evidenceVals?.[i]||'').trim()).length;return f+'/'+n+' filled'}
+
+function setEvidence(i,v){current.evidenceVals=current.evidenceVals||{};current.evidenceVals[i]=v.trim();saveCurrent();const el=document.getElementById('evCount');if(el)el.textContent=evCount()}
+
+/* Reads an image file and returns a resized JPEG blob (max 900px). Decodes via data: URLs so it also works under strict CSP. */
+function readImg(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*k));c.height=Math.max(1,Math.round(im.height*k));c.getContext('2d').drawImage(im,0,0,c.width,c.height);c.toBlob(b=>b?res(b):rej(new Error('encode failed')),'image/jpeg',.7)};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
+
+async function addAttachments(e){
+ const files=[...e.target.files];e.target.value='';current.attachments=current.attachments||[];
+ const useDb=await imageDB.isAvailable();
+ for(const f of files){
+  if(!f.type.startsWith('image/'))continue;
+  if(current.attachments.length>=6){showToast('Maximum 6 images per case');break}
+  try{
+   const blob=await readImg(f),a={id:uid(),name:f.name.slice(0,60)};
+   if(useDb){await imageDB.put(a.id,blob);a.idb=true}else a.data=await blobToDataUrl(blob);
+   current.attachments.push(a);
+   if(!saveCurrent()){current.attachments.pop();if(a.idb)imageDB.remove(a.id).catch(()=>{});break}
+  }catch(err){showToast('Could not read '+f.name)}
+ }
+ renderPlan(playbooks[current.category].branches[current.branch]);
+}
+
+function removeAttachment(id){
+ const a=(current.attachments||[]).find(x=>x.id===id);
+ current.attachments=(current.attachments||[]).filter(x=>x.id!==id);saveCurrent();
+ if(a&&a.idb){imageDB.remove(id).catch(()=>{});imageSrcCache.delete(id)}
+ renderPlan(playbooks[current.category].branches[current.branch]);
+}
+
+async function viewAttachment(id){
+ const a=(current.attachments||[]).find(x=>x.id===id);if(!a)return;
+ const src=await imageSrc(a);if(!src)return;
+ const d=document.getElementById('imgDlg');document.getElementById('imgDlgImg').src=src;
+ typeof d.showModal==='function'?d.showModal():window.open(src);
+}
+
+function cancelCase(){if(current){syncContext();saveCurrent()}go('diagnose')}
+
+let lastDeleted=null;
+async function delCase(id){
+ if(!await dlg('Delete this case?'))return;
+ const i=state.cases.findIndex(c=>c.id===id);if(i<0)return;
+ lastDeleted={c:state.cases[i],i};
+ state.cases.splice(i,1);if(current&&current.id===id)current=null;
+ save();renderHistory();renderHome();
+ showToast('Case deleted',{action:'Undo',onAction:undoDelete});
+ clearTimeout(window.__purgeTimer);window.__purgeTimer=setTimeout(()=>{lastDeleted=null;purgeOrphanImages().catch(()=>{})},8500);
+}
+function undoDelete(){
+ if(!lastDeleted)return;
+ const {c,i}=lastDeleted;lastDeleted=null;clearTimeout(window.__purgeTimer);
+ state.cases.splice(Math.min(i,state.cases.length),0,c);
+ save();renderHistory();renderHome();showToast('Case restored');
+}
+async function editDetails(){
+ const t=await dlg('Case title',{text:true,value:current.title});if(t===null)return;
+ const d=await dlg('Case description',{text:true,value:current.description});
+ if(t)current.title=t;if(d)current.description=d;   /* an empty answer keeps the old text */
+ saveCurrent();renderPlan(playbooks[current.category].branches[current.branch]);
+}
+
+async function addLog(){const n=await dlg('What happened just now? (optional)',{text:true});if(n===null)return;(current.log=current.log||[]).push({t:new Date().toISOString(),n});saveCurrent();renderPlan(playbooks[current.category].branches[current.branch])}
+
+function safetyHtml(){return current&&current.severity==='safety'?'<div class="notice danger" role="alert" style="margin-top:12px"><b>Safety first.</b> If there is smoke, a burning or gas smell, sparks, flooding near electricity, or anyone could be hurt, stop now, move away and call your local emergency number. FixFlow gives general guidance only.</div>':''}
+
+function extraNotices(){const w=Object.values(current.stepResults||{}).includes('worse')?'<div class="notice" role="alert"><b>Something got worse.</b> Pause the remaining steps and use <b>Reassess route</b> below, or contact support.</div>':'';const c=current.status==='closed'?`<div class="notice"><b>Closed: ${esc(OUT[current.outcome]||'recorded')}</b>${current.notes?'<br>'+esc(current.notes):''}</div>`:'';return safetyHtml()+w+c}
+
+let histStatus='all',histCat='all';
+
+
+const VIEW_TITLES={home:'FixFlow — Troubleshooting, made actionable',diagnose:'Diagnose — FixFlow',case:'Case — FixFlow',history:'History — FixFlow',analytics:'Insights — FixFlow'};
+const VIEW_IDS=Object.keys(VIEW_TITLES);
+function viewFromHash(){const m=/^#\/(\w+)$/.exec(location.hash);return m&&VIEW_IDS.includes(m[1])?m[1]:'home'}
+/* Switches screen. Each screen gets its own history entry (so Back works), its own page title,
+   and keyboard/screen-reader focus moves to its heading. */
+function go(view,opts={}){
+ if(current&&document.getElementById('case').classList.contains('active')&&view!=='case'){try{syncContext();saveCurrent()}catch(e){}}
+ document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+ document.getElementById(view).classList.add('active');
+ document.querySelectorAll('.nav').forEach(x=>{const on=x.dataset.view===view;x.classList.toggle('active',on);on?x.setAttribute('aria-current','page'):x.removeAttribute('aria-current')});
+ if(view==='history')renderHistory();
+ if(view==='analytics')renderAnalytics();
+ if(view==='diagnose')renderDiagnoseCategories();
+ if(view==='home')renderHome();
+ document.title=VIEW_TITLES[view]||VIEW_TITLES.home;
+ if(!opts.fromHistory&&!opts.silent&&location.hash!=='#/'+view){try{history.pushState({view},'','#/'+view)}catch(e){}}
+ if(!opts.silent){const v=document.getElementById(view),h=v.querySelector('h1,h2,h3')||v;if(!h.hasAttribute('tabindex'))h.setAttribute('tabindex','-1');h.focus({preventScroll:true});window.scrollTo(0,0)}
+}
+
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>go(b.dataset.view));
+
+function startCase(category=''){
+ current={id:uid(),log:[],evidenceVals:{},attachments:[],created:new Date().toISOString(),updated:new Date().toISOString(),title:'',description:'',category:category||'other',symptom:'',answers:{},branch:'',steps:[],evidence:[],status:'open',outcome:null,notes:'',platform:'',device:'',quickChecks:{},stepResults:{},severity:'normal'};
+ go('case');renderStage1();
+}
+
+function workflowBar(active){const steps=['Define','Diagnose','Act','Check'];return `<div class="workflow-bar">${steps.map((x,i)=>`<span class="workflow-step ${i+1<active?'done':''} ${i+1===active?'active':''}"><span class="dot">${i+1<active?'✓':i+1}</span>${x}</span>${i<3?'<span class="workflow-line"></span>':''}`).join('')}</div>`}
+
+function renderStage1(){
+ document.getElementById('caseStage').textContent='Step 1 · Define';document.getElementById('caseTitle').textContent='Define the problem';
+ document.getElementById('caseBody').innerHTML=`${workflowBar(1)}
+ <div class="card" style="box-shadow:none;background:var(--surface2);margin-bottom:16px"><b>Start with evidence, not guesses.</b><div class="small muted" style="margin-top:4px">Tell FixFlow what you expected, what actually happened, and what device or service is affected.</div></div>
+ <div class="field"><label for="problemTitle">Short title</label><input id="problemTitle" value="${esc(current.title)}" placeholder="e.g. Wi-Fi keeps disconnecting"></div>
+ <div class="field"><label for="problemDesc">What is happening?</label><textarea id="problemDesc" placeholder="What did you expect, what actually happened, and when did it begin?">${esc(current.description)}</textarea></div>
+ <div class="context-grid"><div><div class="mini-label">Platform</div><select id="platform" aria-label="Platform"><option value="">Select</option><option>Android</option><option>iPhone / iPad</option><option>Windows</option><option>Mac</option><option>ChromeOS</option><option>Web / browser</option><option>Other</option></select></div><div><div class="mini-label">Device / service</div><input id="deviceName" aria-label="Device or service" placeholder="e.g. phone, laptop, router, website" value="${esc(current.device||'')}"></div><div><div class="mini-label">Urgency</div><select id="severity" aria-label="Urgency" onchange="syncContext();document.getElementById('safetyNote').innerHTML=safetyHtml()"><option value="normal">Normal</option><option value="important">Important — blocking work</option><option value="safety">Safety concern</option></select></div></div>
+ <div id="safetyNote">${safetyHtml()}</div><div class="field" style="margin-top:16px"><label>Category</label><div class="chips">${categories.map(c=>`<button type="button" class="chip ${current.category===c.id?'selected':''}" onclick="pickCat('${c.id}')">${c.icon} ${c.name}</button>`).join('')}</div></div>
+ <div class="field"><label>Choose the closest common problem</label><div class="problem-grid">${(commonProblems[current.category]||[]).map(s=>`<button type="button" class="problem-chip" onclick="pickSymptom('${s[0]}')"><span><b>${esc(s[1])}</b><small class="muted" style="display:block;margin-top:2px">${esc(s[2])}</small></span><span class="arrow">${current.symptom===s[0]?'✓':'›'}</span></button>`).join('')}</div></div>
+ ${current.category==='household'?'<div class="notice">Household mode is limited to safe, visible, normal-user checks. Stop and get a trusted adult/professional for electricity, gas, fire, chemicals, structural hazards, or anything unsafe.</div>':''}
+ <div class="actions"><button class="btn" onclick="runQuickChecks()">Run safe quick checks</button><button type="button" class="btn primary" data-action="continue-diagnosis">Continue →</button></div><div id="quickCheckArea"></div>`;
+ document.getElementById('platform').value=current.platform||'';document.getElementById('severity').value=current.severity||'normal';if(Object.keys(current.quickChecks||{}).length)renderQuickChecks();
+}
+
+function syncContext(){const g=id=>document.getElementById(id);if(g('problemTitle'))current.title=g('problemTitle').value.trim();if(g('problemDesc'))current.description=g('problemDesc').value.trim();if(g('platform'))current.platform=g('platform').value;if(g('deviceName'))current.device=g('deviceName').value.trim();if(g('severity'))current.severity=g('severity').value}
+
+function runQuickChecks(){syncContext();const checks=[{name:'Internet reachability',status:navigator.onLine?'Online according to browser':'Browser reports offline',kind:navigator.onLine?'good':'warn'},{name:'Browser',status:navigator.userAgent.includes('Chrome')?'Chrome-family browser detected':'Browser detected',kind:'good'},{name:'Screen / device',status:`${window.innerWidth}×${window.innerHeight} viewport`,kind:'good'}];if(navigator.connection){const n=navigator.connection;checks.push({name:'Connection',status:[n.effectiveType,n.downlink?n.downlink+' Mbps est.':'',n.rtt?n.rtt+' ms RTT':''].filter(Boolean).join(' · ')||'Available',kind:'good'})}current.quickChecks={base:checks};renderQuickChecks();saveCurrent();if(navigator.getBattery)navigator.getBattery().then(b=>{current.quickChecks.battery={name:'Battery',status:`${Math.round(b.level*100)}%${b.charging?' · charging':''}`,kind:'good'};renderQuickChecks();saveCurrent()}).catch(()=>{})}
+
+function renderQuickChecks(){const el=document.getElementById('quickCheckArea');if(!el)return;const vals=[];if(current.quickChecks?.base)vals.push(...current.quickChecks.base);if(current.quickChecks?.battery)vals.push(current.quickChecks.battery);el.innerHTML=`<div class="card" style="box-shadow:none;margin-top:15px"><b>Safe quick checks</b><div class="small muted">Browser-level observations only; this is not a full hardware diagnostic.</div><div class="quick-checks">${vals.map(x=>`<div class="check-card ${x.kind||''}"><b>${esc(x.name)}</b><div class="check-status">${esc(x.status)}</div></div>`).join('')}</div></div>`}
+
+function pickCat(id){syncContext();if(current.category!==id){current.answers={};current.branch='';current.steps=[];current.stepResults={};current.evidenceVals={}}current.category=id;current.symptom='';renderStage1()}
+
+function pickSymptom(id){syncContext();current.symptom=id;if(!current.title){const p=(commonProblems[current.category]||[]).find(x=>x[0]===id);if(p)current.title=p[1]}renderStage1()}
+
+function nextDiagnosis(){
+ syncContext();
+ const t=document.getElementById('problemTitle').value.trim(),d=document.getElementById('problemDesc').value.trim();
+ if(!t||!d||!current.category||!current.symptom){showToast('Add a title and description, and pick the closest problem.');return}
+ current.title=t;current.description=d;
+ const qs=playbooks[current.category].questions;
+ renderDiagnosisQuestions();
+}
+
+function setAnswer(i,a){current.answers[i]=a;renderDiagnosisQuestions()}
+
+function renderDiagnosisQuestions(){
+ const qs=playbooks[current.category].questions;
+ document.getElementById('caseStage').textContent='Step 2 · Diagnose';
+ document.getElementById('caseTitle').textContent='Answer the diagnostic questions';
+ const chosenProblem=(commonProblems[current.category]||[]).find(x=>x[0]===current.symptom);
+ document.getElementById('caseBody').innerHTML=`
+ ${workflowBar(2)}<div class="card" style="box-shadow:none;background:var(--surface2);margin-bottom:15px"><span class="badge">${esc(categories.find(c=>c.id===current.category)?.name||'Topic')}</span><h3 style="margin:8px 0 4px">${esc(chosenProblem?.[1]||'Custom problem')}</h3><div class="small muted">${esc(chosenProblem?.[2]||'')}</div></div>
+ <div class="notice safe"><b>How FixFlow works:</b> answer all questions, then analyze the pattern. Your selections stay visible while you work.</div>
+ ${qs.map((x,i)=>`<div class="field"><label>${i+1}. ${esc(x.q)}</label><div class="chips">${[x.yes,x.no].map(a=>`<button type="button" aria-pressed="${current.answers[i]===a}" class="chip ${current.answers[i]===a?'selected':''}" onclick="setAnswer(${i},'${a}')">${(a===x.yes?x.yl:x.nl)||(a==='multi'?'Yes — more than one':a==='single'?'No — only one':a==='router'?'Router/device related':a==='persistent'?'Yes — persistent':a==='signal'?'Yes — signal related':a==='not-signal'?'No — not signal':a==='timing'?'Yes — happens at a pattern/time':a==='not-timing'?'No — no clear timing pattern':a==='broad'?'Many areas':a==='change'?'Yes — after a change':a==='nochange'?'No recent change':a==='restart'?'Yes — restart/reboot':a==='repeat'?'Yes — repeats':a==='error'?'Yes — error shown':a==='recent'?'Yes — recent change':a==='browser'?'Only this browser/device':a==='notbrowser'?'Not limited to browser':a==='local'?'One device/location':a==='noerror'?'No clear error':a==='clear'?'Yes — clear next task':a==='unclear'?'No — unclear':a==='distraction'?'Yes — distraction':a==='internal'?'No — internal/friction':a==='recall'?'Yes — recall issue':a==='weakrecall'?'No — not mainly recall':a==='hazard'?'Yes — possible hazard':a==='stop'?'Yes — stop condition':a==='visible'?'Yes — visible only':a==='safe'?'No — safe to continue':a==='compare'?'Yes — comparison available':a==='nocompare'?'No comparison':a==='norecent'?'No recent change':a==='intermittent'?'No — intermittent':a)}</button>`).join('')}</div></div>`).join('')}
+ <div id="diagnosisMessage" class="notice safe" style="display:none"></div><div class="actions"><button type="button" class="btn primary" data-action="build-plan">Analyze & build plan →</button><button type="button" class="btn" onclick="renderStage1()">Back</button></div>`;
+}
+
+function buildPlan(){
+ try{
+  if(!current||!current.category){throw new Error('No active case category.');}
+  const pb=playbooks[current.category];
+  if(!pb||!Array.isArray(pb.questions)){throw new Error('This troubleshooting category is not configured correctly.');}
+  const missing=missingAnswers(pb.questions,current.answers);
+  if(missing.length){
+   const msg=document.getElementById('diagnosisMessage');
+   if(msg){msg.textContent=`Answer question${missing.length>1?'s':''} ${missing.join(', ')} before analyzing.`;msg.className='notice';msg.style.display='block';}
+   return;
+  }
+  let b=routeBranch(current.category,current.answers||{});
+  if(!pb.branches?.[b])b=Object.keys(pb.branches||{})[0];
+  const branch=pb.branches?.[b];
+  if(!branch){throw new Error(`No troubleshooting route is configured for ${current.category}.`);}
+  current.branch=b;
+  current.steps=buildSteps(playbooks,current.category,b);
+  current.evidence=Array.isArray(pb.evidence)?pb.evidence:[];
+  current.status='in-progress';
+  saveCurrent();
+  renderPlan(branch);
+ }catch(err){
+  console.error('FixFlow buildPlan error:',err);
+  const body=document.getElementById('caseBody');
+  if(body)body.insertAdjacentHTML('afterbegin',`<div class="notice" role="alert"><b>FixFlow could not build this plan.</b><br>${esc(err.message||'Unexpected error.')} Please try the current answers again.</div>`);
+ }
+}
+
+function renderPlan(branch){
+ const done=current.steps.filter(s=>s.done).length,pct=current.steps.length?Math.round(done/current.steps.length*100):0;document.getElementById('caseStage').textContent='Step 3 · Act';document.getElementById('caseTitle').textContent=branch.title;
+ document.getElementById('caseBody').innerHTML=`${workflowBar(3)}${extraNotices()}<div class="notice safe"><b>Why this route?</b> ${esc(branch.why)}</div><div class="card" style="box-shadow:none;background:var(--surface2);margin-bottom:16px"><b>Case snapshot</b><div class="chips" style="margin-top:9px"><span class="badge">${esc(categories.find(c=>c.id===current.category)?.name||current.category)}</span>${current.platform?`<span class="badge">${esc(current.platform)}</span>`:''}${current.device?`<span class="badge">${esc(current.device)}</span>`:''}</div><div style="margin-top:10px"><b>${esc(current.title||'Untitled case')}</b><div class="small muted">${esc(current.description)}</div></div><div class="actions" style="margin-top:8px"><button type="button" class="btn" onclick="editDetails()">Edit title &amp; description</button></div></div><div class="card" style="box-shadow:none;background:var(--surface2);margin-bottom:18px"><div style="display:flex;justify-content:space-between;gap:10px"><b>Evidence to collect</b><span class="small muted" id="evCount">${evCount()}</span></div><div class="small muted">Fill in what you know. It goes into your support summary.</div><div class="ev-grid">${(current.evidence||[]).map((x,i)=>`<div><div class="mini-label">${esc(x)}</div><input aria-label="${esc(x)}" value="${esc(current.evidenceVals?.[i]||'')}" onchange="setEvidence(${i},this.value)"></div>`).join('')}</div></div><div class="card" style="box-shadow:none;margin-bottom:18px"><b>Photos &amp; screenshots</b><div class="small muted">Attach up to 6 images (an error screen, a label, the affected area). They stay on this device.</div><div class="thumbs">${(current.attachments||[]).map(a=>`<div class="thumb"><img src="${a.data||'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'}" ${a.data?'':`data-att="${a.id}"`} alt="${esc(a.name)}" onclick="viewAttachment('${a.id}')"><button type="button" aria-label="Remove ${esc(a.name)}" onclick="removeAttachment('${a.id}')">×</button></div>`).join('')}</div><div class="actions" style="margin-top:10px"><button type="button" class="btn" onclick="document.getElementById('attachFile').click()">+ Add photo / screenshot</button><input id="attachFile" aria-label="Add photos or screenshots" type="file" accept="image/*" multiple hidden onchange="addAttachments(event)"></div></div><div style="display:flex;justify-content:space-between"><b>Action progress</b><span>${done}/${current.steps.length}</span></div><div class="progress" style="margin:8px 0 14px"><i style="width:${pct}%"></i></div>${current.steps.map((s,i)=>{const result=current.stepResults?.[i]||'';return `<div class="step ${s.done?'done':''}"><div class="num">${s.done?'✓':i+1}</div><div style="flex:1"><div class="steptext"><b>${esc(s.text)}</b></div>${(()=>{const dt=s.detail||detailFor(playbooks,current.category,current.branch,i);return dt?`<div class="small muted" style="margin-top:4px">${esc(dt)}</div>`:''})()}<div class="result-row"><span class="small muted" style="align-self:center">Result:</span><button aria-pressed="${result==='helped'}" class="result-btn ${result==='helped'?'selected':''}" onclick="setStepResult(${i},'helped')">✓ Helped</button><button class="result-btn ${result==='same'?'selected':''}" onclick="setStepResult(${i},'same')">No change</button><button class="result-btn ${result==='worse'?'selected':''}" onclick="setStepResult(${i},'worse')">New / worse</button></div>${s.note?`<div class="small" style="margin-top:7px"><b>Observation:</b> ${esc(s.note)}</div>`:''}<div class="actions" style="margin-top:8px"><button class="btn" onclick="toggleStep(${i})">${s.done?'Mark incomplete':'Mark complete'}</button><button class="btn" onclick="noteStep(${i})">${s.note?'Edit observation':'Add observation'}</button></div></div></div>`}).join('')}<div class="card" style="box-shadow:none;margin-top:16px"><h3>Incident log</h3><p class="muted small">Add a timestamp each time the problem happens. Patterns are the best evidence.</p>${(current.log||[]).map(l=>`<div class="small" style="padding:3px 0">• ${esc(fmt(l.t))}${l.n?' — '+esc(l.n):''}</div>`).join('')}<div class="actions" style="margin-top:8px"><button class="btn" onclick="addLog()">+ Log it happening now</button></div></div><div class="card" style="box-shadow:none;background:var(--surface2);margin-top:16px"><h3>Decision checkpoint</h3><p class="muted">Record what happened before continuing. If the result is <b>New / worse</b>, pause and reassess instead of blindly doing the remaining steps.</p><div class="actions"><button class="btn" onclick="reassessCase()">Reassess route</button></div></div><div class="actions"><button class="btn primary" onclick="finishCase()">Record outcome →</button><button class="btn" onclick="printReport()">Save as PDF</button><button class="btn" onclick="saveCurrent();go('history')">Save & exit</button></div>`;
+}
+
+function setStepResult(i,result){current.stepResults=current.stepResults||{};current.stepResults[i]=result;if(result==='helped')current.steps[i].done=true;saveCurrent();renderPlan(playbooks[current.category].branches[current.branch])}
+
+function reassessCase(){current.branch='';current.steps=[];current.stepResults={};current.status='open';saveCurrent();renderDiagnosisQuestions()}
+
+function toggleStep(i){current.steps[i].done=!current.steps[i].done;saveCurrent();renderPlan(playbooks[current.category].branches[current.branch])}
+
+async function noteStep(i){const n=await dlg('What did you observe after this step?',{text:true,value:current.steps[i].note||''});if(n!==null){current.steps[i].note=n;saveCurrent();renderPlan(playbooks[current.category].branches[current.branch])}}
+
+function buildSupportSummary(){return summaryText(current,{categories,commonProblems,playbooks})}
+
+async function copySupportSummary(){const text=buildSupportSummary();try{await navigator.clipboard.writeText(text);showToast('Support summary copied')}catch(e){prompt('Copy this support summary:',text)}}
+
+function finishCase(){document.getElementById('caseStage').textContent='Step 4 · Check';document.getElementById('caseTitle').textContent='Check the outcome';document.getElementById('caseBody').innerHTML=`${workflowBar(4)}<div class="card" style="box-shadow:none;background:var(--surface2)"><h3>What happened after testing?</h3><p class="muted">Choose the outcome, then keep the evidence. A good troubleshooting record is useful even when the problem is not solved yet.</p><div class="actions"><button class="btn primary" onclick="completeCase('resolved')">✓ Resolved</button><button class="btn" onclick="completeCase('partial')">Partly helped</button><button class="btn" onclick="completeCase('unresolved')">Still unresolved</button></div><div class="field" style="margin-top:18px"><label for="outcomeNote">What did you learn?</label><textarea id="outcomeNote" placeholder="What worked, failed, or should be tried next?">${esc(current.notes||'')}</textarea></div><div class="actions"><button class="btn" onclick="copySupportSummary()">Copy support summary</button><button class="btn" onclick="printReport()">Save as PDF</button><button class="btn ghost" onclick="renderPlan(playbooks[current.category].branches[current.branch])">← Back to steps</button></div></div>`}
+
+function completeCase(outcome){
+ current.status='closed';current.outcome=outcome;current.closed=new Date().toISOString();
+ current.notes=(document.getElementById('outcomeNote')?.value||'').trim();
+ saveCurrent();
+ document.getElementById('caseStage').textContent='Complete';
+ document.getElementById('caseTitle').textContent=outcome==='resolved'?'Problem resolved':'Outcome recorded';
+ document.getElementById('caseBody').innerHTML=`
+ <div class="notice ${outcome==='resolved'?'safe':''}"><b>${outcome==='resolved'?'✓ Resolved':'• '+(outcome==='partial'?'Partially resolved':'Unresolved')}</b><br>Your case is now part of FixFlow history.</div>
+ <div class="actions"><button class="btn primary" onclick="go('home')">Back home</button><button class="btn" onclick="go('history')">View history</button></div>`;
+}
+
+function renderHistory(){const el=document.getElementById('historyList');if(!state.cases.length){el.innerHTML='<div class="empty">No cases yet. Start with a real problem and FixFlow will keep the troubleshooting record here.</div>';return}const q0=document.getElementById('historySearch')?.value||'',st=[['all','All'],['open','In progress'],['resolved','Resolved'],['partial','Partly helped'],['unresolved','Unresolved']];el.innerHTML=`<div class="search-history"><input id="historySearch" aria-label="Search cases" placeholder="Search your cases…" oninput="filterHistory()"></div><div class="chips" style="margin-bottom:10px">${st.map(x=>`<button type="button" aria-pressed="${histStatus===x[0]}" class="chip ${histStatus===x[0]?'selected':''}" onclick="histStatus='${x[0]}';renderHistory()">${x[1]}</button>`).join('')}</div><div class="field" style="max-width:260px"><select id="histCat" aria-label="Filter by category" onchange="histCat=this.value;filterHistory()"><option value="all">All categories</option>${categories.map(c=>`<option value="${c.id}" ${histCat===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div><div id="historyResults"></div>`;document.getElementById('historySearch').value=q0;filterHistory()}
+
+function filterHistory(){const q=(document.getElementById('historySearch')?.value||'').toLowerCase().trim();const list=filterCases(state.cases,{query:q,status:histStatus,category:histCat});const el=document.getElementById('historyResults');if(!el)return;el.innerHTML=list.length?list.map(c=>`<div class="history-item"><div><b>${esc(c.title||'Untitled case')}</b><div class="small muted">${esc(fmt(c.created))} • ${esc(categories.find(x=>x.id===c.category)?.name||c.category)}</div><div class="small muted">${c.steps?.filter(s=>s.done).length||0}/${c.steps?.length||0} steps completed${c.branch?' • '+esc(playbooks[c.category]?.branches[c.branch]?.title||''):''}</div></div><div style="display:flex;gap:7px;align-items:flex-start"><span class="badge ${c.outcome==='resolved'?'good':c.status!=='closed'?'resume-badge':''}">${esc(OUT[c.outcome]||'In progress')}</span><button class="btn" onclick="openCase('${c.id}')">${c.status==='closed'?'Open':'Resume'}</button><button class="btn" aria-label="Save case as PDF" onclick="printCaseById('${c.id}')">PDF</button><button class="btn danger" aria-label="Delete case" onclick="delCase('${c.id}')">Delete</button></div></div>`).join(''):`<div class="empty">No matching cases.</div>`}
+
+function openCase(id){const c=state.cases.find(x=>x.id===id);if(!c)return;current=JSON.parse(JSON.stringify(c));go('case');if(current.branch&&playbooks[current.category]?.branches[current.branch])renderPlan(playbooks[current.category].branches[current.branch]);else renderStage1()}
+
+function renderAnalytics(){
+ const s=computeStats(state.cases);
+ document.getElementById('stats').innerHTML=[
+  ['Cases',s.total],['Resolved',s.resolved],['Partial',s.partial],['Open',s.open],
+  ['Resolution rate',s.resolutionRate===null?'—':s.resolutionRate+'%'],
+  ['Step completion',s.stepCompletion===null?'—':s.stepCompletion+'%']
+ ].map(x=>`<div class="card"><div class="muted">${x[0]}</div><div class="stat">${x[1]}</div></div>`).join('');
+ document.getElementById('categoryBreakdown').innerHTML=categories.map(c=>{
+  const n=s.byCategory[c.id]||0,p=s.total?Math.round(n/s.total*100):0;
+  return `<div style="margin:14px 0"><div style="display:flex;justify-content:space-between"><span>${c.icon} ${c.name}</span><b>${n}</b></div><div class="progress"><i style="width:${p}%"></i></div></div>`;
+ }).join('');
+}
+
+/* Backups embed photos as data URLs so a backup file is complete on its own. */
+async function buildExportJson(){
+ const copy=JSON.parse(JSON.stringify(state));
+ for(const c of copy.cases){
+  const out=[];
+  for(const a of c.attachments||[]){const data=await imageSrc(a);if(data)out.push({id:a.id,name:a.name,data})}
+  c.attachments=out;
+ }
+ return JSON.stringify(copy,null,2);
+}
+async function exportData(){
+ const blob=new Blob([await buildExportJson()],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='fixflow-v2-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);
+}
+
+function importData(e){
+ const f=e.target.files[0];if(!f)return;
+ const r=new FileReader();
+ r.onload=async()=>{
+  try{
+   const x=JSON.parse(r.result);
+   if(!x||!Array.isArray(x.cases))throw Error();
+   const inc=x.cases.map(c=>normalizeCase(c,CATEGORY_IDS)).filter(Boolean);await moveInlineImagesToDb(inc);
+   state={version:2,cases:mergeCases(state.cases,inc),settings:state.settings||{}};
+   save();renderAnalytics();renderHome();
+   showToast('Imported '+inc.length+' case(s), merged with existing');
+  }catch(err){showToast('That file is not a valid FixFlow backup.')}
+ };
+ r.readAsText(f);e.target.value='';
+}
+
+function showToast(message,opts={}){
+ const t=document.getElementById('toast');if(!t)return;
+ t.textContent=message;
+ if(opts.action){const b=document.createElement('button');b.type='button';b.className='toast-action';b.textContent=opts.action;b.onclick=()=>{t.classList.remove('show');opts.onAction()};t.append(' ',b)}
+ t.classList.toggle('has-action',!!opts.action);t.classList.add('show');
+ clearTimeout(window.__fixflowToast);window.__fixflowToast=setTimeout(()=>t.classList.remove('show'),opts.action?8000:2200);
+}
+
+function toggleTheme(){const dark=document.documentElement.classList.toggle('dark');localStorage.setItem('fixflow_theme',dark?'dark':'light');const b=document.getElementById('themeToggle');if(b){b.textContent=dark?'☀':'☾';b.title=dark?'Use light theme':'Use dark theme'}}
+
+function initTheme(){const t=localStorage.getItem('fixflow_theme'),dark=t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',dark);const b=document.getElementById('themeToggle');if(b){b.textContent=dark?'☀':'☾';b.title=dark?'Use light theme':'Use dark theme'}b?.addEventListener('click',toggleTheme)}
+
+function renderResumeBanner(){const el=document.getElementById('resumeBanner');if(!el)return;const open=state.cases.find(c=>c.status!=='closed');if(!open){el.innerHTML='';return}const cat=categories.find(x=>x.id===open.category)?.name||open.category;el.innerHTML=`<div class="resume-banner"><div class="resume-copy"><span class="badge">Resume case</span><b>${esc(open.title||'Untitled case')}</b><span class="small muted">${esc(cat)} · ${open.steps?.length?((open.steps.filter(x=>x.done).length)+'/'+open.steps.length+' steps'): 'Not started'}</span></div><div class="actions"><button class="btn" type="button" onclick="openCase('${open.id}')">Resume</button><button class="btn ghost" type="button" onclick="dismissResume()">Dismiss</button></div></div>`}
+
+function dismissResume(){const el=document.getElementById('resumeBanner');if(el)el.innerHTML=''}
+
+function renderHome(){
+ renderResumeBanner();
+ const q=document.getElementById('quickAccess');
+ if(q) q.innerHTML=categories.slice(0,6).map(c=>`<button type="button" class="quick-card" data-action="open-category" data-category="${c.id}"><span class="quick-icon">${c.icon}</span><span><b>${esc(c.name)}</b><small>${esc(c.depth)}</small></span><span class="arrow">›</span></button>`).join('');
+ const r=document.getElementById('recentHome');
+ if(!r)return;
+ const recent=state.cases.slice(0,3);
+ r.innerHTML=recent.length?recent.map(c=>`<div class="history-item"><div><b>${esc(c.title||'Untitled case')}</b><div class="small muted">${esc(categories.find(x=>x.id===c.category)?.name||c.category)} · ${new Date(c.created).toLocaleDateString()}</div></div><button class="btn" onclick="openCase('${c.id}')">Open</button></div>`).join(''):`<div class="card recent-card muted">No cases yet. Start with a real problem and FixFlow will keep the troubleshooting record here.</div>`;
+}
+
+function renderDiagnoseCategories(){
+ const dir=document.getElementById('categoryDirectory');
+ const panel=document.getElementById('diagnoseProblems');
+ if(!dir||!panel)return;
+ dir.hidden=false; panel.hidden=true;
+ dir.innerHTML=categories.map(c=>`<button type="button" class="category-card" data-action="open-category" data-category="${c.id}"><span class="cat-icon">${c.icon}</span><span><b>${esc(c.name)}</b><div class="small muted">${esc(c.depth)} · ${(commonProblems[c.id]||[]).length} common problems</div></span><span class="arrow">›</span></button>`).join('');
+}
+
+function openCategory(category){
+ const c=categories.find(x=>x.id===category);
+ if(!c)return;
+ // Always enter the Diagnose section first. This fixes Quick Access cards
+ // on Home, which previously rendered their panel inside a hidden section.
+ go('diagnose');
+ const dir=document.getElementById('categoryDirectory'),panel=document.getElementById('diagnoseProblems');
+ if(!dir||!panel)return;
+ dir.hidden=true;panel.hidden=false;
+ const problems=commonProblems[category]||[];
+ panel.innerHTML=`<div class="section-top"><div><h3>${c.icon} ${esc(c.name)}</h3><span class="small muted">Choose the closest real symptom.</span></div><button class="btn" onclick="renderDiagnoseCategories()">← Categories</button></div><div class="diagnose-toolbar"><input id="problemSearch" placeholder="Search problems…" autocomplete="off" oninput="filterProblems('${category}')"><button class="btn primary" onclick="startCase('${category}')">Describe another problem</button></div><div id="problemList" class="problem-list">${problemRows(category,problems)}</div>`;
+ panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function problemRows(category,problems){
+ return problems.map(x=>`<button type="button" class="problem-row" data-action="start-specific" data-category="${category}" data-symptom="${x[0]}"><span class="picon">${categories.find(c=>c.id===category)?.icon||'?'}</span><span><b>${esc(x[1])}</b><div class="small muted">${esc(x[2])}</div></span><span class="arrow">›</span></button>`).join('');
+}
+
+function filterProblems(category){
+ const q=(document.getElementById('problemSearch')?.value||'').toLowerCase().trim();
+ const list=(commonProblems[category]||[]).filter(x=>x.join(' ').toLowerCase().includes(q));
+ const el=document.getElementById('problemList');
+ if(el)el.innerHTML=list.length?problemRows(category,list):`<div class="card muted" style="grid-column:1/-1;text-align:center">No matching problem. Try a different search or describe it yourself.</div>`;
+}
+
+function startSpecific(category,symptom){
+ startCase(category);
+ pickSymptom(symptom);
+}
+
+/* ---- PDF / print report ---- */
+async function attachmentDataUrls(c){
+ const out=[];
+ for(const a of c.attachments||[]){const data=await imageSrc(a);if(data)out.push({name:a.name,data})}
+ return out;
+}
+async function renderReport(c=current){
+ if(!c)return null;
+ const imgs=await attachmentDataUrls(c);
+ let box=document.getElementById('printReport');
+ if(!box){box=document.createElement('section');box.id='printReport';box.setAttribute('aria-hidden','true');document.body.appendChild(box)}
+ box.innerHTML=reportHtml(c,{categories,commonProblems,playbooks},imgs);
+ await Promise.all([...box.querySelectorAll('img')].map(i=>i.decode().catch(()=>{})));
+ return box;
+}
+async function printReport(c=current){
+ const box=await renderReport(c);if(!box)return;
+ const old=document.title;document.title='FixFlow report - '+(c.title||'case').slice(0,60);
+ const restore=()=>{document.title=old;window.removeEventListener('afterprint',restore)};
+ window.addEventListener('afterprint',restore);
+ window.print();
+}
+function printCaseById(id){const c=state.cases.find(x=>x.id===id);if(c)printReport(c)}
+</script>
+<script>
+/* Global event wiring. */
+document.addEventListener('click', function(e){
+ const el=e.target.closest('[data-action]');
+ if(!el)return;
+ const action=el.dataset.action;
+ if(action==='open-category'){
+   e.preventDefault();
+   openCategory(el.dataset.category);
+   return;
+ }
+ if(action==='new-case'){
+   e.preventDefault();
+   startCase('other');
+   return;
+ }
+ if(action==='open-history'){
+   e.preventDefault();
+   go('history');
+   return;
+ }
+ if(action==='continue-diagnosis'){
+   e.preventDefault();
+   nextDiagnosis();
+   return;
+ }
+ if(action==='start-specific'){
+   e.preventDefault();
+   startSpecific(el.dataset.category,el.dataset.symptom);
+   return;
+ }
+ if(action==='build-plan'){
+   e.preventDefault();
+   buildPlan();
+   return;
+ }
+});
+
+// Keep category navigation working even when the app is opened from a file/preview
+// environment where inline onclick handlers may be restricted.
+
+window.addEventListener('error', function(e){ console.error('FixFlow error:', e.error || e.message); });
+
+window.addEventListener('storage',e=>{if(e.key===KEY){state=load();renderHome()}});
+
+/* ---- Back/forward buttons and deep links ---- */
+window.addEventListener('popstate',()=>{let v=viewFromHash();if(v==='case'&&!current)v='home';go(v,{fromHistory:true})});
+
+/* ---- Autosave drafts while typing, so a reload or closed tab never loses the case ---- */
+let draftTimer=null;
+function flushDraft(){clearTimeout(draftTimer);draftTimer=null;if(current&&document.getElementById('case').classList.contains('active')&&document.getElementById('problemTitle')){try{syncContext();saveCurrent()}catch(e){}}}
+document.addEventListener('input',e=>{if(e.target.matches&&e.target.matches('#problemTitle,#problemDesc,#deviceName,#platform,#severity')){clearTimeout(draftTimer);draftTimer=setTimeout(flushDraft,500)}});
+window.addEventListener('pagehide',flushDraft);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushDraft()});
+
+/* ---- Skip link (a plain #main link would collide with the #/view routes) ---- */
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a.skip');if(!a)return;e.preventDefault();document.getElementById('main').focus()});
+</script>
+<script>
+/* Start-up. */
+initTheme();
+{const v=viewFromHash();if(v!=='home'&&v!=='case')go(v,{fromHistory:true,silent:true})}
+
+renderHome();
+
+/* Photos: move any legacy inline images into IndexedDB, then clean up photos no case uses. */
+(async()=>{
+ if(await moveInlineImagesToDb(state.cases))save();
+ if(!stateRecovered)await purgeOrphanImages();
+})().catch(()=>{});
+</script>
+</body>
+</html>
