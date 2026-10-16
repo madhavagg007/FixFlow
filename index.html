@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="FixFlow: guided troubleshooting that asks the right questions, gives a clear action plan and keeps your evidence. Works offline.">
+<meta name="theme-color" content="#5b5bd6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14162b" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FixFlow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%279%27 fill=%27%235b5bd6%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-size=%2720%27 font-weight=%27800%27 text-anchor=%27middle%27 fill=%27white%27 font-family=%27sans-serif%27%3EF%3C/text%3E%3C/svg%3E">
+<title>FixFlow — Troubleshooting, made actionable</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="app">
+<header>
+  <div class="brand"><div class="logo">F</div><div><h1>FixFlow</h1><p>Troubleshooting, made actionable.</p></div></div>
+  <div class="top-actions"><button class="icon-btn" id="themeToggle" type="button" title="Toggle theme" aria-label="Toggle theme">☾</button></div>
+  <nav aria-label="Main navigation">
+    <button class="nav active" data-view="home">Home</button><button class="nav" data-view="diagnose">Diagnose</button><button class="nav" data-view="history">History</button><button class="nav" data-view="analytics">Insights</button>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1">
+<section id="home" class="view active">
+  <div class="hero">
+    <div class="kicker">● Guided troubleshooting</div>
+    <h2>Real problems. Practical solutions.</h2>
+    <p>Describe what is going wrong. FixFlow narrows the problem, asks useful questions, then gives you a clear action plan.</p>
+    <div class="hero-actions"><button class="btn primary" type="button" data-action="new-case">Start diagnosing →</button><button class="btn" type="button" data-action="open-history">View history</button></div>
+  </div>
+  <div id="resumeBanner"></div>
+  <div class="section-top"><div><h3>Quick access</h3><span class="small muted">Start with the topic that matches your problem.</span></div><button class="btn" onclick="go('diagnose')">See all</button></div>
+  <div class="quick-grid" id="quickAccess"></div>
+  <div class="section-top"><div><h3>Recent cases</h3><span class="small muted">Pick up where you left off.</span></div><button class="btn" onclick="go('history')">View history</button></div>
+  <div id="recentHome" class="home-recent"></div>
+</section>
+
+<section id="diagnose" class="view">
+  <div class="section-hero"><h2>Choose a category</h2><p>Select the type of problem you are facing. FixFlow will show common real-world symptoms.</p></div>
+  <div id="categoryDirectory" class="category-list"></div>
+  <div id="diagnoseProblems" hidden></div>
+</section>
+
+<section id="case" class="view">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><div><span class="badge" id="caseStage">New case</span><h2 id="caseTitle" style="margin:8px 0 0">Describe the problem</h2></div><button class="btn ghost" onclick="cancelCase()">Save &amp; close</button></div>
+    <div id="caseBody" style="margin-top:24px"></div>
+  </div>
+</section>
+
+<section id="history" class="view">
+  <div class="card"><h2 style="margin-top:0">Case history</h2><div id="historyList"></div></div>
+</section>
+
+<section id="analytics" class="view">
+  <div class="grid" id="stats"></div>
+  <div class="card" style="margin-top:16px"><h3>What FixFlow is learning from your usage</h3><p class="muted">This first version keeps data on this device. It tracks cases, categories, outcomes and step completion — not personal identity.</p><div id="categoryBreakdown"></div></div>
+  <div class="card" style="margin-top:16px"><h3>Backup</h3><p class="muted">Export your local data so you can keep a copy or move it later.</p><div class="actions"><button class="btn primary" onclick="exportData()">Export JSON</button><button class="btn" onclick="document.getElementById('importFile').click()">Import JSON</button><input id="importFile" aria-label="Import a FixFlow backup file" type="file" accept="application/json" hidden onchange="importData(event)"></div></div>
+</section>
+</main>
+<dialog id="imgDlg"><img id="imgDlgImg" alt="Attachment preview"><form method="dialog"><button class="btn primary">Close</button></form></dialog>
+<dialog id="dlg"><form method="dialog"><b id="dlgTitle"></b><div id="dlgBody" style="margin:12px 0"></div><div class="actions" style="margin-top:0"><button class="btn primary" value="ok">OK</button><button class="btn" value="cancel">Cancel</button></div></form></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<footer>FixFlow V3.3 • Reliable navigation • Guided diagnostics • Evidence tracking <span id="netBadge" class="net-badge" hidden>Offline: your cases are safe on this device</span> <button type="button" id="installBtn" class="btn" hidden onclick="installApp()">Install app</button></footer>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/imagedb.js"></script>
+<script src="js/state.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/events.js"></script>
+<script src="js/pwa.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
