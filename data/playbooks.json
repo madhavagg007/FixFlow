@@ -1,0 +1,1655 @@
+{
+  "schemaVersion": 1,
+  "categories": [
+    {
+      "id": "internet",
+      "name": "Internet / Wi-Fi",
+      "icon": "◉",
+      "depth": "Network diagnostics"
+    },
+    {
+      "id": "device",
+      "name": "Phone / Computer",
+      "icon": "▣",
+      "depth": "Hardware & system checks"
+    },
+    {
+      "id": "software",
+      "name": "Apps / Software",
+      "icon": "◇",
+      "depth": "App-level diagnosis"
+    },
+    {
+      "id": "website",
+      "name": "Website",
+      "icon": "⌁",
+      "depth": "Browser / web diagnosis"
+    },
+    {
+      "id": "study",
+      "name": "Study / Productivity",
+      "icon": "◆",
+      "depth": "Workflow diagnosis"
+    },
+    {
+      "id": "household",
+      "name": "Household",
+      "icon": "⌂",
+      "depth": "Safe visible checks only"
+    },
+    {
+      "id": "other",
+      "name": "Other",
+      "icon": "?",
+      "depth": "General diagnostic framework"
+    }
+  ],
+  "commonProblems": {
+    "internet": [
+      ["wifi-disconnects","Wi-Fi keeps disconnecting","Drops repeatedly, reconnects, then drops again."],
+      ["wifi-slow","Wi-Fi is very slow","Browsing, streaming or downloads are much slower than expected."],
+      ["wifi-nointernet","Connected to Wi-Fi but no internet","The device says it is connected, but websites/services do not load."],
+      ["wifi-one-device","Wi-Fi works on other devices but not mine","Only one phone/computer appears affected."],
+      ["wifi-range","Wi-Fi is weak in one room","Connection becomes unreliable farther from the router."],
+      ["wifi-newdevice","New device cannot connect","A newly connected phone/computer cannot join normally."],
+      ["wifi-password","Wi-Fi password is rejected","The network is visible but the password/connection fails."],
+      ["wifi-intermittent","Internet works, then stops randomly","The connection alternates between normal and unusable."],
+      ["wifi-other","Other Wi-Fi problem","Something else is wrong with the connection."]
+    ],
+    "device": [
+      ["phone-slow","Phone/computer is slow","Apps or normal actions take unusually long."],
+      ["phone-freeze","Device freezes or becomes unresponsive","The screen or system stops responding normally."],
+      ["phone-restart","Device restarts unexpectedly","It restarts or shuts down without you intentionally doing so."],
+      ["phone-battery","Battery drains unusually fast","Battery life is noticeably worse than your normal baseline."],
+      ["phone-storage","Storage is almost full","The device reports low or nearly full storage."],
+      ["phone-overheat","Device gets unusually warm","It becomes warmer than expected during ordinary use."],
+      ["phone-appcrash","Apps keep crashing","One or several apps repeatedly close or freeze."],
+      ["phone-update","Problem started after an update","The issue appeared after a system/app update."],
+      ["phone-camera","Camera/mic/speaker is not working","A built-in hardware feature behaves unexpectedly."],
+      ["phone-other","Other phone/computer problem","Something else is wrong with the device."]
+    ],
+    "software": [
+      ["app-crash","An app keeps crashing","The app closes or freezes repeatedly."],
+      ["app-error","An app shows an error","A visible message/code appears."],
+      ["app-login","Cannot log in","Sign-in fails even though the account should work."],
+      ["app-slow","An app is very slow","The app responds much more slowly than usual."],
+      ["app-feature","One feature is not working","A specific button, screen or function fails."],
+      ["app-install","Cannot install/update an app","Installation or updating does not complete normally."],
+      ["app-file","File will not open/work","A document, image, project or other file behaves unexpectedly."],
+      ["app-sync","Data is not syncing","Changes do not appear across devices/services."],
+      ["app-other","Other app/software problem","Something else is wrong with software."]
+    ],
+    "website": [
+      ["web-notload","Website will not load","The page fails to open or keeps loading."],
+      ["web-slow","Website is very slow","Pages or actions take unusually long."],
+      ["web-login","Website login fails","Sign-in does not work as expected."],
+      ["web-form","Form/button does not work","A submission, button, upload or action fails."],
+      ["web-broken","Website looks broken","Images, layout, text or controls appear incorrect."],
+      ["web-error","Website shows an error","A server/browser/error message appears."],
+      ["web-mobile","Website works on PC but not phone","The same site behaves differently by device."],
+      ["web-browser","Website works in one browser only","Another browser behaves differently."],
+      ["web-other","Other website problem","Something else is wrong with a website."]
+    ],
+    "study": [
+      ["study-start","I cannot start studying","I keep delaying even when I know what to do."],
+      ["study-focus","I lose focus quickly","I start but repeatedly switch tasks or get distracted."],
+      ["study-plan","I do not know what to study first","Too many tasks and no clear priority."],
+      ["study-forget","I forget what I studied","Recall is weak after studying."],
+      ["study-backlog","My backlog keeps growing","Work accumulates faster than I can complete it."],
+      ["study-consistency","I cannot stay consistent","Good days are followed by long gaps."],
+      ["study-mistakes","I keep making the same mistakes","Errors repeat even after reviewing."],
+      ["study-test","My test performance is lower than preparation","I study but performance does not match preparation."],
+      ["study-time","I spend too much time on one topic","A chapter/question set takes much longer than planned."],
+      ["study-other","Other study/productivity problem","Something else is blocking progress."]
+    ],
+    "household": [
+      ["home-leak","There is a visible leak","Water/moisture is appearing where it normally should not."],
+      ["home-noise","An appliance/object is making an unusual noise","The sound is different from normal operation."],
+      ["home-notwork","A household item is not working normally","Normal operation has changed."],
+      ["home-clean","A routine cleaning/maintenance problem","Something needs ordinary user-level cleaning or care."],
+      ["home-door","A door/drawer/cabinet is not behaving normally","It sticks, does not close, or behaves differently."],
+      ["home-light","A light/device is behaving unexpectedly","A visible household electrical symptom is present."],
+      ["home-odor","There is an unusual smell","A new or unexpected odor is noticeable."],
+      ["home-other","Other household problem","Something else is wrong."]
+    ],
+    "other": [
+      ["other-notwork","Something does not work","A device, process, object or service is failing."],
+      ["other-slow","Something is unusually slow","An action takes much longer than expected."],
+      ["other-error","I am getting an error","A message or unexpected response appears."],
+      ["other-repeating","The same problem keeps returning","Temporary fixes do not last."],
+      ["other-change","Something changed unexpectedly","The result changed from the normal behavior."],
+      ["other-unknown","I do not know what is wrong","The symptom is unclear and needs structured diagnosis."],
+      ["other-compare","It works for someone else but not me","A known-good comparison exists."],
+      ["other-other","Other problem","None of the listed problems fit."]
+    ]
+  },
+  "playbooks": {
+    "internet": {
+      "symptoms": [
+        ["slow","Internet is slow","Pages/videos take too long to load."],
+        ["drop","Connection keeps dropping","Wi-Fi disconnects or stops working intermittently."],
+        ["none","No internet","Connected to Wi-Fi but nothing loads."],
+        ["one","Only one device has the problem","Other devices work normally."],
+        ["range","Weak signal in some areas","Connection is much worse farther from the router."]
+      ],
+      "questions": [
+        {
+          "q": "Does the same problem happen on another device connected to the same Wi-Fi?",
+          "yes": "multi",
+          "no": "single",
+          "yl": "Yes — other devices too",
+          "nl": "No — only this device"
+        },
+        {
+          "q": "Does restarting the router temporarily improve it?",
+          "yes": "router",
+          "no": "persistent",
+          "yl": "Yes — restart helps for a while",
+          "nl": "No — restart does not help"
+        },
+        {
+          "q": "Is the problem worse in one physical location?",
+          "yes": "signal",
+          "no": "not-signal",
+          "yl": "Yes — worse in one place",
+          "nl": "No — about the same everywhere"
+        },
+        {
+          "q": "Does it happen at roughly the same time of day?",
+          "yes": "timing",
+          "no": "not-timing",
+          "yl": "Yes — similar time each day",
+          "nl": "No — no time pattern"
+        }
+      ],
+      "branches": {
+        "multi": {
+          "title": "Likely network-side issue",
+          "why": "Multiple devices showing the same symptom points away from a single device.",
+          "steps": [
+            {
+              "title": "Observe",
+              "action": "Test two different devices for 2–3 minutes.",
+              "detail": "You should be able to tell whether the issue is shared."
+            },
+            {
+              "title": "Restart",
+              "action": "Restart the router/modem using its normal power procedure.",
+              "detail": "Wait until its normal status lights/connection return."
+            },
+            {
+              "title": "Compare",
+              "action": "Test again near the router and then at the original location.",
+              "detail": "A large difference suggests coverage/interference rather than the internet line itself."
+            },
+            {
+              "title": "Record",
+              "action": "Write down the time, duration, affected devices and exact symptom.",
+              "detail": "This gives your ISP/support team useful evidence."
+            },
+            {
+              "title": "Escalate",
+              "action": "If multiple devices still fail, contact the internet provider or responsible adult.",
+              "detail": "Provide the observations instead of only saying “Wi-Fi is bad.”"
+            }
+          ]
+        },
+        "single": {
+          "title": "Likely device-side issue",
+          "why": "If other devices work, investigate the affected device before changing the whole network.",
+          "steps": [
+            {
+              "title": "Reconnect",
+              "action": "Forget/reconnect to the Wi-Fi network using the device’s normal settings.",
+              "detail": "Confirm the device receives a normal connection."
+            },
+            {
+              "title": "Restart",
+              "action": "Restart the affected device.",
+              "detail": "Retest before changing additional settings."
+            },
+            {
+              "title": "Compare",
+              "action": "Test another network if one is safely available.",
+              "detail": "If the device works elsewhere, the original network/device interaction becomes more relevant."
+            },
+            {
+              "title": "Update",
+              "action": "Check for normal system/network-driver updates.",
+              "detail": "Only install updates from the device’s normal trusted update channel."
+            },
+            {
+              "title": "Record",
+              "action": "Capture the exact error or behavior if it remains.",
+              "detail": "Use the evidence when seeking support."
+            }
+          ]
+        },
+        "router": {
+          "title": "Temporary recovery after router restart",
+          "why": "A temporary improvement suggests the network equipment or connection may be involved, but it does not prove the cause.",
+          "steps": [
+            {
+              "title": "Observe",
+              "action": "Note how long the connection remains stable after recovery.",
+              "detail": "A repeatable pattern is useful evidence."
+            },
+            {
+              "title": "Compare",
+              "action": "Check whether all connected devices are affected when it happens again.",
+              "detail": "This separates shared from device-specific symptoms."
+            },
+            {
+              "title": "Position",
+              "action": "If the issue is location-dependent, compare near and far from the router.",
+              "detail": "Large differences point toward coverage."
+            },
+            {
+              "title": "Record",
+              "action": "Record timestamps and symptoms for two or three occurrences.",
+              "detail": "Patterns are more useful than a single incident."
+            },
+            {
+              "title": "Escalate",
+              "action": "If the problem repeatedly returns, involve the ISP or responsible adult.",
+              "detail": "Share the pattern and affected devices."
+            }
+          ]
+        },
+        "signal": {
+          "title": "Likely coverage/interference issue",
+          "why": "A location-dependent symptom makes the physical Wi-Fi path important.",
+          "steps": [
+            {
+              "title": "Compare",
+              "action": "Test near the router and in the problem location.",
+              "detail": "Measure the practical difference by loading the same simple page."
+            },
+            {
+              "title": "Reduce distance",
+              "action": "For important work, temporarily use a location with a stronger signal.",
+              "detail": "This is a workaround, not proof of the root cause."
+            },
+            {
+              "title": "Check pattern",
+              "action": "See whether walls, floors or one specific room consistently correlate with the problem.",
+              "detail": "A repeatable location pattern is useful evidence."
+            },
+            {
+              "title": "Record",
+              "action": "Write down the locations where the connection is reliable/unreliable.",
+              "detail": "Use this before considering network changes."
+            }
+          ]
+        },
+        "timing": {
+          "title": "Time-pattern investigation",
+          "why": "A repeated time pattern can point to congestion, scheduled activity, or an external event.",
+          "steps": [
+            {
+              "title": "Log",
+              "action": "Record start/end times for several occurrences.",
+              "detail": "Look for a repeated window rather than one coincidence."
+            },
+            {
+              "title": "Compare",
+              "action": "Check whether every device is affected during that window.",
+              "detail": "Shared timing strengthens the network-side hypothesis."
+            },
+            {
+              "title": "Cross-check",
+              "action": "Compare with another network or ask whether the same service is affected elsewhere.",
+              "detail": "This helps separate local from service-wide problems."
+            },
+            {
+              "title": "Escalate",
+              "action": "If the pattern persists, provide the timestamps to the responsible support team.",
+              "detail": "Precise timestamps are actionable evidence."
+            }
+          ]
+        },
+        "persistent": {
+          "title": "Persistent connection issue",
+          "why": "Because a restart does not resolve the issue, focus on reproducible evidence rather than repeatedly restarting.",
+          "steps": [
+            {
+              "title": "Reproduce",
+              "action": "Trigger the problem once and note the exact symptom.",
+              "detail": "Avoid changing several settings at once."
+            },
+            {
+              "title": "Compare",
+              "action": "Test another device on the same network.",
+              "detail": "This is the key split between network and device diagnosis."
+            },
+            {
+              "title": "Compare location",
+              "action": "Test near the router if relevant.",
+              "detail": "A location change can reveal a coverage component."
+            },
+            {
+              "title": "Record",
+              "action": "Keep a short incident log with time, device and symptom.",
+              "detail": "Use it for support."
+            }
+          ]
+        },
+        "not-signal": {
+          "title": "General network diagnosis",
+          "why": "No obvious location pattern means you need to separate device, router and service symptoms systematically.",
+          "steps": [
+            {
+              "title": "Compare devices",
+              "action": "Test at least two devices.",
+              "detail": "Determine whether the symptom is shared."
+            },
+            {
+              "title": "Restart once",
+              "action": "Restart the relevant device/network equipment through normal controls.",
+              "detail": "Then retest."
+            },
+            {
+              "title": "Observe",
+              "action": "Record exactly what fails: connection, DNS/page loading, speed, or one service.",
+              "detail": "Specific symptoms narrow the next step."
+            },
+            {
+              "title": "Escalate",
+              "action": "If multiple devices fail repeatedly, involve the ISP/support team.",
+              "detail": "Give them your observations."
+            }
+          ]
+        },
+        "not-timing": {
+          "title": "Repeatable network diagnosis",
+          "why": "Without a time pattern, device/location comparison gives the most useful information.",
+          "steps": [
+            {
+              "title": "Compare devices",
+              "action": "Test another device on the same network.",
+              "detail": "Shared vs single-device behavior is the first split."
+            },
+            {
+              "title": "Compare location",
+              "action": "Test near and far from the router.",
+              "detail": "This checks coverage."
+            },
+            {
+              "title": "Record",
+              "action": "Write the exact symptom and when it occurs.",
+              "detail": "Keep the evidence consistent."
+            },
+            {
+              "title": "Escalate",
+              "action": "Use the collected evidence if the issue remains.",
+              "detail": "Avoid random setting changes."
+            }
+          ]
+        }
+      },
+      "evidence": ["Affected device(s)","Location","Time of occurrence","Exact symptom/error","What changed immediately before it started"]
+    },
+    "device": {
+      "symptoms": [
+        ["slow","Device feels slow","Apps open slowly or actions lag."],
+        ["crash","Apps crash/freeze","One or more apps close, freeze or become unresponsive."],
+        ["battery","Battery drains unusually fast","Battery falls faster than your normal baseline."],
+        ["storage","Storage is nearly full","The device reports low storage."],
+        ["restart","Device restarts/shuts down unexpectedly","The device restarts without you intentionally doing it."]
+      ],
+      "questions": [
+        {
+          "q": "Does the problem affect one app or many parts of the device?",
+          "yes": "broad",
+          "no": "single",
+          "yl": "Many parts of the device",
+          "nl": "Just one app or feature"
+        },
+        {
+          "q": "Did the problem start after an update, install, or setting change?",
+          "yes": "change",
+          "no": "nochange",
+          "yl": "Yes — after a change",
+          "nl": "No — nothing changed"
+        },
+        {
+          "q": "Does a normal restart temporarily improve it?",
+          "yes": "restart",
+          "no": "persistent",
+          "yl": "Yes — restart helps for a while",
+          "nl": "No — restart does not help"
+        }
+      ],
+      "branches": {
+        "single": {
+          "title": "App-specific device issue",
+          "why": "A problem isolated to one app should be investigated at the app level first.",
+          "steps": [
+            {
+              "title": "Reproduce",
+              "action": "Open the app and trigger the problem once.",
+              "detail": "Record the exact behavior."
+            },
+            {
+              "title": "Restart app",
+              "action": "Close and reopen the app normally.",
+              "detail": "Retest before changing settings."
+            },
+            {
+              "title": "Update",
+              "action": "Check the app’s official update channel.",
+              "detail": "Install an update only if one is offered there."
+            },
+            {
+              "title": "Compare",
+              "action": "If possible, check whether the same account/service works elsewhere.",
+              "detail": "This helps separate app from account/service issues."
+            },
+            {
+              "title": "Escalate",
+              "action": "If the issue persists, record the app version and exact error.",
+              "detail": "Use official support."
+            }
+          ]
+        },
+        "broad": {
+          "title": "System-wide device issue",
+          "why": "Multiple affected areas make a system-level cause more relevant than one app.",
+          "steps": [
+            {
+              "title": "Check storage",
+              "action": "Look at the device’s storage status.",
+              "detail": "Very low free space can affect normal operation."
+            },
+            {
+              "title": "Restart",
+              "action": "Perform one normal restart.",
+              "detail": "Retest the same actions afterward."
+            },
+            {
+              "title": "Update",
+              "action": "Check normal system updates.",
+              "detail": "Use only the device’s built-in update path."
+            },
+            {
+              "title": "Observe",
+              "action": "Note whether the problem appears during a particular activity or after a particular action.",
+              "detail": "Patterns help distinguish causes."
+            },
+            {
+              "title": "Escalate",
+              "action": "If unexpected restarts or persistent system failures continue, involve a trusted adult or qualified service provider.",
+              "detail": "Bring the observations rather than repeatedly experimenting."
+            }
+          ]
+        },
+        "change": {
+          "title": "Recent-change investigation",
+          "why": "A new update, installation or setting change creates a strong timeline clue.",
+          "steps": [
+            {
+              "title": "Identify",
+              "action": "Write down what changed immediately before the problem began.",
+              "detail": "Be specific: app, update, setting or accessory."
+            },
+            {
+              "title": "Test safely",
+              "action": "Use normal app/device settings to return only the recent change if there is an obvious reversible option.",
+              "detail": "Do not modify advanced system settings blindly."
+            },
+            {
+              "title": "Retest",
+              "action": "Repeat the original action.",
+              "detail": "Check whether the symptom changes."
+            },
+            {
+              "title": "Record",
+              "action": "Keep the before/after observation.",
+              "detail": "This is stronger evidence than memory."
+            },
+            {
+              "title": "Escalate",
+              "action": "If the issue remains or the device behaves unpredictably, use official support/service.",
+              "detail": "Avoid risky hardware modifications."
+            }
+          ]
+        },
+        "nochange": {
+          "title": "Baseline comparison",
+          "why": "Without a known recent change, compare scope, reproduction and system state.",
+          "steps": [
+            {
+              "title": "Define",
+              "action": "Write the exact symptom and one reproducible example.",
+              "detail": "Avoid vague descriptions such as “it is broken.”"
+            },
+            {
+              "title": "Scope",
+              "action": "Check whether one app, one feature, or the whole device is affected.",
+              "detail": "This determines the next branch."
+            },
+            {
+              "title": "Check basics",
+              "action": "Review storage and normal updates.",
+              "detail": "Do not change advanced settings yet."
+            },
+            {
+              "title": "Restart",
+              "action": "Restart once and compare.",
+              "detail": "Record whether anything changed."
+            },
+            {
+              "title": "Escalate",
+              "action": "If persistent, use official support/service with your evidence.",
+              "detail": "Bring your notes, the device model and the exact symptom to the manufacturer, your carrier or a qualified repair shop."
+            }
+          ]
+        },
+        "restart": {
+          "title": "Temporary recovery after restart",
+          "why": "Temporary improvement suggests state, resource, or software interaction issues but does not identify the root cause.",
+          "steps": [
+            {
+              "title": "Observe",
+              "action": "Note how long the device works normally after restart.",
+              "detail": "Repeat only enough to establish a pattern."
+            },
+            {
+              "title": "Scope",
+              "action": "Identify the exact app/action that eventually triggers the issue.",
+              "detail": "This narrows the investigation."
+            },
+            {
+              "title": "Check basics",
+              "action": "Review storage and available updates.",
+              "detail": "Use built-in settings."
+            },
+            {
+              "title": "Record",
+              "action": "Keep a short incident log.",
+              "detail": "Time + action + symptom is enough."
+            },
+            {
+              "title": "Escalate",
+              "action": "If repeated restarts become necessary, seek official support.",
+              "detail": "If restarts keep being needed, or the device shuts down by itself, stop experimenting and contact official support."
+            }
+          ]
+        },
+        "persistent": {
+          "title": "Persistent device issue",
+          "why": "Because restarting does not help, focus on scope and evidence instead of repeating the same action.",
+          "steps": [
+            {
+              "title": "Define",
+              "action": "Record one exact reproducible symptom.",
+              "detail": "Write one sentence: what you do, what you expect, and what actually happens. One clear example beats a general complaint."
+            },
+            {
+              "title": "Scope",
+              "action": "Check whether it is one app or system-wide.",
+              "detail": "Try the same action in another app or feature. The same result everywhere suggests a system-wide issue; only one place suggests an app issue."
+            },
+            {
+              "title": "Check basics",
+              "action": "Review storage and normal updates.",
+              "detail": "Open Settings and note your free storage and whether an update is waiting."
+            },
+            {
+              "title": "Avoid random changes",
+              "action": "Do not alter advanced settings without knowing what they do.",
+              "detail": "Changing unknown settings can create new problems and hide the original one. Change one thing at a time, and only if you can undo it."
+            },
+            {
+              "title": "Escalate",
+              "action": "Use official support/service if the problem remains.",
+              "detail": "Contact the manufacturer or a trusted repair service with your notes, model and OS version."
+            }
+          ]
+        }
+      },
+      "evidence": ["Device model/OS","Affected app or feature","Exact error","Recent changes","Frequency and timing"]
+    },
+    "software": {
+      "symptoms": [
+        ["crash","App crashes","The program closes unexpectedly."],
+        ["error","Error message","A visible error appears."],
+        ["slow","Software is slow","Actions take much longer than expected."],
+        ["data","Data/file issue","A file is missing, wrong, or cannot be opened."],
+        ["login","Login/account issue","Sign-in or account behavior is failing."]
+      ],
+      "questions": [
+        {
+          "q": "Can you reproduce the issue consistently?",
+          "yes": "repeat",
+          "no": "intermittent",
+          "yl": "Yes — it happens every time",
+          "nl": "No — it comes and goes"
+        },
+        {
+          "q": "Is there a specific error message or code?",
+          "yes": "error",
+          "no": "noerror",
+          "yl": "Yes — an error is shown",
+          "nl": "No — no clear error"
+        },
+        {
+          "q": "Did an update, install, setting, or file change happen first?",
+          "yes": "recent",
+          "no": "norecent",
+          "yl": "Yes — something changed first",
+          "nl": "No — nothing changed"
+        },
+        {
+          "q": "Does the same problem happen with a different file, account, or project?",
+          "yes": "everywhere",
+          "no": "oneitem",
+          "yl": "Yes — happens with others too",
+          "nl": "No — only this one"
+        }
+      ],
+      "branches": {
+        "repeat": {
+          "title": "Reproducible software issue",
+          "why": "A repeatable failure is easier to diagnose because each test can be compared.",
+          "steps": [
+            {
+              "title": "Reproduce once",
+              "action": "Trigger the issue and capture the exact message/behavior.",
+              "detail": "Do not repeatedly retry if it risks changing data."
+            },
+            {
+              "title": "Isolate",
+              "action": "Change only one safe variable at a time.",
+              "detail": "For example, test another file or account if appropriate."
+            },
+            {
+              "title": "Check version",
+              "action": "Record the software version and platform.",
+              "detail": "Use the official about/help screen."
+            },
+            {
+              "title": "Check official support",
+              "action": "Search the exact error in the software maker’s official support documentation.",
+              "detail": "Prefer official documentation over random fixes."
+            },
+            {
+              "title": "Escalate",
+              "action": "If unresolved, provide the reproduction steps and evidence to support.",
+              "detail": "Send support the steps that trigger it, the exact error, the app version and your platform."
+            }
+          ]
+        },
+        "intermittent": {
+          "title": "Intermittent software issue",
+          "why": "Intermittent failures require logging because memory after the fact is unreliable.",
+          "steps": [
+            {
+              "title": "Start a log",
+              "action": "Record date/time, action, file/account and symptom.",
+              "detail": "A note on your phone is enough: date, time, what you were doing and what happened."
+            },
+            {
+              "title": "Look for triggers",
+              "action": "After several incidents, compare what was common.",
+              "detail": "Do not assume the first coincidence is causal."
+            },
+            {
+              "title": "Update safely",
+              "action": "Check the official update channel.",
+              "detail": "Use only the app store or the software's own update option, never third-party download sites."
+            },
+            {
+              "title": "Reduce variables",
+              "action": "When possible, reproduce with a simple known-good input.",
+              "detail": "Try a small, simple file or a fresh test account so fewer things can go wrong at once."
+            },
+            {
+              "title": "Escalate",
+              "action": "Share the incident pattern with support.",
+              "detail": "Give support your log and what the incidents had in common."
+            }
+          ]
+        },
+        "error": {
+          "title": "Error-led diagnosis",
+          "why": "An exact error code is often more informative than a general description.",
+          "steps": [
+            {
+              "title": "Copy exactly",
+              "action": "Record the error text/code without paraphrasing.",
+              "detail": "Copy the message or take a screenshot. Codes and exact wording are what support searches for."
+            },
+            {
+              "title": "Capture context",
+              "action": "Write what action caused it and what you expected.",
+              "detail": "Note what you clicked just before it appeared and what you expected to happen."
+            },
+            {
+              "title": "Check official docs",
+              "action": "Search the exact error in the software maker’s official help/support.",
+              "detail": "Search the exact text on the maker's own help site. Ignore answers that tell you to disable security features."
+            },
+            {
+              "title": "Test one documented fix",
+              "action": "Apply one relevant, low-risk documented action.",
+              "detail": "Pick one low-risk fix from the official page. Doing several at once means you won't know which one worked."
+            },
+            {
+              "title": "Record result",
+              "action": "Note whether the error changed, disappeared, or stayed identical.",
+              "detail": "Did the error disappear, change or stay identical? A changed error is progress, so record the new text."
+            }
+          ]
+        },
+        "noerror": {
+          "title": "Behavior-led diagnosis",
+          "why": "Without an error, scope and reproduction become the strongest clues.",
+          "steps": [
+            {
+              "title": "Define",
+              "action": "Describe the expected vs actual behavior.",
+              "detail": "Write \"I expected X, but Y happened\". That gap is what support needs."
+            },
+            {
+              "title": "Reproduce",
+              "action": "Find the smallest sequence that reliably triggers it.",
+              "detail": "Find the shortest set of clicks that triggers it every time."
+            },
+            {
+              "title": "Compare",
+              "action": "Try a known-good file/action if possible.",
+              "detail": "Try another file, account or project. If it works there, the problem is tied to the original item."
+            },
+            {
+              "title": "Check updates",
+              "action": "Use the official update channel.",
+              "detail": "Update using the official update option, then retest the same sequence."
+            },
+            {
+              "title": "Escalate",
+              "action": "Share exact reproduction steps if the issue persists.",
+              "detail": "Share your exact steps, the expected vs actual result, and the version."
+            }
+          ]
+        },
+        "recent": {
+          "title": "Recent-change investigation",
+          "why": "A timeline gives you a concrete hypothesis without guessing.",
+          "steps": [
+            {
+              "title": "Identify",
+              "action": "Record the exact change and timestamp if known.",
+              "detail": "Note the exact update, install or setting, and roughly when it happened."
+            },
+            {
+              "title": "Compare",
+              "action": "Check whether the issue existed before the change.",
+              "detail": "Ask yourself whether it worked the day before. If it did, the change is a strong suspect."
+            },
+            {
+              "title": "Use documented rollback",
+              "action": "If the software officially provides a safe undo/restore path, follow that documentation.",
+              "detail": "Do not delete or overwrite important data blindly."
+            },
+            {
+              "title": "Retest",
+              "action": "Repeat the original action.",
+              "detail": "Repeat exactly the action that failed and compare with before."
+            },
+            {
+              "title": "Record",
+              "action": "Keep the before/after result.",
+              "detail": "Write down what changed and what didn't. This gives support a clear timeline."
+            }
+          ]
+        },
+        "norecent": {
+          "title": "Baseline software diagnosis",
+          "why": "Without a recent change, establish a reproducible baseline first.",
+          "steps": [
+            {
+              "title": "Define",
+              "action": "Write expected vs actual behavior.",
+              "detail": "Write the symptom plus one example you can repeat."
+            },
+            {
+              "title": "Reproduce",
+              "action": "Find a minimal reproducible example.",
+              "detail": "Find a repeatable trigger. If it happens randomly, start a log instead."
+            },
+            {
+              "title": "Check version",
+              "action": "Record software/platform version.",
+              "detail": "Find it under About or Help. Support will ask for it first."
+            },
+            {
+              "title": "Check official support",
+              "action": "Look for known issues/documentation.",
+              "detail": "Search your exact symptom on the software maker's site."
+            },
+            {
+              "title": "Escalate",
+              "action": "Provide the reproduction steps and evidence.",
+              "detail": "Send the version, platform, steps and evidence to official support."
+            }
+          ]
+        }
+      },
+      "evidence": ["Software/app name + version","Platform","Exact error","Reproduction steps","Input/file/account context"]
+    },
+    "website": {
+      "symptoms": [
+        ["down","Website does not load","The page fails to load at all."],
+        ["broken","Page loads incorrectly","Layout, buttons, images or content are broken."],
+        ["login","Login fails","Sign-in does not work as expected."],
+        ["slow","Website is very slow","Pages or actions take unusually long."],
+        ["form","Form/action fails","A button, upload, or form submission does not work."]
+      ],
+      "questions": [
+        {
+          "q": "Does the problem go away when you use a different browser?",
+          "yes": "browser",
+          "no": "notbrowser",
+          "yl": "Yes — works in another browser",
+          "nl": "No — same in other browsers"
+        },
+        {
+          "q": "Does it happen on another device or network?",
+          "yes": "broad",
+          "no": "local",
+          "yl": "Yes — also elsewhere",
+          "nl": "No — only this device/network"
+        },
+        {
+          "q": "Is there a visible error message?",
+          "yes": "error",
+          "no": "noerror",
+          "yl": "Yes — error shown",
+          "nl": "No — no clear error"
+        }
+      ],
+      "branches": {
+        "browser": {
+          "title": "Browser-specific investigation",
+          "why": "If another browser works, the original browser becomes the first variable to isolate.",
+          "steps": [
+            {
+              "title": "Compare",
+              "action": "Repeat the same action in the working and failing browser.",
+              "detail": "Keep the test identical."
+            },
+            {
+              "title": "Private test",
+              "action": "Try a private/incognito window in the failing browser.",
+              "detail": "This can separate session/extension effects."
+            },
+            {
+              "title": "Check extensions",
+              "action": "If private mode works, review browser extensions one at a time.",
+              "detail": "Disable only what you understand."
+            },
+            {
+              "title": "Clear only if appropriate",
+              "action": "Use the browser’s normal site-data controls if official support recommends it.",
+              "detail": "Avoid deleting important saved information blindly."
+            },
+            {
+              "title": "Record",
+              "action": "Keep the exact browser/version and error.",
+              "detail": "Use this when reporting the issue."
+            }
+          ]
+        },
+        "broad": {
+          "title": "Cross-device/service investigation",
+          "why": "If multiple devices or networks reproduce it, a local browser issue becomes less likely.",
+          "steps": [
+            {
+              "title": "Confirm",
+              "action": "Repeat the same action on a second device/network.",
+              "detail": "Try the same site on another device and network (for example mobile data). If it fails everywhere, the problem is probably the site."
+            },
+            {
+              "title": "Record",
+              "action": "Capture exact error, URL/page and time.",
+              "detail": "Note the time, the page and any message. Screenshots help."
+            },
+            {
+              "title": "Check official status/support",
+              "action": "If the website provides an official status page or support channel, check it.",
+              "detail": "Look for a status page or the company's official account for outage notices."
+            },
+            {
+              "title": "Wait-and-retest",
+              "action": "For service-side issues, retest later rather than repeatedly changing local settings.",
+              "detail": "Wait 15 to 30 minutes and test again. Don't keep retrying anything that involves payments or submitting forms."
+            },
+            {
+              "title": "Report",
+              "action": "Send the exact reproduction steps to the website owner/support.",
+              "detail": "Contact the site's support with the time, page, error and what you tried."
+            }
+          ]
+        },
+        "local": {
+          "title": "Local browser/session investigation",
+          "why": "If another environment works, focus on the original device/browser/session.",
+          "steps": [
+            {
+              "title": "Refresh",
+              "action": "Reload once and repeat the action.",
+              "detail": "Do a hard refresh (Ctrl/Cmd+Shift+R) or close and reopen the tab."
+            },
+            {
+              "title": "Private test",
+              "action": "Try a private/incognito window.",
+              "detail": "Open the page in a private/incognito window. If it works there, extensions or cached data may be involved."
+            },
+            {
+              "title": "Browser comparison",
+              "action": "Try another supported browser.",
+              "detail": "Try a second browser. If it works there, the first browser is the likely cause."
+            },
+            {
+              "title": "Check session",
+              "action": "If appropriate, sign out/in through the site’s normal controls.",
+              "detail": "Sign out and back in. Expired sessions cause many odd failures."
+            },
+            {
+              "title": "Record",
+              "action": "Document what works and what fails.",
+              "detail": "Note which browser and mode worked and which didn't."
+            }
+          ]
+        },
+        "notbrowser": {
+          "title": "Browser-neutral web diagnosis",
+          "why": "Because another browser does not reproduce the issue, investigate whether the problem is local or service-side.",
+          "steps": [
+            {
+              "title": "Compare device",
+              "action": "Test another device if safely available.",
+              "detail": "Try another phone or computer on the same network."
+            },
+            {
+              "title": "Compare network",
+              "action": "Test another network if safely available.",
+              "detail": "Switch between Wi-Fi and mobile data to see whether your network is blocking or slowing the site."
+            },
+            {
+              "title": "Record error",
+              "action": "Capture exact text and page.",
+              "detail": "Copy the exact message shown, and the time."
+            },
+            {
+              "title": "Check official support",
+              "action": "Use the website’s official support/status information.",
+              "detail": "Check the site's help pages for that message."
+            },
+            {
+              "title": "Report",
+              "action": "Provide concise reproduction steps.",
+              "detail": "Send support your device, browser, network type and the error."
+            }
+          ]
+        },
+        "error": {
+          "title": "Error-led web diagnosis",
+          "why": "The exact error is the strongest evidence available at this stage.",
+          "steps": [
+            {
+              "title": "Capture",
+              "action": "Copy the exact error text/code and page.",
+              "detail": "Screenshot the message including the address bar. Don't retype it from memory."
+            },
+            {
+              "title": "Reproduce",
+              "action": "Confirm the same action produces it.",
+              "detail": "Repeat the same steps once to see whether the error is consistent."
+            },
+            {
+              "title": "Compare",
+              "action": "Test another browser/device if possible.",
+              "detail": "Try another browser or device to see whether the error follows you."
+            },
+            {
+              "title": "Check official support",
+              "action": "Search the exact error using the site’s official support information.",
+              "detail": "Search the exact message on the site's official help centre."
+            },
+            {
+              "title": "Report",
+              "action": "Include URL/page, time, browser/device and error.",
+              "detail": "Send the screenshot, time and what you tried to the site's support."
+            }
+          ]
+        },
+        "noerror": {
+          "title": "Behavior-led web diagnosis",
+          "why": "Without an error, cross-environment comparison is the fastest way to narrow the scope.",
+          "steps": [
+            {
+              "title": "Define",
+              "action": "Write expected vs actual behavior.",
+              "detail": "Write what should happen and what actually happens."
+            },
+            {
+              "title": "Compare browser",
+              "action": "Try another supported browser.",
+              "detail": "Test in a second browser. Different results point to the browser."
+            },
+            {
+              "title": "Compare device/network",
+              "action": "Try another environment if available.",
+              "detail": "Try another device or network to rule out your setup."
+            },
+            {
+              "title": "Record",
+              "action": "Note what combination works/fails.",
+              "detail": "Note the browser, device, network and which combinations worked."
+            },
+            {
+              "title": "Escalate",
+              "action": "Report the smallest reproducible sequence.",
+              "detail": "Give the site's support your comparison notes; it saves them time."
+            }
+          ]
+        }
+      },
+      "evidence": ["URL/page","Browser + version","Device","Network","Exact error/behavior","Timestamp"]
+    },
+    "study": {
+      "symptoms": [
+        ["start","I cannot start","I know I should study but keep delaying."],
+        ["focus","I lose focus","I start but repeatedly switch tasks."],
+        ["retention","I forget quickly","I study but cannot recall later."],
+        ["planning","I do not know what to study","I have too much work and no clear priority."],
+        ["consistency","I cannot stay consistent","Some days go well, then the routine collapses."]
+      ],
+      "questions": [
+        {
+          "q": "Do you have one clearly defined task for the next session?",
+          "yes": "clear",
+          "no": "unclear",
+          "yl": "Yes — one clear task",
+          "nl": "No — task is unclear"
+        },
+        {
+          "q": "Is the main interruption coming from your environment/device?",
+          "yes": "distraction",
+          "no": "internal",
+          "yl": "Yes — phone, noise or surroundings",
+          "nl": "No — it feels more internal"
+        },
+        {
+          "q": "Can you explain what you studied without looking at your notes?",
+          "yes": "recall",
+          "no": "weakrecall",
+          "yl": "Yes — I can explain most of it",
+          "nl": "No — I forget a lot"
+        }
+      ],
+      "branches": {
+        "clear": {
+          "title": "Execution problem",
+          "why": "When the next task is clear, the main bottleneck is usually starting and protecting attention.",
+          "steps": [
+            {
+              "title": "Shrink",
+              "action": "Define a 15–30 minute unit of work.",
+              "detail": "Make the finish line visible."
+            },
+            {
+              "title": "Remove one distraction",
+              "action": "Put the biggest avoidable interruption out of reach.",
+              "detail": "Change the environment before starting."
+            },
+            {
+              "title": "Start timer",
+              "action": "Work only on the defined task for one short block.",
+              "detail": "Do not optimize the system mid-session."
+            },
+            {
+              "title": "Record friction",
+              "action": "After the block, write what interrupted you.",
+              "detail": "One sentence is enough."
+            },
+            {
+              "title": "Adjust",
+              "action": "Use the friction note to change the next session.",
+              "detail": "Build from evidence rather than motivation."
+            }
+          ]
+        },
+        "unclear": {
+          "title": "Planning bottleneck",
+          "why": "If the next task is unclear, motivation is not the first problem — task selection is.",
+          "steps": [
+            {
+              "title": "List",
+              "action": "Write every pending task without organizing it yet.",
+              "detail": "Write every task down, even small ones. Seeing the whole list removes the strain of holding it in your head."
+            },
+            {
+              "title": "Define",
+              "action": "For each important task, write the smallest next action.",
+              "detail": "Example: “solve Q1–5” instead of “study physics.”"
+            },
+            {
+              "title": "Prioritize",
+              "action": "Choose one urgent/high-value next action.",
+              "detail": "Only one starting task."
+            },
+            {
+              "title": "Time-box",
+              "action": "Give it a short block.",
+              "detail": "Give the first task a fixed short block (say 25 minutes) and stop when it ends, even if unfinished."
+            },
+            {
+              "title": "Review",
+              "action": "At the end, choose the next action before stopping.",
+              "detail": "This reduces tomorrow’s startup friction."
+            }
+          ]
+        },
+        "distraction": {
+          "title": "Environment bottleneck",
+          "why": "If the main interruption is external, changing the environment can have more leverage than trying to force concentration.",
+          "steps": [
+            {
+              "title": "Identify",
+              "action": "Name the top one distraction.",
+              "detail": "For one session, note each time you get pulled away and what pulled you."
+            },
+            {
+              "title": "Remove",
+              "action": "Change one environmental variable before starting.",
+              "detail": "Put your phone in another room and close unrelated tabs before you begin."
+            },
+            {
+              "title": "Focus block",
+              "action": "Work for a short defined block.",
+              "detail": "Work in one timed block on one task, then take a real break."
+            },
+            {
+              "title": "Log interruptions",
+              "action": "Record what still broke focus.",
+              "detail": "Keep a tally of interruptions. If it drops, the change is working."
+            },
+            {
+              "title": "Iterate",
+              "action": "Change only the biggest remaining interruption next time.",
+              "detail": "After a few days, keep what reduced distractions and drop what didn't."
+            }
+          ]
+        },
+        "internal": {
+          "title": "Attention/energy investigation",
+          "why": "When external distractions are not dominant, task size, difficulty and timing are worth testing.",
+          "steps": [
+            {
+              "title": "Check task size",
+              "action": "Reduce the task to a concrete 15–30 minute unit.",
+              "detail": "If a task feels heavy, cut it into a piece you can finish in about 20 minutes."
+            },
+            {
+              "title": "Change timing",
+              "action": "Compare a different time of day on the next session.",
+              "detail": "Try studying at a different time of day. Your energy may be better then."
+            },
+            {
+              "title": "Use active work",
+              "action": "For learning, alternate input with recall/practice.",
+              "detail": "Swap re-reading for solving questions, explaining aloud or writing from memory."
+            },
+            {
+              "title": "Record difficulty",
+              "action": "Note where you got stuck instead of simply stopping.",
+              "detail": "Note where you get stuck or bored. That is the real problem to solve."
+            },
+            {
+              "title": "Adjust",
+              "action": "Use the pattern to choose the next session format.",
+              "detail": "Change one thing (task size, time or method) and review after a few days."
+            }
+          ]
+        },
+        "recall": {
+          "title": "Retention is the next lever",
+          "why": "Being able to retrieve information without notes is a stronger test of learning than rereading alone.",
+          "steps": [
+            {
+              "title": "Close notes",
+              "action": "After a study block, put notes away.",
+              "detail": "Shut your notes and write everything you remember on a blank page."
+            },
+            {
+              "title": "Recall",
+              "action": "Write or say the key ideas from memory.",
+              "detail": "Pull the topic out of memory without looking. The effort is what strengthens it."
+            },
+            {
+              "title": "Check",
+              "action": "Compare your recall with the source.",
+              "detail": "Compare your page to the notes and mark what was missing or wrong."
+            },
+            {
+              "title": "Log gaps",
+              "action": "Record exactly what you could not recall.",
+              "detail": "Keep a running list of gaps so your next session starts there."
+            },
+            {
+              "title": "Re-test",
+              "action": "Return to those gaps later using retrieval/practice.",
+              "detail": "Test yourself again after a day or two, and again after a week."
+            }
+          ]
+        },
+        "weakrecall": {
+          "title": "Active-recall diagnosis",
+          "why": "If you cannot retrieve the material without notes, the next action should test and strengthen retrieval.",
+          "steps": [
+            {
+              "title": "Close notes",
+              "action": "Attempt recall before rereading.",
+              "detail": "Put your notes away before you test yourself."
+            },
+            {
+              "title": "Generate questions",
+              "action": "Turn the material into a few questions.",
+              "detail": "Write 5 to 10 questions about the topic that you might be asked on a test."
+            },
+            {
+              "title": "Answer",
+              "action": "Answer without looking.",
+              "detail": "Answer them from memory, then check."
+            },
+            {
+              "title": "Check gaps",
+              "action": "Mark only the missed concepts.",
+              "detail": "Mark the ones you got wrong or answered slowly. These are your real weak spots."
+            },
+            {
+              "title": "Re-test later",
+              "action": "Space the next retrieval attempt instead of immediately rereading everything.",
+              "detail": "Come back to the same questions after a few days to see whether they stuck."
+            }
+          ]
+        }
+      },
+      "evidence": ["Subject/topic","Specific task","Session length","Main interruption","What you could/could not recall"]
+    },
+    "household": {
+      "symptoms": [
+        ["visible","Something visibly looks wrong","A loose, blocked, leaking, noisy, or misaligned non-hazardous item."],
+        ["clean","Cleaning/maintenance issue","The item needs routine cleaning or care."],
+        ["usage","It works differently than expected","The behavior changed during normal use."]
+      ],
+      "questions": [
+        {
+          "q": "Could this involve electricity, gas, fire, chemicals, pressure, sharp machinery, or structural damage?",
+          "yes": "hazard",
+          "no": "safe",
+          "yl": "Yes — possible hazard",
+          "nl": "No — none that I can see"
+        },
+        {
+          "q": "Can you inspect the issue without opening, dismantling, cutting, lifting, or touching a hazardous component?",
+          "yes": "visible",
+          "no": "stop",
+          "yl": "Yes — outside only",
+          "nl": "No — would need to open or touch it"
+        },
+        {
+          "q": "Do you have the manual or the manufacturer instructions for this item?",
+          "yes": "manual",
+          "no": "nomanual",
+          "yl": "Yes — I can check them",
+          "nl": "No — I cannot find them"
+        }
+      ],
+      "branches": {
+        "hazard": {
+          "title": "Safety stop",
+          "why": "Some household problems can become dangerous when a person experiments with them.",
+          "steps": [
+            {
+              "title": "Stop",
+              "action": "Do not continue troubleshooting the hazardous component.",
+              "detail": "Do not touch, open or repair the item. Stepping away is the right move."
+            },
+            {
+              "title": "Secure",
+              "action": "Move away from the suspected hazard and follow normal emergency/safety procedures if there is immediate danger.",
+              "detail": "Keep people and pets away. Switch the item off with its normal control only if that is clearly safe. Never touch anything wet, hot or sparking."
+            },
+            {
+              "title": "Tell an adult",
+              "action": "Inform a trusted adult about the exact visible symptom.",
+              "detail": "Tell a parent, guardian or the person responsible for the home right away."
+            },
+            {
+              "title": "Professional help",
+              "action": "Use a qualified professional for inspection/repair when appropriate.",
+              "detail": "Call a licensed electrician, plumber or gas engineer. For fire, a gas smell or serious danger, call your local emergency number."
+            },
+            {
+              "title": "Record safely",
+              "action": "Only note visible, non-hazardous symptoms if it is safe to do so.",
+              "detail": "Take a photo from a safe distance and note the time and what you saw. Don't move closer for a better picture."
+            }
+          ]
+        },
+        "stop": {
+          "title": "Do not dismantle",
+          "why": "If safe observation is not possible, the correct diagnostic action is escalation rather than experimentation.",
+          "steps": [
+            {
+              "title": "Stop",
+              "action": "Do not open or dismantle the item.",
+              "detail": "If you can't check it without opening or touching something hazardous, don't continue."
+            },
+            {
+              "title": "Tell an adult",
+              "action": "Describe what happened and what you observed.",
+              "detail": "Explain to them what you saw and why you stopped."
+            },
+            {
+              "title": "Professional help",
+              "action": "Ask a qualified person to inspect it.",
+              "detail": "A qualified person should handle anything you can't inspect safely."
+            },
+            {
+              "title": "Record",
+              "action": "Keep the model/name and visible symptom if safe.",
+              "detail": "Note what you observed and when, from a safe distance."
+            }
+          ]
+        },
+        "visible": {
+          "title": "Safe visible-check workflow",
+          "why": "Only routine, non-hazardous observations are appropriate here.",
+          "steps": [
+            {
+              "title": "Observe",
+              "action": "Describe exactly what looks or behaves differently.",
+              "detail": "Look closely at the outside only. Note loose parts, blockages, marks or damage."
+            },
+            {
+              "title": "Check normal controls",
+              "action": "Use only the normal user controls/instructions for the item.",
+              "detail": "Check plug and switch position, batteries, settings and the on/off state you'd normally use."
+            },
+            {
+              "title": "Clean if documented",
+              "action": "If routine cleaning is explicitly described by the manufacturer, follow that documentation.",
+              "detail": "Clean only in the ways the manual describes, with the item off and cool."
+            },
+            {
+              "title": "Retest",
+              "action": "Use the item normally and compare.",
+              "detail": "Try the item again normally and compare with before."
+            },
+            {
+              "title": "Escalate",
+              "action": "If the issue remains or becomes unsafe, stop and involve an adult/professional.",
+              "detail": "If nothing changed, check the manual or contact the maker or a professional."
+            }
+          ]
+        },
+        "safe": {
+          "title": "Safety-first household diagnosis",
+          "why": "Before any action, rule out hazards and keep the investigation limited to normal user-level checks.",
+          "steps": [
+            {
+              "title": "Describe",
+              "action": "Record the visible symptom.",
+              "detail": "Write what's wrong, when it began and what normally happens."
+            },
+            {
+              "title": "Check instructions",
+              "action": "Use the manufacturer’s normal user guidance if available.",
+              "detail": "Find the manual or manufacturer's page and see whether your symptom is listed."
+            },
+            {
+              "title": "Try one safe action",
+              "action": "Change one normal-use variable at a time.",
+              "detail": "Pick one simple, documented action. Nothing that involves opening or dismantling."
+            },
+            {
+              "title": "Retest",
+              "action": "Compare with the original symptom.",
+              "detail": "Check whether the symptom changed."
+            },
+            {
+              "title": "Escalate",
+              "action": "Stop if anything becomes hazardous or unclear.",
+              "detail": "If nothing changes, ask a trusted adult, the maker or a professional."
+            }
+          ]
+        }
+      },
+      "evidence": ["Item/model","Visible symptom","When it started","What changed","Manufacturer/user guidance"]
+    },
+    "other": {
+      "symptoms": [
+        ["notwork","Something does not work","A device, process, object, or service is failing."],
+        ["unexpected","Unexpected result","You did something normal and got an unexpected outcome."],
+        ["recurring","Problem keeps returning","The same issue returns after temporary recovery."]
+      ],
+      "questions": [
+        {
+          "q": "Can you reproduce the problem?",
+          "yes": "repeat",
+          "no": "intermittent",
+          "yl": "Yes — I can repeat it",
+          "nl": "No — it comes and goes"
+        },
+        {
+          "q": "Did something change before it started?",
+          "yes": "change",
+          "no": "nochange",
+          "yl": "Yes — something changed",
+          "nl": "No — nothing I know of"
+        },
+        {
+          "q": "Can you safely compare with a known-good example?",
+          "yes": "compare",
+          "no": "nocompare",
+          "yl": "Yes — I have a working example",
+          "nl": "No — nothing to compare"
+        }
+      ],
+      "branches": {
+        "repeat": {
+          "title": "Reproducible problem",
+          "why": "Repeatability lets you test one variable at a time.",
+          "steps": [
+            {
+              "title": "Define",
+              "action": "Write expected vs actual result.",
+              "detail": "Describe the problem in one sentence: what you did and what happened."
+            },
+            {
+              "title": "Reproduce",
+              "action": "Find the smallest sequence that causes the issue.",
+              "detail": "Find the smallest sequence of actions that causes it each time."
+            },
+            {
+              "title": "Change one thing",
+              "action": "Make one safe, reversible change.",
+              "detail": "Change only one thing, so you know what made the difference."
+            },
+            {
+              "title": "Retest",
+              "action": "Compare with the original behavior.",
+              "detail": "Do exactly the same action again and compare."
+            },
+            {
+              "title": "Document",
+              "action": "Keep the successful/failed test results.",
+              "detail": "Write down what you tried and what happened so you don't repeat it."
+            }
+          ]
+        },
+        "intermittent": {
+          "title": "Intermittent problem",
+          "why": "A log turns an unpredictable issue into a pattern you can investigate.",
+          "steps": [
+            {
+              "title": "Log",
+              "action": "Record time, context, action and symptom every time.",
+              "detail": "Note the date, time and what was happening each time."
+            },
+            {
+              "title": "Compare",
+              "action": "After several incidents, look for repeated conditions.",
+              "detail": "Look at your log: what do the incidents have in common?"
+            },
+            {
+              "title": "Test one hypothesis",
+              "action": "Change one safe variable.",
+              "detail": "Pick one likely cause and test only that."
+            },
+            {
+              "title": "Record result",
+              "action": "Write what changed.",
+              "detail": "Write down whether the test changed anything."
+            },
+            {
+              "title": "Escalate",
+              "action": "Use the evidence if specialist help is needed.",
+              "detail": "Share your log with whoever supports this."
+            }
+          ]
+        },
+        "change": {
+          "title": "Recent-change investigation",
+          "why": "A clear timeline gives you a testable hypothesis.",
+          "steps": [
+            {
+              "title": "Identify",
+              "action": "Write what changed immediately before the issue.",
+              "detail": "Think back to what changed before it began: a setting, a place, a person, a product?"
+            },
+            {
+              "title": "Compare",
+              "action": "Check whether the issue existed before that change.",
+              "detail": "Compare how it worked before with how it works now."
+            },
+            {
+              "title": "Undo safely",
+              "action": "If there is an obvious normal-user undo path, use it.",
+              "detail": "Reverse the change only if it can be undone easily and safely."
+            },
+            {
+              "title": "Retest",
+              "action": "Repeat the original action.",
+              "detail": "Repeat the original action and compare."
+            },
+            {
+              "title": "Document",
+              "action": "Keep the before/after evidence.",
+              "detail": "Note what changed and whether undoing it helped."
+            }
+          ]
+        },
+        "nochange": {
+          "title": "Baseline investigation",
+          "why": "Without a known change, scope and reproduction are the best starting points.",
+          "steps": [
+            {
+              "title": "Define",
+              "action": "Write the exact symptom.",
+              "detail": "State the problem and give one real example."
+            },
+            {
+              "title": "Reproduce",
+              "action": "Find a repeatable example if possible.",
+              "detail": "Find a repeatable trigger."
+            },
+            {
+              "title": "Compare",
+              "action": "Use a known-good example if safely available.",
+              "detail": "Compare with a working example if you can find one."
+            },
+            {
+              "title": "Change one variable",
+              "action": "Test one safe possibility.",
+              "detail": "Change one variable, retest and write down the result."
+            },
+            {
+              "title": "Document",
+              "action": "Keep what worked and what did not.",
+              "detail": "Keep notes so anyone helping you can see your tests."
+            }
+          ]
+        },
+        "compare": {
+          "title": "Known-good comparison",
+          "why": "A controlled comparison can reveal which variable differs.",
+          "steps": [
+            {
+              "title": "List variables",
+              "action": "Write what differs between working and failing cases.",
+              "detail": "List the differences between the working and non-working case: settings, place, version, timing, person."
+            },
+            {
+              "title": "Choose one",
+              "action": "Pick one safe variable to test.",
+              "detail": "Choose the difference you suspect most."
+            },
+            {
+              "title": "Retest",
+              "action": "Make only that change.",
+              "detail": "Make the two match on that one point and test again."
+            },
+            {
+              "title": "Record",
+              "action": "Note whether the symptom changes.",
+              "detail": "Write down what happened."
+            },
+            {
+              "title": "Repeat carefully",
+              "action": "Test the next variable only if needed.",
+              "detail": "Repeat with the next difference, changing only one thing each time."
+            }
+          ]
+        },
+        "nocompare": {
+          "title": "Evidence-first diagnosis",
+          "why": "Without a known-good comparison, build a reliable description before changing things.",
+          "steps": [
+            {
+              "title": "Define",
+              "action": "Write expected vs actual.",
+              "detail": "Say what you expected and what you got."
+            },
+            {
+              "title": "Reproduce",
+              "action": "Try to create the symptom again.",
+              "detail": "Find a way to trigger it deliberately."
+            },
+            {
+              "title": "Log",
+              "action": "Record time, context and exact behavior.",
+              "detail": "Log the time and conditions each time it happens."
+            },
+            {
+              "title": "Change one safe variable",
+              "action": "Test only one hypothesis.",
+              "detail": "Change one safe thing and test."
+            },
+            {
+              "title": "Escalate",
+              "action": "Use the evidence when asking for help.",
+              "detail": "Share your log and tests with the person or service that can help."
+            }
+          ]
+        }
+      },
+      "evidence": ["Expected result","Actual result","When it started","Recent changes","Reproduction steps","Known-good comparison"]
+    }
+  }
+}
