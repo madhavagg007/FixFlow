@@ -1,7 +1,10 @@
 /* Start-up. */
 initTheme();
-{const v=viewFromHash();if(v!=='home'&&v!=='case')go(v,{fromHistory:true,silent:true})}
-
+if(location.hash.startsWith('#/shared/')){
+ openSharedCase(location.hash.slice('#/shared/'.length));
+}else{
+ const v=viewFromHash();if(v!=='home'&&v!=='case')go(v,{fromHistory:true,silent:true});
+}
 renderHome();
 
 /* Photos: move any legacy inline images into IndexedDB, then clean up photos no case uses. */

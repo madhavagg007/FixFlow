@@ -43,7 +43,10 @@ window.addEventListener('error', function(e){ console.error('FixFlow error:', e.
 window.addEventListener('storage',e=>{if(e.key===KEY){state=load();renderHome()}});
 
 /* ---- Back/forward buttons and deep links ---- */
-window.addEventListener('popstate',()=>{let v=viewFromHash();if(v==='case'&&!current)v='home';go(v,{fromHistory:true})});
+window.addEventListener('popstate',()=>{
+ if(location.hash.startsWith('#/shared/')){openSharedCase(location.hash.slice('#/shared/'.length));return}
+ let v=viewFromHash();if(v==='case'&&!current)v='home';go(v,{fromHistory:true});
+});
 
 /* ---- Autosave drafts while typing, so a reload or closed tab never loses the case ---- */
 let draftTimer=null;
