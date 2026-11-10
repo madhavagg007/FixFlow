@@ -13,7 +13,9 @@ Most troubleshooting advice is a pile of random fixes. Changing five things at o
 
 ## Features
 
-- **Guided diagnosis** across 7 categories (Internet/Wi-Fi, Phone/Computer, Apps/Software, Website, Study/Productivity, Household, Other). 3 to 4 questions route each problem to one of 6 to 8 tailored action plans.
+- **Guided diagnosis** across 9 categories (Internet/Wi-Fi, Phone/Computer, Apps/Software, Website, Study/Productivity, Household, Printer, Smart Home, Other). 3 to 4 questions route each problem to one of 5 to 8 tailored action plans.
+- **Dynamic questioning**: some follow-up questions only appear once an earlier answer makes them relevant (for example, Printer only asks whether an error is paper-specific once you've said there is an error at all). The question list, and its numbering, updates live as you answer — and a stale answer to a question that's no longer showing is cleared automatically so it can never affect the result.
+- **Repair log sharing**: share a case as a link (`#/shared/...`) with no server and no login — the whole read-only report is encoded into the link itself. Anyone who opens it sees the problem, route, steps, evidence and outcome, and can import it as their own case with one tap. Uses the Web Share sheet on mobile where available, otherwise copies the link.
 - **Action plans with a reason for every step**: each step explains what to do and why, and you mark it as helped, no change, or worse.
 - **Evidence checklist**: fill in device, location, timing, exact error and more. It flows into the support summary.
 - **Incident log**: one-tap timestamps each time the problem happens, so patterns show up.
@@ -105,13 +107,14 @@ A new branch needs a `title` and at least 3 steps, each with a `title`, an `acti
 ## Testing
 
 ```bash
-npm test             # 49 unit tests, no dependencies (Node 20+)
-npm run test:e2e     # 70 browser checks in real Chromium (pip install playwright && playwright install chromium)
+npm test             # 68 unit tests, no dependencies (Node 20+)
+npm run test:e2e     # 88 browser checks in real Chromium (pip install playwright && playwright install chromium)
 ```
 
 The unit tests cover:
 - **Data integrity**: every category, question, branch and step is complete, and every answer button has a label.
-- **Routing**: every answer combination reaches a real branch, every branch is reachable, plus scenario tests that document the intended logic. A possible household hazard always wins.
+- **Routing**: every answer combination reaches a real branch, every branch is reachable, plus scenario tests that document the intended logic. A possible household hazard always wins. Dynamic (conditional) questions are tested separately: hidden until their trigger answer, required once shown, and never required when hidden.
+- **Sharing**: share links round-trip through encoding and decoding (including Unicode), a tampered or garbage link decodes to `null` instead of throwing, and the rendered report escapes user text so a hostile title or note can never execute.
 - **Case hygiene**: `normalizeCase` is tested with hostile and broken input (script-injection ids, wrong types, fake image data) because imported backups are untrusted.
 - **Merging, filtering, stats and the support summary.**
 - **Packaging**: the service worker caches every file the page loads, the manifest is installable, and generated files are up to date.
@@ -123,6 +126,7 @@ CI (`.github/workflows/ci.yml`) runs both suites on every push and pull request.
 ## Roadmap
 
 - Hindi and other languages (a translation layer for the UI and playbooks)
+- More categories, and deeper dynamic question trees within existing ones
 - Optional AI-assisted intake, with the rule-based playbooks staying as the safe default
 
 ## Disclaimer

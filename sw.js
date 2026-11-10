@@ -1,6 +1,6 @@
 /* FixFlow service worker: offline-first app shell.
    Bump VERSION whenever any cached file changes so installed copies update. */
-const VERSION = 'v3.3.0';
+const VERSION = 'v4.0.0';
 const CACHE = 'fixflow-' + VERSION;
 const SHELL = [
   './',

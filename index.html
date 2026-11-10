@@ -62,11 +62,15 @@
   <div class="card" style="margin-top:16px"><h3>What FixFlow is learning from your usage</h3><p class="muted">This first version keeps data on this device. It tracks cases, categories, outcomes and step completion — not personal identity.</p><div id="categoryBreakdown"></div></div>
   <div class="card" style="margin-top:16px"><h3>Backup</h3><p class="muted">Export your local data so you can keep a copy or move it later.</p><div class="actions"><button class="btn primary" onclick="exportData()">Export JSON</button><button class="btn" onclick="document.getElementById('importFile').click()">Import JSON</button><input id="importFile" aria-label="Import a FixFlow backup file" type="file" accept="application/json" hidden onchange="importData(event)"></div></div>
 </section>
+
+<section id="shared" class="view">
+  <div class="card" id="sharedBody"></div>
+</section>
 </main>
 <dialog id="imgDlg"><img id="imgDlgImg" alt="Attachment preview"><form method="dialog"><button class="btn primary">Close</button></form></dialog>
 <dialog id="dlg"><form method="dialog"><b id="dlgTitle"></b><div id="dlgBody" style="margin:12px 0"></div><div class="actions" style="margin-top:0"><button class="btn primary" value="ok">OK</button><button class="btn" value="cancel">Cancel</button></div></form></dialog>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
-<footer>FixFlow V3.3 • Reliable navigation • Guided diagnostics • Evidence tracking <span id="netBadge" class="net-badge" hidden>Offline: your cases are safe on this device</span> <button type="button" id="installBtn" class="btn" hidden onclick="installApp()">Install app</button></footer>
+<footer>FixFlow V4.0 • Reliable navigation • Guided diagnostics • Evidence tracking <span id="netBadge" class="net-badge" hidden>Offline: your cases are safe on this device</span> <button type="button" id="installBtn" class="btn" hidden onclick="installApp()">Install app</button></footer>
 </div>
 
 <script src="js/data.js"></script>

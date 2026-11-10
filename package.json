@@ -1,6 +1,6 @@
 {
   "name": "fixflow",
-  "version": "3.3.0",
+  "version": "4.0.0",
   "private": true,
   "description": "Offline-first troubleshooting assistant: guided diagnosis, action plans, evidence tracking.",
   "scripts": {
