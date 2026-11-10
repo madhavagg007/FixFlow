@@ -38,6 +38,18 @@
       "depth": "Safe visible checks only"
     },
     {
+      "id": "printer",
+      "name": "Printer",
+      "icon": "▤",
+      "depth": "Print & peripheral diagnosis"
+    },
+    {
+      "id": "smarthome",
+      "name": "Smart Home",
+      "icon": "⬡",
+      "depth": "IoT / connected device diagnosis"
+    },
+    {
       "id": "other",
       "name": "Other",
       "icon": "?",
@@ -46,91 +58,407 @@
   ],
   "commonProblems": {
     "internet": [
-      ["wifi-disconnects","Wi-Fi keeps disconnecting","Drops repeatedly, reconnects, then drops again."],
-      ["wifi-slow","Wi-Fi is very slow","Browsing, streaming or downloads are much slower than expected."],
-      ["wifi-nointernet","Connected to Wi-Fi but no internet","The device says it is connected, but websites/services do not load."],
-      ["wifi-one-device","Wi-Fi works on other devices but not mine","Only one phone/computer appears affected."],
-      ["wifi-range","Wi-Fi is weak in one room","Connection becomes unreliable farther from the router."],
-      ["wifi-newdevice","New device cannot connect","A newly connected phone/computer cannot join normally."],
-      ["wifi-password","Wi-Fi password is rejected","The network is visible but the password/connection fails."],
-      ["wifi-intermittent","Internet works, then stops randomly","The connection alternates between normal and unusable."],
-      ["wifi-other","Other Wi-Fi problem","Something else is wrong with the connection."]
+      [
+        "wifi-disconnects",
+        "Wi-Fi keeps disconnecting",
+        "Drops repeatedly, reconnects, then drops again."
+      ],
+      [
+        "wifi-slow",
+        "Wi-Fi is very slow",
+        "Browsing, streaming or downloads are much slower than expected."
+      ],
+      [
+        "wifi-nointernet",
+        "Connected to Wi-Fi but no internet",
+        "The device says it is connected, but websites/services do not load."
+      ],
+      [
+        "wifi-one-device",
+        "Wi-Fi works on other devices but not mine",
+        "Only one phone/computer appears affected."
+      ],
+      [
+        "wifi-range",
+        "Wi-Fi is weak in one room",
+        "Connection becomes unreliable farther from the router."
+      ],
+      [
+        "wifi-newdevice",
+        "New device cannot connect",
+        "A newly connected phone/computer cannot join normally."
+      ],
+      [
+        "wifi-password",
+        "Wi-Fi password is rejected",
+        "The network is visible but the password/connection fails."
+      ],
+      [
+        "wifi-intermittent",
+        "Internet works, then stops randomly",
+        "The connection alternates between normal and unusable."
+      ],
+      [
+        "wifi-other",
+        "Other Wi-Fi problem",
+        "Something else is wrong with the connection."
+      ]
     ],
     "device": [
-      ["phone-slow","Phone/computer is slow","Apps or normal actions take unusually long."],
-      ["phone-freeze","Device freezes or becomes unresponsive","The screen or system stops responding normally."],
-      ["phone-restart","Device restarts unexpectedly","It restarts or shuts down without you intentionally doing so."],
-      ["phone-battery","Battery drains unusually fast","Battery life is noticeably worse than your normal baseline."],
-      ["phone-storage","Storage is almost full","The device reports low or nearly full storage."],
-      ["phone-overheat","Device gets unusually warm","It becomes warmer than expected during ordinary use."],
-      ["phone-appcrash","Apps keep crashing","One or several apps repeatedly close or freeze."],
-      ["phone-update","Problem started after an update","The issue appeared after a system/app update."],
-      ["phone-camera","Camera/mic/speaker is not working","A built-in hardware feature behaves unexpectedly."],
-      ["phone-other","Other phone/computer problem","Something else is wrong with the device."]
+      [
+        "phone-slow",
+        "Phone/computer is slow",
+        "Apps or normal actions take unusually long."
+      ],
+      [
+        "phone-freeze",
+        "Device freezes or becomes unresponsive",
+        "The screen or system stops responding normally."
+      ],
+      [
+        "phone-restart",
+        "Device restarts unexpectedly",
+        "It restarts or shuts down without you intentionally doing so."
+      ],
+      [
+        "phone-battery",
+        "Battery drains unusually fast",
+        "Battery life is noticeably worse than your normal baseline."
+      ],
+      [
+        "phone-storage",
+        "Storage is almost full",
+        "The device reports low or nearly full storage."
+      ],
+      [
+        "phone-overheat",
+        "Device gets unusually warm",
+        "It becomes warmer than expected during ordinary use."
+      ],
+      [
+        "phone-appcrash",
+        "Apps keep crashing",
+        "One or several apps repeatedly close or freeze."
+      ],
+      [
+        "phone-update",
+        "Problem started after an update",
+        "The issue appeared after a system/app update."
+      ],
+      [
+        "phone-camera",
+        "Camera/mic/speaker is not working",
+        "A built-in hardware feature behaves unexpectedly."
+      ],
+      [
+        "phone-other",
+        "Other phone/computer problem",
+        "Something else is wrong with the device."
+      ]
     ],
     "software": [
-      ["app-crash","An app keeps crashing","The app closes or freezes repeatedly."],
-      ["app-error","An app shows an error","A visible message/code appears."],
-      ["app-login","Cannot log in","Sign-in fails even though the account should work."],
-      ["app-slow","An app is very slow","The app responds much more slowly than usual."],
-      ["app-feature","One feature is not working","A specific button, screen or function fails."],
-      ["app-install","Cannot install/update an app","Installation or updating does not complete normally."],
-      ["app-file","File will not open/work","A document, image, project or other file behaves unexpectedly."],
-      ["app-sync","Data is not syncing","Changes do not appear across devices/services."],
-      ["app-other","Other app/software problem","Something else is wrong with software."]
+      [
+        "app-crash",
+        "An app keeps crashing",
+        "The app closes or freezes repeatedly."
+      ],
+      [
+        "app-error",
+        "An app shows an error",
+        "A visible message/code appears."
+      ],
+      [
+        "app-login",
+        "Cannot log in",
+        "Sign-in fails even though the account should work."
+      ],
+      [
+        "app-slow",
+        "An app is very slow",
+        "The app responds much more slowly than usual."
+      ],
+      [
+        "app-feature",
+        "One feature is not working",
+        "A specific button, screen or function fails."
+      ],
+      [
+        "app-install",
+        "Cannot install/update an app",
+        "Installation or updating does not complete normally."
+      ],
+      [
+        "app-file",
+        "File will not open/work",
+        "A document, image, project or other file behaves unexpectedly."
+      ],
+      [
+        "app-sync",
+        "Data is not syncing",
+        "Changes do not appear across devices/services."
+      ],
+      [
+        "app-other",
+        "Other app/software problem",
+        "Something else is wrong with software."
+      ]
     ],
     "website": [
-      ["web-notload","Website will not load","The page fails to open or keeps loading."],
-      ["web-slow","Website is very slow","Pages or actions take unusually long."],
-      ["web-login","Website login fails","Sign-in does not work as expected."],
-      ["web-form","Form/button does not work","A submission, button, upload or action fails."],
-      ["web-broken","Website looks broken","Images, layout, text or controls appear incorrect."],
-      ["web-error","Website shows an error","A server/browser/error message appears."],
-      ["web-mobile","Website works on PC but not phone","The same site behaves differently by device."],
-      ["web-browser","Website works in one browser only","Another browser behaves differently."],
-      ["web-other","Other website problem","Something else is wrong with a website."]
+      [
+        "web-notload",
+        "Website will not load",
+        "The page fails to open or keeps loading."
+      ],
+      [
+        "web-slow",
+        "Website is very slow",
+        "Pages or actions take unusually long."
+      ],
+      [
+        "web-login",
+        "Website login fails",
+        "Sign-in does not work as expected."
+      ],
+      [
+        "web-form",
+        "Form/button does not work",
+        "A submission, button, upload or action fails."
+      ],
+      [
+        "web-broken",
+        "Website looks broken",
+        "Images, layout, text or controls appear incorrect."
+      ],
+      [
+        "web-error",
+        "Website shows an error",
+        "A server/browser/error message appears."
+      ],
+      [
+        "web-mobile",
+        "Website works on PC but not phone",
+        "The same site behaves differently by device."
+      ],
+      [
+        "web-browser",
+        "Website works in one browser only",
+        "Another browser behaves differently."
+      ],
+      [
+        "web-other",
+        "Other website problem",
+        "Something else is wrong with a website."
+      ]
     ],
     "study": [
-      ["study-start","I cannot start studying","I keep delaying even when I know what to do."],
-      ["study-focus","I lose focus quickly","I start but repeatedly switch tasks or get distracted."],
-      ["study-plan","I do not know what to study first","Too many tasks and no clear priority."],
-      ["study-forget","I forget what I studied","Recall is weak after studying."],
-      ["study-backlog","My backlog keeps growing","Work accumulates faster than I can complete it."],
-      ["study-consistency","I cannot stay consistent","Good days are followed by long gaps."],
-      ["study-mistakes","I keep making the same mistakes","Errors repeat even after reviewing."],
-      ["study-test","My test performance is lower than preparation","I study but performance does not match preparation."],
-      ["study-time","I spend too much time on one topic","A chapter/question set takes much longer than planned."],
-      ["study-other","Other study/productivity problem","Something else is blocking progress."]
+      [
+        "study-start",
+        "I cannot start studying",
+        "I keep delaying even when I know what to do."
+      ],
+      [
+        "study-focus",
+        "I lose focus quickly",
+        "I start but repeatedly switch tasks or get distracted."
+      ],
+      [
+        "study-plan",
+        "I do not know what to study first",
+        "Too many tasks and no clear priority."
+      ],
+      [
+        "study-forget",
+        "I forget what I studied",
+        "Recall is weak after studying."
+      ],
+      [
+        "study-backlog",
+        "My backlog keeps growing",
+        "Work accumulates faster than I can complete it."
+      ],
+      [
+        "study-consistency",
+        "I cannot stay consistent",
+        "Good days are followed by long gaps."
+      ],
+      [
+        "study-mistakes",
+        "I keep making the same mistakes",
+        "Errors repeat even after reviewing."
+      ],
+      [
+        "study-test",
+        "My test performance is lower than preparation",
+        "I study but performance does not match preparation."
+      ],
+      [
+        "study-time",
+        "I spend too much time on one topic",
+        "A chapter/question set takes much longer than planned."
+      ],
+      [
+        "study-other",
+        "Other study/productivity problem",
+        "Something else is blocking progress."
+      ]
     ],
     "household": [
-      ["home-leak","There is a visible leak","Water/moisture is appearing where it normally should not."],
-      ["home-noise","An appliance/object is making an unusual noise","The sound is different from normal operation."],
-      ["home-notwork","A household item is not working normally","Normal operation has changed."],
-      ["home-clean","A routine cleaning/maintenance problem","Something needs ordinary user-level cleaning or care."],
-      ["home-door","A door/drawer/cabinet is not behaving normally","It sticks, does not close, or behaves differently."],
-      ["home-light","A light/device is behaving unexpectedly","A visible household electrical symptom is present."],
-      ["home-odor","There is an unusual smell","A new or unexpected odor is noticeable."],
-      ["home-other","Other household problem","Something else is wrong."]
+      [
+        "home-leak",
+        "There is a visible leak",
+        "Water/moisture is appearing where it normally should not."
+      ],
+      [
+        "home-noise",
+        "An appliance/object is making an unusual noise",
+        "The sound is different from normal operation."
+      ],
+      [
+        "home-notwork",
+        "A household item is not working normally",
+        "Normal operation has changed."
+      ],
+      [
+        "home-clean",
+        "A routine cleaning/maintenance problem",
+        "Something needs ordinary user-level cleaning or care."
+      ],
+      [
+        "home-door",
+        "A door/drawer/cabinet is not behaving normally",
+        "It sticks, does not close, or behaves differently."
+      ],
+      [
+        "home-light",
+        "A light/device is behaving unexpectedly",
+        "A visible household electrical symptom is present."
+      ],
+      [
+        "home-odor",
+        "There is an unusual smell",
+        "A new or unexpected odor is noticeable."
+      ],
+      [
+        "home-other",
+        "Other household problem",
+        "Something else is wrong."
+      ]
     ],
     "other": [
-      ["other-notwork","Something does not work","A device, process, object or service is failing."],
-      ["other-slow","Something is unusually slow","An action takes much longer than expected."],
-      ["other-error","I am getting an error","A message or unexpected response appears."],
-      ["other-repeating","The same problem keeps returning","Temporary fixes do not last."],
-      ["other-change","Something changed unexpectedly","The result changed from the normal behavior."],
-      ["other-unknown","I do not know what is wrong","The symptom is unclear and needs structured diagnosis."],
-      ["other-compare","It works for someone else but not me","A known-good comparison exists."],
-      ["other-other","Other problem","None of the listed problems fit."]
+      [
+        "other-notwork",
+        "Something does not work",
+        "A device, process, object or service is failing."
+      ],
+      [
+        "other-slow",
+        "Something is unusually slow",
+        "An action takes much longer than expected."
+      ],
+      [
+        "other-error",
+        "I am getting an error",
+        "A message or unexpected response appears."
+      ],
+      [
+        "other-repeating",
+        "The same problem keeps returning",
+        "Temporary fixes do not last."
+      ],
+      [
+        "other-change",
+        "Something changed unexpectedly",
+        "The result changed from the normal behavior."
+      ],
+      [
+        "other-unknown",
+        "I do not know what is wrong",
+        "The symptom is unclear and needs structured diagnosis."
+      ],
+      [
+        "other-compare",
+        "It works for someone else but not me",
+        "A known-good comparison exists."
+      ],
+      [
+        "other-other",
+        "Other problem",
+        "None of the listed problems fit."
+      ]
+    ],
+    "printer": [
+      [
+        "wont-print",
+        "Printer won't print",
+        "Nothing happens when a print job is sent."
+      ],
+      [
+        "poor-quality",
+        "Print quality is poor",
+        "Streaks, faded text, or wrong colors."
+      ],
+      [
+        "jam",
+        "Paper jams or misfeeds",
+        "Paper gets stuck or feeds incorrectly."
+      ],
+      [
+        "offline",
+        "Printer shows offline",
+        "The computer or app says the printer is offline or unreachable."
+      ]
+    ],
+    "smarthome": [
+      [
+        "unresponsive",
+        "Device won't respond",
+        "The app or voice assistant cannot control it."
+      ],
+      [
+        "offline",
+        "Device shows offline",
+        "The app says the device is unreachable."
+      ],
+      [
+        "voice-fail",
+        "Voice commands fail",
+        "The voice assistant does not recognize or control the device."
+      ],
+      [
+        "automation",
+        "Automations or schedules not running",
+        "Scheduled actions do not trigger."
+      ]
     ]
   },
   "playbooks": {
     "internet": {
       "symptoms": [
-        ["slow","Internet is slow","Pages/videos take too long to load."],
-        ["drop","Connection keeps dropping","Wi-Fi disconnects or stops working intermittently."],
-        ["none","No internet","Connected to Wi-Fi but nothing loads."],
-        ["one","Only one device has the problem","Other devices work normally."],
-        ["range","Weak signal in some areas","Connection is much worse farther from the router."]
+        [
+          "slow",
+          "Internet is slow",
+          "Pages/videos take too long to load."
+        ],
+        [
+          "drop",
+          "Connection keeps dropping",
+          "Wi-Fi disconnects or stops working intermittently."
+        ],
+        [
+          "none",
+          "No internet",
+          "Connected to Wi-Fi but nothing loads."
+        ],
+        [
+          "one",
+          "Only one device has the problem",
+          "Other devices work normally."
+        ],
+        [
+          "range",
+          "Weak signal in some areas",
+          "Connection is much worse farther from the router."
+        ]
       ],
       "questions": [
         {
@@ -387,15 +715,41 @@
           ]
         }
       },
-      "evidence": ["Affected device(s)","Location","Time of occurrence","Exact symptom/error","What changed immediately before it started"]
+      "evidence": [
+        "Affected device(s)",
+        "Location",
+        "Time of occurrence",
+        "Exact symptom/error",
+        "What changed immediately before it started"
+      ]
     },
     "device": {
       "symptoms": [
-        ["slow","Device feels slow","Apps open slowly or actions lag."],
-        ["crash","Apps crash/freeze","One or more apps close, freeze or become unresponsive."],
-        ["battery","Battery drains unusually fast","Battery falls faster than your normal baseline."],
-        ["storage","Storage is nearly full","The device reports low storage."],
-        ["restart","Device restarts/shuts down unexpectedly","The device restarts without you intentionally doing it."]
+        [
+          "slow",
+          "Device feels slow",
+          "Apps open slowly or actions lag."
+        ],
+        [
+          "crash",
+          "Apps crash/freeze",
+          "One or more apps close, freeze or become unresponsive."
+        ],
+        [
+          "battery",
+          "Battery drains unusually fast",
+          "Battery falls faster than your normal baseline."
+        ],
+        [
+          "storage",
+          "Storage is nearly full",
+          "The device reports low storage."
+        ],
+        [
+          "restart",
+          "Device restarts/shuts down unexpectedly",
+          "The device restarts without you intentionally doing it."
+        ]
       ],
       "questions": [
         {
@@ -608,15 +962,41 @@
           ]
         }
       },
-      "evidence": ["Device model/OS","Affected app or feature","Exact error","Recent changes","Frequency and timing"]
+      "evidence": [
+        "Device model/OS",
+        "Affected app or feature",
+        "Exact error",
+        "Recent changes",
+        "Frequency and timing"
+      ]
     },
     "software": {
       "symptoms": [
-        ["crash","App crashes","The program closes unexpectedly."],
-        ["error","Error message","A visible error appears."],
-        ["slow","Software is slow","Actions take much longer than expected."],
-        ["data","Data/file issue","A file is missing, wrong, or cannot be opened."],
-        ["login","Login/account issue","Sign-in or account behavior is failing."]
+        [
+          "crash",
+          "App crashes",
+          "The program closes unexpectedly."
+        ],
+        [
+          "error",
+          "Error message",
+          "A visible error appears."
+        ],
+        [
+          "slow",
+          "Software is slow",
+          "Actions take much longer than expected."
+        ],
+        [
+          "data",
+          "Data/file issue",
+          "A file is missing, wrong, or cannot be opened."
+        ],
+        [
+          "login",
+          "Login/account issue",
+          "Sign-in or account behavior is failing."
+        ]
       ],
       "questions": [
         {
@@ -836,15 +1216,41 @@
           ]
         }
       },
-      "evidence": ["Software/app name + version","Platform","Exact error","Reproduction steps","Input/file/account context"]
+      "evidence": [
+        "Software/app name + version",
+        "Platform",
+        "Exact error",
+        "Reproduction steps",
+        "Input/file/account context"
+      ]
     },
     "website": {
       "symptoms": [
-        ["down","Website does not load","The page fails to load at all."],
-        ["broken","Page loads incorrectly","Layout, buttons, images or content are broken."],
-        ["login","Login fails","Sign-in does not work as expected."],
-        ["slow","Website is very slow","Pages or actions take unusually long."],
-        ["form","Form/action fails","A button, upload, or form submission does not work."]
+        [
+          "down",
+          "Website does not load",
+          "The page fails to load at all."
+        ],
+        [
+          "broken",
+          "Page loads incorrectly",
+          "Layout, buttons, images or content are broken."
+        ],
+        [
+          "login",
+          "Login fails",
+          "Sign-in does not work as expected."
+        ],
+        [
+          "slow",
+          "Website is very slow",
+          "Pages or actions take unusually long."
+        ],
+        [
+          "form",
+          "Form/action fails",
+          "A button, upload, or form submission does not work."
+        ]
       ],
       "questions": [
         {
@@ -1057,15 +1463,42 @@
           ]
         }
       },
-      "evidence": ["URL/page","Browser + version","Device","Network","Exact error/behavior","Timestamp"]
+      "evidence": [
+        "URL/page",
+        "Browser + version",
+        "Device",
+        "Network",
+        "Exact error/behavior",
+        "Timestamp"
+      ]
     },
     "study": {
       "symptoms": [
-        ["start","I cannot start","I know I should study but keep delaying."],
-        ["focus","I lose focus","I start but repeatedly switch tasks."],
-        ["retention","I forget quickly","I study but cannot recall later."],
-        ["planning","I do not know what to study","I have too much work and no clear priority."],
-        ["consistency","I cannot stay consistent","Some days go well, then the routine collapses."]
+        [
+          "start",
+          "I cannot start",
+          "I know I should study but keep delaying."
+        ],
+        [
+          "focus",
+          "I lose focus",
+          "I start but repeatedly switch tasks."
+        ],
+        [
+          "retention",
+          "I forget quickly",
+          "I study but cannot recall later."
+        ],
+        [
+          "planning",
+          "I do not know what to study",
+          "I have too much work and no clear priority."
+        ],
+        [
+          "consistency",
+          "I cannot stay consistent",
+          "Some days go well, then the routine collapses."
+        ]
       ],
       "questions": [
         {
@@ -1278,13 +1711,31 @@
           ]
         }
       },
-      "evidence": ["Subject/topic","Specific task","Session length","Main interruption","What you could/could not recall"]
+      "evidence": [
+        "Subject/topic",
+        "Specific task",
+        "Session length",
+        "Main interruption",
+        "What you could/could not recall"
+      ]
     },
     "household": {
       "symptoms": [
-        ["visible","Something visibly looks wrong","A loose, blocked, leaking, noisy, or misaligned non-hazardous item."],
-        ["clean","Cleaning/maintenance issue","The item needs routine cleaning or care."],
-        ["usage","It works differently than expected","The behavior changed during normal use."]
+        [
+          "visible",
+          "Something visibly looks wrong",
+          "A loose, blocked, leaking, noisy, or misaligned non-hazardous item."
+        ],
+        [
+          "clean",
+          "Cleaning/maintenance issue",
+          "The item needs routine cleaning or care."
+        ],
+        [
+          "usage",
+          "It works differently than expected",
+          "The behavior changed during normal use."
+        ]
       ],
       "questions": [
         {
@@ -1430,13 +1881,31 @@
           ]
         }
       },
-      "evidence": ["Item/model","Visible symptom","When it started","What changed","Manufacturer/user guidance"]
+      "evidence": [
+        "Item/model",
+        "Visible symptom",
+        "When it started",
+        "What changed",
+        "Manufacturer/user guidance"
+      ]
     },
     "other": {
       "symptoms": [
-        ["notwork","Something does not work","A device, process, object, or service is failing."],
-        ["unexpected","Unexpected result","You did something normal and got an unexpected outcome."],
-        ["recurring","Problem keeps returning","The same issue returns after temporary recovery."]
+        [
+          "notwork",
+          "Something does not work",
+          "A device, process, object, or service is failing."
+        ],
+        [
+          "unexpected",
+          "Unexpected result",
+          "You did something normal and got an unexpected outcome."
+        ],
+        [
+          "recurring",
+          "Problem keeps returning",
+          "The same issue returns after temporary recovery."
+        ]
       ],
       "questions": [
         {
@@ -1649,7 +2118,448 @@
           ]
         }
       },
-      "evidence": ["Expected result","Actual result","When it started","Recent changes","Reproduction steps","Known-good comparison"]
+      "evidence": [
+        "Expected result",
+        "Actual result",
+        "When it started",
+        "Recent changes",
+        "Reproduction steps",
+        "Known-good comparison"
+      ]
+    },
+    "printer": {
+      "questions": [
+        {
+          "q": "Does printing work from a different app or document?",
+          "yes": "other-works",
+          "no": "nothing-works",
+          "yl": "Yes — works from other apps",
+          "nl": "No — fails everywhere"
+        },
+        {
+          "q": "Is there an error light, code, or on-screen message on the printer itself?",
+          "yes": "error",
+          "no": "noerror",
+          "yl": "Yes — an error is shown",
+          "nl": "No — no error shown"
+        },
+        {
+          "q": "Did this start after a new install, update, or cable/network change?",
+          "yes": "afterchange",
+          "no": "noafterchange",
+          "yl": "Yes — after a change",
+          "nl": "No — nothing changed"
+        },
+        {
+          "q": "Is the error specifically about paper (a jam or an empty tray) rather than ink or a connection?",
+          "yes": "paper-error",
+          "no": "other-error",
+          "yl": "Yes — a paper problem",
+          "nl": "No — ink or connection",
+          "showIf": {
+            "idx": 1,
+            "eq": "error"
+          }
+        }
+      ],
+      "symptoms": [
+        [
+          "wont-print",
+          "Printer won't print",
+          "Nothing happens when a print job is sent."
+        ],
+        [
+          "poor-quality",
+          "Print quality is poor",
+          "Streaks, faded text, or wrong colors."
+        ],
+        [
+          "jam",
+          "Paper jams or misfeeds",
+          "Paper gets stuck or feeds incorrectly."
+        ]
+      ],
+      "evidence": [
+        "Printer make/model",
+        "Error code or light pattern",
+        "Connection type (USB/Wi-Fi)",
+        "What changed immediately before it started",
+        "Exact document/app affected"
+      ],
+      "branches": {
+        "paper": {
+          "title": "Paper path problem",
+          "why": "An error pointing at paper means the path itself is the issue, not drivers or network settings.",
+          "steps": [
+            {
+              "title": "Clear the path",
+              "action": "Open every access panel and remove all paper, including small torn pieces.",
+              "detail": "Torn fragments left behind cause the same jam to repeat."
+            },
+            {
+              "title": "Check the tray",
+              "action": "Re-load paper so it sits flush and the guides touch the stack without squeezing it.",
+              "detail": "Guides set too tight or too loose are a common cause of misfeeds."
+            },
+            {
+              "title": "Check paper condition",
+              "action": "Use paper that is flat, dry and within the printer’s supported weight.",
+              "detail": "Curled, damp or overly thick paper jams even in a healthy printer."
+            },
+            {
+              "title": "Test print",
+              "action": "Print a single plain page before resuming the original job.",
+              "detail": "Confirms the path is clear before you trust it with the real document."
+            },
+            {
+              "title": "Escalate if repeated",
+              "action": "If the same spot jams again, note it and check the manufacturer’s support page for that model.",
+              "detail": "A jam in the exact same place usually points to a worn roller needing service."
+            }
+          ]
+        },
+        "error-other": {
+          "title": "Ink, toner or connection error",
+          "why": "An on-printer error that is not about paper usually points at supplies or the connection.",
+          "steps": [
+            {
+              "title": "Read the exact error",
+              "action": "Write down the precise code or message rather than paraphrasing it.",
+              "detail": "Exact codes are what the manufacturer’s support search needs."
+            },
+            {
+              "title": "Check supplies",
+              "action": "Confirm ink/toner cartridges are seated, not empty, and not past their expiry.",
+              "detail": "A loose or empty cartridge is the single most common cause of this kind of error."
+            },
+            {
+              "title": "Reseat the connection",
+              "action": "Unplug and firmly replug the USB cable, or reconnect to Wi-Fi if wireless.",
+              "detail": "A half-seated cable or weak signal can trigger a generic error."
+            },
+            {
+              "title": "Restart both devices",
+              "action": "Power cycle the printer, then restart the computer or phone sending the job.",
+              "detail": "Clears a stuck print queue or driver state on either side."
+            },
+            {
+              "title": "Look it up",
+              "action": "Search the exact error code on the manufacturer’s official support site.",
+              "detail": "Official pages give the correct fix for that specific code, not a generic guess."
+            }
+          ]
+        },
+        "afterchange": {
+          "title": "Started after a change",
+          "why": "A problem that began right after an install, update or cable change is most likely caused by that change.",
+          "steps": [
+            {
+              "title": "Note the change",
+              "action": "Write down exactly what was installed, updated or reconnected, and when.",
+              "detail": "A precise timeline is the fastest way to confirm the cause."
+            },
+            {
+              "title": "Check the driver",
+              "action": "Confirm the correct, current driver for this exact printer model is installed.",
+              "detail": "A mismatched or outdated driver is the most common cause after an update."
+            },
+            {
+              "title": "Reverse if possible",
+              "action": "If a specific update or change can be rolled back safely, try that first.",
+              "detail": "Undoing a recent change is often quicker than troubleshooting forward."
+            },
+            {
+              "title": "Reconnect cleanly",
+              "action": "Remove and re-add the printer in your system’s printer settings.",
+              "detail": "A stale printer entry can keep pointing at the old configuration."
+            },
+            {
+              "title": "Retest",
+              "action": "Print a single test page and compare the result to before the change.",
+              "detail": "Confirms whether the change was the actual cause."
+            }
+          ]
+        },
+        "queue": {
+          "title": "Print queue issue",
+          "why": "Since another app or document still prints, the printer itself works; the stuck job is the problem.",
+          "steps": [
+            {
+              "title": "Open the print queue",
+              "action": "Find the pending or stuck job in your system’s print queue or spooler.",
+              "detail": "This shows whether the job is stuck, paused or still processing."
+            },
+            {
+              "title": "Cancel the stuck job",
+              "action": "Remove the specific stuck job rather than the whole queue if possible.",
+              "detail": "A single corrupted job can block everything behind it."
+            },
+            {
+              "title": "Restart the print spooler",
+              "action": "Restart the print spooler service (or restart the device if unsure how).",
+              "detail": "Clears a jammed queue without affecting other settings."
+            },
+            {
+              "title": "Resend as a new job",
+              "action": "Reopen the original document and print it again as a fresh job.",
+              "detail": "A newly created job avoids whatever corrupted the original."
+            },
+            {
+              "title": "Try a different format",
+              "action": "If it fails again, try exporting to PDF first and printing that instead.",
+              "detail": "Narrows whether the issue is the document format or the print system."
+            }
+          ]
+        },
+        "offline": {
+          "title": "Printer offline / unreachable",
+          "why": "Printing fails everywhere with no other symptom isolated yet, so start with the basic connection.",
+          "steps": [
+            {
+              "title": "Check power and display",
+              "action": "Confirm the printer is powered on and its own display/lights look normal.",
+              "detail": "Rules out the simplest cause before touching settings."
+            },
+            {
+              "title": "Check the connection",
+              "action": "Confirm the USB cable is firmly connected, or that the printer shows connected to Wi-Fi.",
+              "detail": "Most “offline” errors are the device simply not reachable on the expected connection."
+            },
+            {
+              "title": "Set as default/online",
+              "action": "In your system’s printer settings, use any “use printer online” or “set as default” option if offered.",
+              "detail": "Systems sometimes mark a printer offline after one failed job and need this reset."
+            },
+            {
+              "title": "Restart both devices",
+              "action": "Power cycle the printer, then restart the computer or phone.",
+              "detail": "Clears a stuck connection state on either side."
+            },
+            {
+              "title": "Re-add the printer",
+              "action": "Remove the printer from your system and add it again from scratch.",
+              "detail": "A fresh setup avoids a corrupted saved configuration."
+            }
+          ]
+        }
+      }
+    },
+    "smarthome": {
+      "questions": [
+        {
+          "q": "Does the device still work from its own physical button or switch?",
+          "yes": "physical-ok",
+          "no": "physical-fail",
+          "yl": "Yes — works physically",
+          "nl": "No — fails physically too"
+        },
+        {
+          "q": "Does the app show the device as online (connected to Wi-Fi)?",
+          "yes": "online",
+          "no": "offline-app",
+          "yl": "Yes — shown as online",
+          "nl": "No — shown as offline"
+        },
+        {
+          "q": "Did this start after a Wi-Fi, router, or app update/change?",
+          "yes": "afterchange",
+          "no": "noafterchange",
+          "yl": "Yes — after a change",
+          "nl": "No — nothing changed"
+        },
+        {
+          "q": "Have you already tried moving the device closer to the router?",
+          "yes": "moved",
+          "no": "notmoved",
+          "yl": "Yes — already tried",
+          "nl": "No — not tried yet",
+          "showIf": {
+            "idx": 1,
+            "eq": "offline-app"
+          }
+        }
+      ],
+      "symptoms": [
+        [
+          "unresponsive",
+          "Device won't respond",
+          "The app or voice assistant cannot control it."
+        ],
+        [
+          "offline",
+          "Device shows offline",
+          "The app says the device is unreachable."
+        ],
+        [
+          "voice-fail",
+          "Voice commands fail",
+          "The voice assistant does not recognize or control the device."
+        ]
+      ],
+      "evidence": [
+        "Device make/model",
+        "App and firmware version",
+        "Wi-Fi band (2.4GHz/5GHz)",
+        "Distance from router",
+        "What changed immediately before it started"
+      ],
+      "branches": {
+        "still-offline": {
+          "title": "Offline even after moving closer",
+          "why": "Since proximity did not fix it, the problem is more likely the device’s network setup than signal strength.",
+          "steps": [
+            {
+              "title": "Power cycle the device",
+              "action": "Fully power off the device for 30 seconds, then turn it back on.",
+              "detail": "Clears a stuck connection without touching any settings."
+            },
+            {
+              "title": "Power cycle the router",
+              "action": "Restart your Wi-Fi router, then wait a minute before reconnecting the device.",
+              "detail": "A stale router connection table can strand a device that looks fine otherwise."
+            },
+            {
+              "title": "Check the Wi-Fi band",
+              "action": "Confirm the device is set up on the band (2.4GHz vs 5GHz) it actually supports.",
+              "detail": "Many smart-home devices only support 2.4GHz and silently fail on 5GHz-only networks."
+            },
+            {
+              "title": "Remove and re-add",
+              "action": "Delete the device from the app and set it up again from scratch.",
+              "detail": "A fresh setup clears a corrupted saved network profile."
+            },
+            {
+              "title": "Check the app/firmware version",
+              "action": "Confirm the app and the device’s firmware are both up to date.",
+              "detail": "An outdated firmware version is a common, overlooked cause of silent offline failures."
+            }
+          ]
+        },
+        "try-closer": {
+          "title": "Move closer to the router first",
+          "why": "An offline device with no attempt yet to improve signal should start with the simplest possible cause.",
+          "steps": [
+            {
+              "title": "Move the device",
+              "action": "Temporarily place the device within a few meters of the router with no walls between them.",
+              "detail": "Confirms whether distance or obstruction is the cause."
+            },
+            {
+              "title": "Retest the app",
+              "action": "Open the app again and see if it now shows the device as online.",
+              "detail": "A quick fix here confirms signal strength was the issue."
+            },
+            {
+              "title": "Check for interference",
+              "action": "Note any microwaves, baby monitors or other 2.4GHz devices nearby that could interfere.",
+              "detail": "These commonly interfere with the same frequency smart-home devices use."
+            },
+            {
+              "title": "Plan placement",
+              "action": "If moving closer fixes it, consider a Wi-Fi extender for the original location.",
+              "detail": "Gives a permanent fix rather than relocating the device."
+            },
+            {
+              "title": "Re-check if unresolved",
+              "action": "If it is still offline up close, treat it as a network-setup problem instead of signal.",
+              "detail": "Rules signal strength out so the next troubleshooting step targets the real cause."
+            }
+          ]
+        },
+        "hardware": {
+          "title": "Hardware problem",
+          "why": "If the device fails even from its own physical button, software and network are unlikely to be the cause.",
+          "steps": [
+            {
+              "title": "Check power",
+              "action": "Confirm the device is receiving power (an LED, charge indicator, or working outlet).",
+              "detail": "Rules out the simplest hardware cause first."
+            },
+            {
+              "title": "Try a different outlet/cable",
+              "action": "If it uses a cable or plug, test a different one known to work.",
+              "detail": "A faulty cable or outlet is a common, easily missed cause."
+            },
+            {
+              "title": "Look for a reset option",
+              "action": "Check the manufacturer’s instructions for a physical factory-reset procedure.",
+              "detail": "A hardware-level reset can clear a fault that software can’t reach."
+            },
+            {
+              "title": "Check the warranty",
+              "action": "Note the purchase date and check whether the device is still under warranty.",
+              "detail": "Determines whether replacement or repair is the right next step."
+            },
+            {
+              "title": "Contact support",
+              "action": "Contact the manufacturer with the exact symptom and what you’ve already tried.",
+              "detail": "A device unresponsive even to its own button usually needs manufacturer support."
+            }
+          ]
+        },
+        "afterchange": {
+          "title": "Started after a change",
+          "why": "A problem that began right after a Wi-Fi, router or app change is most likely caused by that change.",
+          "steps": [
+            {
+              "title": "Note the change",
+              "action": "Write down exactly what changed (router settings, app update, Wi-Fi password) and when.",
+              "detail": "A precise timeline is the fastest way to confirm the cause."
+            },
+            {
+              "title": "Check the Wi-Fi credentials",
+              "action": "If the router password or network name changed, update it in the device’s app too.",
+              "detail": "Devices don’t update saved credentials automatically."
+            },
+            {
+              "title": "Reverse if possible",
+              "action": "If a specific router setting was changed, try reverting just that one setting.",
+              "detail": "Undoing a recent change is often quicker than troubleshooting forward."
+            },
+            {
+              "title": "Re-pair the device",
+              "action": "Remove and re-add the device in the app so it learns the current network.",
+              "detail": "Clears any mismatch between the device and the new setup."
+            },
+            {
+              "title": "Retest automations",
+              "action": "Confirm existing automations/schedules still reference the device correctly.",
+              "detail": "Reconnecting a device can sometimes break links inside existing automations."
+            }
+          ]
+        },
+        "app-glitch": {
+          "title": "App or account glitch",
+          "why": "With physical control working, Wi-Fi online, and no recent change, the app or account layer is the likely cause.",
+          "steps": [
+            {
+              "title": "Force-close and reopen the app",
+              "action": "Fully close the app (not just minimize it) and reopen it.",
+              "detail": "Clears a stuck app state without affecting the device itself."
+            },
+            {
+              "title": "Sign out and back in",
+              "action": "Sign out of the smart-home account and sign back in.",
+              "detail": "Refreshes a stale session that can silently stop commands from reaching the device."
+            },
+            {
+              "title": "Update the app",
+              "action": "Check the app store for a pending update and install it.",
+              "detail": "An outdated app is a common, overlooked cause of control failures."
+            },
+            {
+              "title": "Check the service status",
+              "action": "Look for a status page or official account post about an ongoing outage.",
+              "detail": "Some failures are on the manufacturer’s side, not yours."
+            },
+            {
+              "title": "Reinstall if still stuck",
+              "action": "Uninstall and reinstall the app, then log back in.",
+              "detail": "A clean install clears corrupted local app data."
+            }
+          ]
+        }
+      }
     }
   }
 }
